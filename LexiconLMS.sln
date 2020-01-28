@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.29411.108
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LexiconLMS", "LexiconLMS\LexiconLMS.csproj", "{2B554F87-60AD-415C-BD33-59B0BE040935}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{2B554F87-60AD-415C-BD33-59B0BE040935}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2B554F87-60AD-415C-BD33-59B0BE040935}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2B554F87-60AD-415C-BD33-59B0BE040935}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2B554F87-60AD-415C-BD33-59B0BE040935}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {9EEA6787-7896-489D-BD1B-AB736AC8172A}
+	EndGlobalSection
+EndGlobal
