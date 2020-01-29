@@ -54,10 +54,12 @@ namespace LexiconLMS.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("CourseId,CourseName,CourseDescription,StartDate")] Course course)
+        public async Task<IActionResult> Create([Bind("CourseId,CourseName,CourseDescription,StartDate,AppUsers")] Course course)
         {
             if (ModelState.IsValid)
             {
+                course.StartDate = DateTime.Now;
+                
                 _context.Add(course);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
