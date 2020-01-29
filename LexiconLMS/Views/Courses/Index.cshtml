@@ -7,7 +7,14 @@
 <h1>Index</h1>
 
 <p>
-    <a asp-action="Create">Create New</a>
+    @*<a asp-action="Create">Create New</a>*@
+    <a href='@Url.Action("Create", "Courses")'>
+        <input type="submit" value="Add Course" />
+    </a>
+    <a href='@Url.Action("", "Courses")'>
+        <input type="submit" value="Teachers" />
+    </a>
+    <br />
 </p>
 <table class="table">
     <thead>
