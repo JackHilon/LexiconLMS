@@ -253,6 +253,11 @@ namespace LexiconLMS.Data.Migrations
                     b.Property<int?>("CourseId")
                         .HasColumnType("int");
 
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(20)")
+                        .HasMaxLength(20);
+
                     b.HasIndex("CourseId");
 
                     b.HasDiscriminator().HasValue("ApplicationUser");

@@ -2,13 +2,19 @@
 
 namespace LexiconLMS.Data.Migrations
 {
-    public partial class NullableCourse : Migration
+    public partial class initialCreate : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropForeignKey(
                 name: "FK_AspNetUsers_Courses_CourseId",
                 table: "AspNetUsers");
+
+            migrationBuilder.AddColumn<string>(
+                name: "Name",
+                table: "AspNetUsers",
+                maxLength: 20,
+                nullable: true);
 
             migrationBuilder.AddForeignKey(
                 name: "FK_AspNetUsers_Courses_CourseId",
@@ -23,6 +29,10 @@ namespace LexiconLMS.Data.Migrations
         {
             migrationBuilder.DropForeignKey(
                 name: "FK_AspNetUsers_Courses_CourseId",
+                table: "AspNetUsers");
+
+            migrationBuilder.DropColumn(
+                name: "Name",
                 table: "AspNetUsers");
 
             migrationBuilder.AddForeignKey(

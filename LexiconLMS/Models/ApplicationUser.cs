@@ -15,5 +15,14 @@ namespace LexiconLMS.Models
 
         //Navigation Property
         public Course Course { get; set; }
+
+
+        //-----------------------
+
+        [Required]
+        [Display(Name = "Name"), StringLength(20)]
+        public string Name { get; set; }
+
+       
     }
 }
