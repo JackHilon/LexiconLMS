@@ -11,12 +11,16 @@
         <li class="nav-item">
             <a asp-action="Create" class="btn btn-primary btn-lg active" role="button">Add New Course</a>
         </li>
+
+
         <li class="nav-item">
-            <a asp-area="Identity" asp-page="/Account/Register" class="btn btn-secondary btn-lg active" role="button">Add New User</a>
+            <a asp-action="ListUsers" class="btn btn-danger btn-lg active" role="button">List All Users (Teachers)</a>
         </li>
+
+        
     </ul>
 </nav>
-    <br>
+<br>
 
 <table class="table">
     <thead>
@@ -34,24 +38,25 @@
         </tr>
     </thead>
     <tbody>
-@foreach (var item in Model) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.CourseName)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.CourseDescription)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.StartDate)
-            </td>
-            <td>
-                <a class="btn btn-secondary">Students</a>
-                <a class="btn btn-primary" asp-action="Details" asp-route-id="@item.CourseId">Details</a>
-                <a class="btn btn-outline-secondary" asp-action="Edit" asp-route-id="@item.CourseId">Edit</a>
-                <a class="btn btn-danger" asp-action="Delete" asp-route-id="@item.CourseId">Delete</a>
-            </td>
-        </tr>
-}
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.CourseName)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.CourseDescription)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.StartDate)
+                </td>
+                <td>
+                    <a class="btn btn-secondary">Students</a>
+                    <a class="btn btn-primary" asp-action="Details" asp-route-id="@item.CourseId">Details</a>
+                    <a class="btn btn-outline-secondary" asp-action="Edit" asp-route-id="@item.CourseId">Edit</a>
+                    <a class="btn btn-danger" asp-action="Delete" asp-route-id="@item.CourseId">Delete</a>
+                </td>
+            </tr>
+        }
     </tbody>
 </table>

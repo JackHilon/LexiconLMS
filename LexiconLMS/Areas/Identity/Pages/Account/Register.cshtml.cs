@@ -46,6 +46,12 @@ namespace LexiconLMS.Areas.Identity.Pages.Account
 
         public class InputModel
         {
+            [Required]                                                  //  <------------------
+            [Display(Name = "Name"), StringLength(20)]
+            public string Name { get; set; }
+            // ---------------------
+
+
             [Required]
             [EmailAddress]
             [Display(Name = "Email")]
@@ -75,7 +81,7 @@ namespace LexiconLMS.Areas.Identity.Pages.Account
             ExternalLogins = (await _signInManager.GetExternalAuthenticationSchemesAsync()).ToList();
             if (ModelState.IsValid)
             {
-                var user = new ApplicationUser { UserName = Input.Email, Email = Input.Email };
+                var user = new ApplicationUser { Name = Input.Name, Email = Input.Email, UserName = Input.Email };
                 var result = await _userManager.CreateAsync(user, Input.Password);
                 if (result.Succeeded)
                 {
