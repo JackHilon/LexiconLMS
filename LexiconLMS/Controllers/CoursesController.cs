@@ -88,7 +88,7 @@ namespace LexiconLMS.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("CourseId,CourseName,CourseDescription,StartDate")] Course course)
+        public async Task<IActionResult> Edit(int id, [Bind("CourseId,CourseName,CourseDescription")] Course course)
         {
             if (id != course.CourseId)
             {
@@ -99,7 +99,17 @@ namespace LexiconLMS.Controllers
             {
                 try
                 {
-                    _context.Update(course);
+                    var newUpdatedDataCourse = await _context.Courses.FindAsync(id);
+
+                    if(newUpdatedDataCourse == null)
+                    {
+                        return NotFound();
+                    }
+
+                    newUpdatedDataCourse.CourseId = course.CourseId;
+                    newUpdatedDataCourse.CourseName = course.CourseName;
+                    newUpdatedDataCourse.CourseDescription = course.CourseDescription;
+                  //  _context.Update(course);
                     await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
