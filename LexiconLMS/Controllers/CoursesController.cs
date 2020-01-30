@@ -7,17 +7,30 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using LexiconLMS.Data;
 using LexiconLMS.Models;
+using Microsoft.AspNetCore.Identity;
 
 namespace LexiconLMS.Controllers
 {
     public class CoursesController : Controller
     {
         private readonly ApplicationDbContext _context;
+        private readonly UserManager<ApplicationUser> userManager;
 
-        public CoursesController(ApplicationDbContext context)
+        public CoursesController(ApplicationDbContext context, UserManager<ApplicationUser> userManager)
         {
             _context = context;
+            this.userManager = userManager;
         }
+
+        [HttpGet]
+        public async Task<IActionResult> ListUsers()             //  <--------------------------------------------
+        {
+            //  var teachers = await userManager.GetUsersInRoleAsync("Teacher");
+            var users =await _context.AppUser.ToListAsync();
+            return  View(users);
+        }
+
+
 
         // GET: Courses
         public async Task<IActionResult> Index()
