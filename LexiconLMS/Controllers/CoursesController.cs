@@ -23,7 +23,7 @@ namespace LexiconLMS.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> ListUsers()             //  <--------------------------------------------
+        public async Task<IActionResult> ListUsers()             //  <-------------------- List of users (teachers) -------
         {
             //  var teachers = await userManager.GetUsersInRoleAsync("Teacher");
             var users =await _context.AppUser.ToListAsync();
@@ -174,5 +174,119 @@ namespace LexiconLMS.Controllers
         {
             return _context.Courses.Any(e => e.CourseId == id);
         }
+
+
+        // ----------------- Edit a teacher -------------------------------------------------------
+
+        public async Task<IActionResult> EditUser(string? id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            var user = await _context.AppUser.FindAsync(id);
+            if (user == null)
+            {
+                return NotFound();
+            }
+            return View(user);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> EditUser(string id, [Bind("Id, Name, UserName, Email")] ApplicationUser user)
+        {
+             if(!string.Equals(id, user.Id))                       //if (id != user.Id)
+            {
+                return NotFound();
+            }
+
+            if (ModelState.IsValid)
+            {
+                try
+                {
+                    var newUpdatedAppUser = await _context.AppUser.FindAsync(id);
+
+                    if (newUpdatedAppUser == null)
+                    {
+                        return NotFound();
+                    }
+
+                    newUpdatedAppUser.Name = user.Name;
+                    newUpdatedAppUser.Email = user.Email;
+                    newUpdatedAppUser.UserName = user.UserName;
+                    newUpdatedAppUser.NormalizedUserName = user.NormalizedUserName;
+                    newUpdatedAppUser.NormalizedEmail = user.NormalizedEmail;
+                    
+                    await _context.SaveChangesAsync();
+                }
+                catch (DbUpdateConcurrencyException)
+                {
+                    if (!AppUserExists(user.Id))
+                    {
+                        return NotFound();
+                    }
+                    else
+                    {
+                        throw;
+                    }
+                }
+                return RedirectToAction(nameof(ListUsers));
+            }
+            return View(user);
+        }
+
+        private bool AppUserExists(string id)
+        {
+            return GetAny(id);
+        }
+
+        private bool GetAny(string id)
+        {
+            return _context.AppUser.Any(e => e.Id == id);
+        }
+
+        // -------------- end of Edit a teacher -----------------------------------------------------------------------
+
+
+
+        // =============== Delete a teacher ================
+        public async Task<IActionResult> DeleteUser(string? id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+            ApplicationUser user = await GetAsync(id);
+
+            if (user == null)
+            {
+                return NotFound();
+            }
+
+            return View(user);
+        }
+
+        private async Task<ApplicationUser> GetAsync(string? id)
+        {
+            return await _context.AppUser
+                .FirstOrDefaultAsync(m => m.Id == id);
+        }
+
+
+        [HttpPost, ActionName("DeleteUser")]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> DeleteUserConfirmed(string id)
+        {
+            var user = await GetAsync(id);
+
+            _context.AppUser.Remove(user);
+            await _context.SaveChangesAsync();
+            return RedirectToAction(nameof(ListUsers));
+        }
+
+        // ================ end of Edit a teacher ============
+
     }
 }
