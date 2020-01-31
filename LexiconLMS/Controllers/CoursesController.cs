@@ -59,7 +59,7 @@ namespace LexiconLMS.Controllers
             TempData["Courseid"] = id;
         //    TempData["CreateCourseid"] = id;
          
-            return RedirectToAction("Index", "Modules");
+            return RedirectToAction("ModuleActivity", "Modules");
         }
 
         // GET: Courses/Create
