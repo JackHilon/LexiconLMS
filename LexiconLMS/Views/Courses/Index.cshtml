@@ -4,24 +4,23 @@
     ViewData["Title"] = "Index";
 }
 
-<h1>Index</h1>
+<h1>Teacher</h1>
 
-<nav class="navbar navbar-expand-sm bg-light">
-    <ul class="navbar-nav ml-md-auto ">
-        <li class="nav-item">
-            <a asp-action="Create" class="btn btn-primary  active" role="button">Add New Course</a>
-        </li>
-
-
-        <li class="nav-item">
-            <a asp-action="ListUsers" class="btn btn-danger active" role="button">List All Users (Teachers)</a>
-        </li>
-
+<nav class="container">
         
-    </ul>
+            <ul class="text-right"> 
+                <li class="btn-group">
+                        <a asp-action="Create" class="btn btn-primary  active" role="button">Add New Course</a>
+                </li>
+                    <li class="btn-group">
+                        <a asp-action="ListUsers" class="btn btn-danger  active" role="button">List All Users (Teachers)</a>
+                    </li>
+                
+            </ul>
+   
 </nav>
 <br>
-
+<h2>All Courses</h2>
 <table class="table">
     <thead>
         <tr>
