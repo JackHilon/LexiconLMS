@@ -11,6 +11,7 @@ using Microsoft.AspNetCore.Identity;
 
 namespace LexiconLMS.Controllers
 {
+
     public class CoursesController : Controller
     {
         private readonly ApplicationDbContext _context;
@@ -26,16 +27,7 @@ namespace LexiconLMS.Controllers
         public async Task<IActionResult> ListUsers()             //  <-------------------- List of users (teachers) -------
         {
             //  var teachers = await userManager.GetUsersInRoleAsync("Teacher");
-            List<ApplicationUser> users;
-            if (User.IsInRole("Teacher"))
-            {
-             users =await _context.AppUser.ToListAsync();
-            }
-            else
-            {
-             users =await _context.AppUser.ToListAsync();
-
-            }
+            var users = await _context.AppUser.ToListAsync();
             return  View(users);
         }
 
