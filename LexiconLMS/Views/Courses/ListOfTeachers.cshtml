@@ -1,15 +1,15 @@
 ﻿@model IEnumerable<ApplicationUser>
 
 @{
-    ViewBag.Title = "List of all users";
+    ViewBag.Title = "ListofallTeachers";
 }
 
-<h1>All Users (Teachers)</h1>
+<h1>All Teachers</h1>
 
 <nav class="navbar navbar-expand-sm bg-light">
     <ul class="navbar-nav">
         <li class="nav-item">
-            <a asp-area="Identity" asp-page="/Account/Register" class="btn btn-secondary btn-lg active" role="button">Add New User (Teacher)</a>
+            <a asp-area="Identity"  asp-page="/Account/Register" asp-route-RoleName="Teacher" class="btn btn-secondary btn-lg active" role="button">Add New Teacher</a>
         </li>
     </ul>
 </nav>

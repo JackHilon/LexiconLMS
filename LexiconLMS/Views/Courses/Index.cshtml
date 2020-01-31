@@ -12,9 +12,10 @@
                 <li class="btn-group">
                         <a asp-action="Create" class="btn btn-primary  active" role="button">Add New Course</a>
                 </li>
-                    <li class="btn-group">
-                        <a asp-action="ListUsers" class="btn btn-danger  active" role="button">List All Users (Teachers)</a>
-                    </li>
+                <li class="btn-group">
+
+                    <a asp-action="ListOfTeachers" class="btn btn-danger  active" role="button" >List All Teachers</a>
+                </li>
                 
             </ul>
    
@@ -50,7 +51,7 @@
                     @Html.DisplayFor(modelItem => item.StartDate)
                 </td>
                 <td>
-                    <a class="btn btn-secondary">Students</a>
+                    <a class="btn btn-secondary" asp-action="ListOfCourseStudents" asp-route-id="@item.CourseId">Students</a>
                     <a class="btn btn-primary" asp-action="Details" asp-route-id="@item.CourseId">Details</a>
                     <a class="btn btn-outline-secondary" asp-action="Edit" asp-route-id="@item.CourseId">Edit</a>
                     <a class="btn btn-danger" asp-action="Delete" asp-route-id="@item.CourseId">Delete</a>
