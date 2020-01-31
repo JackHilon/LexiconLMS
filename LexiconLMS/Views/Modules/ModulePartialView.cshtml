@@ -1,0 +1,68 @@
+﻿
+@model LexiconLMS.ViewModels.ModuleActivityViewModel
+
+@{
+    ViewData["Title"] = "ModuleActivity";
+}
+
+<!-- <h1>Module</h1> -->
+    <ul class="nav nav-pills">
+        <li class="nav-item ">
+            <a class="nav-link active rounded-0" data-toggle="pill" href="#home">Modules</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link rounded-0" data-toggle="pill" href="#menu1">Activities</a>
+        </li>
+        <p>
+            <a asp-action="Create">Add New Module</a> |
+        </p>
+     </ul>
+
+    <div>
+        <div class="tab-content">
+            <div class="tab-pane container active p-0" id="home">
+                <h5 class="text-uppercase p-2 text-center">List of Modules</h5>
+                <table class="table table-bordered table-striped">
+                    <thead class="thead-dark text-white">
+                        <tr>
+                            <th>
+                                @Html.DisplayNameFor(model => model.Modules.FirstOrDefault().Name)
+                            </th>
+                            <th>
+                                @Html.DisplayNameFor(model => model.Modules.FirstOrDefault().Description)
+                            </th>
+                            <th>
+                                @Html.DisplayNameFor(model => model.Modules.FirstOrDefault().StartDate)
+                            </th>
+                            <th>
+                                @Html.DisplayNameFor(model => model.Modules.FirstOrDefault().Course)
+                            </th>
+
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var item in Model.Modules)
+                        {
+                            <tr>
+                                <td>
+                                    @Html.DisplayFor(modelItem => @item.Name)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => @item.Description)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => @item.StartDate)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => @item.CourseId)
+                                </td>
+                                <td>
+                                    <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
+                                    <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
+                                    <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>

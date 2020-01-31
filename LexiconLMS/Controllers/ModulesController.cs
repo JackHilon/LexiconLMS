@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using LexiconLMS.Data;
 using LexiconLMS.Models;
+using LexiconLMS.ViewModels;
 
 namespace LexiconLMS.Controllers
 {
@@ -25,14 +26,34 @@ namespace LexiconLMS.Controllers
 
             // Display Modules for the corresponding course.
 
+            //int data = (int)TempData["Courseid"];
+            //TempData.Keep();
+            //var applicationDbContext = _context.Module.Include(q => q.Course);
+            //var _thisModuleCourse = applicationDbContext.Where(c => c.CourseId == data).Include(a => a.Activity);
+            //return View(await _thisModuleCourse.ToListAsync());
+
+
+            var applicationDbContext = _context.Module.Include(q => q.Course);
+            return View(await applicationDbContext.ToListAsync());
+        }
+
+        public ActionResult ModuleActivity()
+        {
+            // Display Modules for the corresponding course.
+
             int data = (int)TempData["Courseid"];
             TempData.Keep();
+
             var applicationDbContext = _context.Module.Include(q => q.Course);
             var _thisModuleCourse = applicationDbContext.Where(c => c.CourseId == data).Include(a => a.Activity);
-            return View(await _thisModuleCourse.ToListAsync());
-          
-            // var applicationDbContext = _context.Module.Include(q => q.Course);
-            // return View(await applicationDbContext.ToListAsync());
+
+            var moduleActivityView = new ModuleActivityViewModel()
+            {
+                 Modules = _context.Module.ToList(),
+               Activities = _context.ModuleActivity.ToList()
+            };
+
+            return View(moduleActivityView);
         }
 
         // GET: Modules/Details/5
