@@ -16,6 +16,7 @@ namespace LexiconLMS.Data
 
         public DbSet<Course> Courses { get; set; }
         public DbSet<ApplicationUser> AppUser { get; set; }
+        public DbSet<LexiconLMS.Models.Module> Module { get; set; }
 
     }
 }
