@@ -62,7 +62,7 @@ namespace LexiconLMS.Controllers
             if (id == null)
             {
                 return NotFound();
-            }
+            } 
 
             var @module = await _context.Module
                 .Include(a=> a.Course)
@@ -78,7 +78,7 @@ namespace LexiconLMS.Controllers
         // GET: Modules/Create
         public IActionResult Create()
         {
-            ViewData["CourseId"] = new SelectList(_context.Courses, "CourseId", "CourseId");
+            ViewData["CourseId"] = new SelectList(_context.Courses, "CourseId", "CourseName");
             return View();
         }
 
@@ -93,7 +93,7 @@ namespace LexiconLMS.Controllers
             {
                 _context.Add(@module);
                 await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
+                return RedirectToAction(nameof(ModuleActivity));
             }
             ViewData["CourseId"] = new SelectList(_context.Courses, "CourseId", "CourseId", @module.CourseId);
             return View(@module);
