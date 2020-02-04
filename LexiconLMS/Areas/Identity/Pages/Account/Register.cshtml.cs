@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Text.Encodings.Web;
 using System.Threading.Tasks;
+using LexiconLMS.Data;
 using LexiconLMS.Models;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authorization;
@@ -12,6 +13,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.AspNetCore.WebUtilities;
 using Microsoft.Extensions.Logging;
 
@@ -25,16 +27,22 @@ namespace LexiconLMS.Areas.Identity.Pages.Account
         private readonly ILogger<RegisterModel> _logger;
         private readonly IEmailSender _emailSender;
 
+        private readonly ApplicationDbContext _context;
+
+
         public RegisterModel(
             UserManager<ApplicationUser> userManager,
             SignInManager<ApplicationUser> signInManager,
             ILogger<RegisterModel> logger,
-            IEmailSender emailSender)
+            IEmailSender emailSender, 
+            ApplicationDbContext context)
         {
             _userManager = userManager;
             _signInManager = signInManager;
             _logger = logger;
             _emailSender = emailSender;
+
+            _context = context;
         }
 
         [BindProperty]
@@ -42,6 +50,15 @@ namespace LexiconLMS.Areas.Identity.Pages.Account
 
         public string ReturnUrl { get; set; }
         public string RoleName { get; set; }
+
+        // -- ##
+
+        public int SelectedCourse { get; set; }
+        public SelectList CourseOptions { get; set; }
+
+        
+
+        // -- ##
 
         public IList<AuthenticationScheme> ExternalLogins { get; set; }
 
@@ -68,17 +85,22 @@ namespace LexiconLMS.Areas.Identity.Pages.Account
             [Display(Name = "Confirm password")]
             [Compare("Password", ErrorMessage = "The password and confirmation password do not match.")]
             public string ConfirmPassword { get; set; }
+
         }
 
-        public async Task OnGetAsync(string RoleName, string returnUrl = null)
+        public async Task OnGetAsync(string RoleName, int SelectedCourse, string returnUrl = null)
         {
             ReturnUrl = returnUrl;
+
+            CourseOptions = new SelectList(_context.Courses.ToList(), nameof(Course.CourseId), nameof(Course.CourseName));
+            this.SelectedCourse = SelectedCourse;
+
             this.RoleName = RoleName;
             ExternalLogins = (await _signInManager.GetExternalAuthenticationSchemesAsync()).ToList();
         }
        
 
-        public async Task<IActionResult> OnPostAsync(string RoleName, string returnUrl = null)
+        public async Task<IActionResult> OnPostAsync(string RoleName, int SelectedCourse, string returnUrl = null)
         {
 
            // this.RoleName = RoleName;
@@ -86,7 +108,7 @@ namespace LexiconLMS.Areas.Identity.Pages.Account
             ExternalLogins = (await _signInManager.GetExternalAuthenticationSchemesAsync()).ToList();
             if (ModelState.IsValid)
             {
-                var user = new ApplicationUser { Name = Input.Name, Email = Input.Email, UserName = Input.Email };
+                var user = new ApplicationUser { Name = Input.Name, Email = Input.Email, UserName = Input.Email, CourseId = SelectedCourse };
                 var result = await _userManager.CreateAsync(user, Input.Password);
 
                 result = await _userManager.AddToRoleAsync(user, RoleName);
