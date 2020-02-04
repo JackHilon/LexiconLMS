@@ -11,6 +11,7 @@ using Microsoft.AspNetCore.Identity;
 using LexiconLMS.Areas.Identity.Pages.Account;
 using Microsoft.Extensions.Logging;
 using Microsoft.AspNetCore.Identity.UI.Services;
+using LexiconLMS.ViewModels;
 
 namespace LexiconLMS.Controllers
 {
@@ -41,11 +42,18 @@ namespace LexiconLMS.Controllers
         [HttpGet]
         public async Task<IActionResult> ListOfCourseStudents(int? id)             //  <-------------------- List of Course's students -------
         {
-        
 
+            string courseName = _context.Courses.FirstOrDefault(c => c.CourseId == id).CourseName;
             var allStudents = await userManager.GetUsersInRoleAsync("Student");
             var students = allStudents.Where(s => s.CourseId == id);
-            return View(students);
+
+            var model = new StudentListAndCourseName()
+            {
+                CourseName = courseName,
+                Students = students
+            };
+
+            return View(model);
         }
 
         private async Task<string> GetUserRrole(ApplicationUser user)

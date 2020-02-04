@@ -1,10 +1,10 @@
-﻿@model IEnumerable<ApplicationUser>
+﻿@model LexiconLMS.ViewModels.StudentListAndCourseName
 
     @{
     ViewData["Title"] = "ListOfCourseStudents";
     }
 
-    <h1>ListOf Course Students</h1>
+    <h1>List of @Html.DisplayFor(m => m.CourseName) Course Students</h1>
 
     <nav class="navbar navbar-expand-sm bg-light">
         <ul class="navbar-nav">
@@ -16,21 +16,21 @@
     <br>
 
 
-    @if (Model.Any())
+    @if (Model.Students.Any())
 {
     <table class="table">
         <thead>
             <tr>
-                <th>@Html.DisplayNameFor(model => model.First().Name)</th>
+                <th>@Html.DisplayNameFor(model => model.Students.First().Name)</th>
                 <th>
-                    @Html.DisplayNameFor(model => model.First().Email)
+                    @Html.DisplayNameFor(model => model.Students.First().Email)
                 </th>
 
                 <th></th>
             </tr>
         </thead>
         <tbody>
-            @foreach (var item in Model)
+            @foreach (var item in Model.Students)
             {
             <tr>
                 <td>
