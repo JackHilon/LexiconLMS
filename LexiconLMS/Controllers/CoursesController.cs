@@ -8,6 +8,9 @@ using Microsoft.EntityFrameworkCore;
 using LexiconLMS.Data;
 using LexiconLMS.Models;
 using Microsoft.AspNetCore.Identity;
+using LexiconLMS.Areas.Identity.Pages.Account;
+using Microsoft.Extensions.Logging;
+using Microsoft.AspNetCore.Identity.UI.Services;
 
 namespace LexiconLMS.Controllers
 {
@@ -16,20 +19,50 @@ namespace LexiconLMS.Controllers
     {
         private readonly ApplicationDbContext _context;
         private readonly UserManager<ApplicationUser> userManager;
+        private readonly RoleManager<IdentityRole> roleManager;
 
-        public CoursesController(ApplicationDbContext context, UserManager<ApplicationUser> userManager)
+        public CoursesController(ApplicationDbContext context, 
+            UserManager<ApplicationUser> userManager, 
+            RoleManager<IdentityRole> roleManager)
         {
             _context = context;
             this.userManager = userManager;
+            this.roleManager = roleManager;
         }
 
         [HttpGet]
-        public async Task<IActionResult> ListUsers()             //  <-------------------- List of users (teachers) -------
+        public async Task<IActionResult> ListOfTeachers()             //  <-------------------- List of users (teachers) -------
         {
-            //  var teachers = await userManager.GetUsersInRoleAsync("Teacher");
-            var users = await _context.AppUser.ToListAsync();
-            return  View(users);
+             var AllTeachers = await userManager.GetUsersInRoleAsync("Teacher");
+            
+            return  View(AllTeachers);
         }
+
+        [HttpGet]
+        public async Task<IActionResult> ListOfCourseStudents(int? id)             //  <-------------------- List of Course's students -------
+        {
+        
+
+            var allStudents = await userManager.GetUsersInRoleAsync("Student");
+            var students = allStudents.Where(s => s.CourseId == id);
+            return View(students);
+        }
+
+        private async Task<string> GetUserRrole(ApplicationUser user)
+        {
+            string userRole;
+
+            bool flag = await userManager.IsInRoleAsync(user, "Teacher");
+
+            if (flag)
+                userRole = "Teacher";
+            else
+                userRole = "Student";
+
+            return userRole;
+        }
+
+        // ----------------------------------------------------------------------------------------------------------------------
 
 
 
@@ -238,7 +271,7 @@ namespace LexiconLMS.Controllers
                         throw;
                     }
                 }
-                return RedirectToAction(nameof(ListUsers));
+                return RedirectToAction(nameof(ListOfTeachers));
             }
             return View(user);
         }
@@ -289,7 +322,7 @@ namespace LexiconLMS.Controllers
 
             _context.AppUser.Remove(user);
             await _context.SaveChangesAsync();
-            return RedirectToAction(nameof(ListUsers));
+            return RedirectToAction(nameof(ListOfTeachers));
         }
 
         // ================ end of Edit a teacher ============

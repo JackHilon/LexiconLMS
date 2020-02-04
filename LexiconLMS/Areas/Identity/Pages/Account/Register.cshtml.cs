@@ -41,6 +41,7 @@ namespace LexiconLMS.Areas.Identity.Pages.Account
         public InputModel Input { get; set; }
 
         public string ReturnUrl { get; set; }
+        public string RoleName { get; set; }
 
         public IList<AuthenticationScheme> ExternalLogins { get; set; }
 
@@ -69,20 +70,27 @@ namespace LexiconLMS.Areas.Identity.Pages.Account
             public string ConfirmPassword { get; set; }
         }
 
-        public async Task OnGetAsync(string returnUrl = null)
+        public async Task OnGetAsync(string RoleName, string returnUrl = null)
         {
             ReturnUrl = returnUrl;
+            this.RoleName = RoleName;
             ExternalLogins = (await _signInManager.GetExternalAuthenticationSchemesAsync()).ToList();
         }
+       
 
-        public async Task<IActionResult> OnPostAsync(string returnUrl = null)
+        public async Task<IActionResult> OnPostAsync(string RoleName, string returnUrl = null)
         {
+
+           // this.RoleName = RoleName;
             returnUrl = returnUrl ?? Url.Content("~/");
             ExternalLogins = (await _signInManager.GetExternalAuthenticationSchemesAsync()).ToList();
             if (ModelState.IsValid)
             {
                 var user = new ApplicationUser { Name = Input.Name, Email = Input.Email, UserName = Input.Email };
                 var result = await _userManager.CreateAsync(user, Input.Password);
+
+                result = await _userManager.AddToRoleAsync(user, RoleName);
+                
                 if (result.Succeeded)
                 {
                     _logger.LogInformation("User created a new account with password.");
