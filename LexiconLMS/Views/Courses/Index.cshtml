@@ -29,16 +29,13 @@
     <thead>
         <tr>
             <th>
-                <!-- @Html.DisplayNameFor(model => model.CourseName)-->
-                <p>Course Name</p>
+                @Html.DisplayNameFor(model => model.CourseName)
             </th>
             <th>
-                <!--@Html.DisplayNameFor(model => model.CourseDescription)-->
-                <p>Course Description</p>
+                @Html.DisplayNameFor(model => model.CourseDescription)
             </th>
             <th>
-                <!--  @Html.DisplayNameFor(model => model.StartDate)-->
-                <p>Start Date</p>
+                @Html.DisplayNameFor(model => model.StartDate)
             </th>
                 <th></th>
             </tr>
@@ -48,16 +45,13 @@
             {
                 <tr>
                     <td>
-                        <!--@Html.DisplayFor(modelItem => item.CourseName)-->
-                        <p>Course Name</p>
+                        @Html.DisplayFor(modelItem => item.CourseName)
                     </td>
                     <td>
-                        <!-- @Html.DisplayFor(modelItem => item.CourseDescription)-->
-                        <p>Course Description</p>
+                        @Html.DisplayFor(modelItem => item.CourseDescription)
                     </td>
                     <td>
-                        <!-- @Html.DisplayFor(modelItem => item.StartDate)-->
-                        <p>Start Date</p>
+                        @Html.DisplayFor(modelItem => item.StartDate)
                     </td>
                     <td>
                         <a class="btn btn-secondary" asp-action="ListOfCourseStudents" asp-route-id="@item.CourseId">Students</a>
