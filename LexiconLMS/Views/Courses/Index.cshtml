@@ -4,59 +4,108 @@
     ViewData["Title"] = "Index";
 }
 
-<h1>Teacher</h1>
 
-<nav class="container">
-        
-            <ul class="text-right"> 
-                <li class="btn-group">
-                        <a asp-action="Create" class="btn btn-primary  active" role="button">Add New Course</a>
-                </li>
-                <li class="btn-group">
 
-                    <a asp-action="ListOfTeachers" class="btn btn-danger  active" role="button" >List All Teachers</a>
-                </li>
-                
-            </ul>
-   
-</nav>
-<br>
-<h2>All Courses</h2>
-<table class="table">
-    <thead>
-        <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.CourseName)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.CourseDescription)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.StartDate)
-            </th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody> 
-        @foreach (var item in Model)
-        {
+@if (User.IsInRole("Teacher"))
+{
+    <h1>Teacher</h1>
+
+
+    <nav class="container">
+
+        <ul class="text-right">
+            <li class="btn-group">
+                <a asp-action="Create" class="btn btn-primary  active" role="button">Add New Course</a>
+            </li>
+            <li class="btn-group">
+
+                <a asp-action="ListOfTeachers" class="btn btn-danger  active" role="button">List All Teachers</a>
+            </li>
+
+        </ul>
+
+    </nav>
+    <br>
+    <h2>All Courses</h2>
+    <br />
+    <table class="table">
+        <thead>
             <tr>
-                <td>
-                    @Html.DisplayFor(modelItem => item.CourseName)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.CourseDescription)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.StartDate)
-                </td>
-                <td>
-                    <a class="btn btn-secondary" asp-action="ListOfCourseStudents" asp-route-id="@item.CourseId">Students</a>
-                    <a class="btn btn-primary" asp-action="Details" asp-route-id="@item.CourseId">Details</a>
-                    <a class="btn btn-outline-secondary" asp-action="Edit" asp-route-id="@item.CourseId">Edit</a>
-                    <a class="btn btn-danger" asp-action="Delete" asp-route-id="@item.CourseId">Delete</a>
-                </td>
+                <th>
+                    @Html.DisplayNameFor(model => model.CourseName)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.CourseDescription)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.StartDate)
+                </th>
+                <th></th>
             </tr>
-        }
-    </tbody>
-</table>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.CourseName)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.CourseDescription)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.StartDate)
+                    </td>
+                    <td>
+                        <a class="btn btn-secondary" asp-action="ListOfCourseStudents" asp-route-id="@item.CourseId">Students</a>
+                        <a class="btn btn-primary" asp-action="Details" asp-route-id="@item.CourseId">Details</a>
+                        <a class="btn btn-outline-secondary" asp-action="Edit" asp-route-id="@item.CourseId">Edit</a>
+                        <a class="btn btn-danger" asp-action="Delete" asp-route-id="@item.CourseId">Delete</a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+
+}
+
+
+@if (User.IsInRole("Student"))
+{
+    <td>
+        <h2>All Modules</h2>
+
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>
+                        @Html.DisplayNameFor(model => model.CourseName)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.CourseDescription)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.StartDate)
+                    </th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.CourseName)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.CourseDescription)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.StartDate)
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </td>
+}
