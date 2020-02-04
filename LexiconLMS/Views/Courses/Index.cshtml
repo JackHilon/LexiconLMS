@@ -13,8 +13,11 @@
                         <a asp-action="Create" class="btn btn-primary  active" role="button">Add New Course</a>
                 </li>
                 <li class="btn-group">
+                        <a asp-area="Identity" asp-page="/Account/Register" asp-route-roleName="Student" class="btn btn-secondary active" role="button">Add New Student</a>
+                </li>
+                <li class="btn-group">
 
-                    <a asp-action="ListOfTeachers" class="btn btn-danger  active" role="button" >List All Teachers</a>
+                    <a asp-action="ListOfTeachers" class="btn btn-success  active" role="button" >List All Teachers</a>
                 </li>
                 
             </ul>
