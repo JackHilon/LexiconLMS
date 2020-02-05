@@ -24,14 +24,6 @@ namespace LexiconLMS.Controllers
         public async Task<IActionResult> Index()
         {
 
-            // Display Modules for the corresponding course.
-
-            //int data = (int)TempData["Courseid"];
-            //TempData.Keep();
-            //var applicationDbContext = _context.Module.Include(q => q.Course);
-            //var _thisModuleCourse = applicationDbContext.Where(c => c.CourseId == data).Include(a => a.Activity);
-            //return View(await _thisModuleCourse.ToListAsync());
-
 
             var applicationDbContext = _context.Module.Include(q => q.Course);
             return View(await applicationDbContext.ToListAsync());
@@ -49,7 +41,7 @@ namespace LexiconLMS.Controllers
 
             var moduleActivityView = new ModuleActivityViewModel()
             {
-                 Modules = _context.Module.ToList(),
+                 Modules = _thisModuleCourse.ToList(),
                Activities = _context.ModuleActivity.ToList()
             };
 

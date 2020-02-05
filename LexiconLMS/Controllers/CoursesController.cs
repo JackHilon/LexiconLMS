@@ -11,6 +11,7 @@ using Microsoft.AspNetCore.Identity;
 using LexiconLMS.Areas.Identity.Pages.Account;
 using Microsoft.Extensions.Logging;
 using Microsoft.AspNetCore.Identity.UI.Services;
+using LexiconLMS.ViewModels;
 
 namespace LexiconLMS.Controllers
 {
@@ -41,11 +42,18 @@ namespace LexiconLMS.Controllers
         [HttpGet]
         public async Task<IActionResult> ListOfCourseStudents(int? id)             //  <-------------------- List of Course's students -------
         {
-        
 
+            string courseName = _context.Courses.FirstOrDefault(c => c.CourseId == id).CourseName;
             var allStudents = await userManager.GetUsersInRoleAsync("Student");
             var students = allStudents.Where(s => s.CourseId == id);
-            return View(students);
+
+            var model = new StudentListAndCourseName()
+            {
+                CourseName = courseName,
+                Students = students
+            };
+
+            return View(model);
         }
 
         private async Task<string> GetUserRrole(ApplicationUser user)
@@ -234,9 +242,11 @@ namespace LexiconLMS.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> EditUser(string id, [Bind("Id, Name, UserName, Email")] ApplicationUser user)
+        public async Task<IActionResult> EditUser(string id, [Bind("Id, Name, UserName, Email, CourseId")] ApplicationUser user)
         {
-             if(!string.Equals(id, user.Id))                       //if (id != user.Id)
+            var hisCourseId = user.CourseId; 
+
+             if (!string.Equals(id, user.Id))                       //if (id != user.Id)            
             {
                 return NotFound();
             }
@@ -246,17 +256,16 @@ namespace LexiconLMS.Controllers
                 try
                 {
                     var newUpdatedAppUser = await _context.AppUser.FindAsync(id);
-
                     if (newUpdatedAppUser == null)
                     {
                         return NotFound();
                     }
 
-                    newUpdatedAppUser.Name = user.Name;
-                    newUpdatedAppUser.Email = user.Email;
-                    newUpdatedAppUser.UserName = user.UserName;
-                    newUpdatedAppUser.NormalizedUserName = user.NormalizedUserName;
-                    newUpdatedAppUser.NormalizedEmail = user.NormalizedEmail;
+                    newUpdatedAppUser.Name = user.Name;                                     // --> Sychronize the (Email, UserName, NormalizedUserName, NormalizedEmail) to Email
+                    newUpdatedAppUser.Email = user.Email;                                   // -- REMARK! -- NormalizedEmail must be unique --
+                    newUpdatedAppUser.UserName = user.Email;
+                    newUpdatedAppUser.NormalizedUserName = user.Email.ToUpper();
+                    newUpdatedAppUser.NormalizedEmail = newUpdatedAppUser.NormalizedUserName;
                     
                     await _context.SaveChangesAsync();
                 }
@@ -271,7 +280,10 @@ namespace LexiconLMS.Controllers
                         throw;
                     }
                 }
-                return RedirectToAction(nameof(ListOfTeachers));
+                if (await userManager.IsInRoleAsync(user, "Student"))
+                    return RedirectToAction(nameof(ListOfCourseStudents), user.CourseId);
+                else
+                    return RedirectToAction(nameof(ListOfTeachers));
             }
             return View(user);
         }
