@@ -6,17 +6,14 @@
 }
 
 @*<h1>List of @Html.DisplayFor(m => m.CourseName) Course Students</h1> Jack's method *@
-<h2 class="p-3 mb-2 bg-info text-white">List of @ViewBag.nameCourse coures students</h2>
 
-<nav class="navbar navbar-expand-sm bg-light">
-    <ul class="navbar-nav">
-        <li class="nav-item">
-            @* <a asp-area="Identity" asp-page="/Account/Register" asp-route-roleName="Student" class="btn btn-secondary btn-lg active" role="button">Add New Student</a>*@
-            <a asp-area="Identity" asp-page="/Account/Register" asp-route-courseId="@ViewBag.IdCourse" asp-route-coureName="@ViewBag.nameCourse" asp-route-roleName="Student" class="btn btn-secondary btn-lg active" role="button">Add New Student</a>
-
-        </li>
-    </ul>
-</nav>
+<div class="container">
+    <div >
+        <h2 class="p-3 mb-2 bg-info text-white rounded-lg">List of @ViewBag.nameCourse coures students</h2>
+        </div>
+      
+    
+</div>
 <br>
 
 
@@ -30,7 +27,13 @@
                     @Html.DisplayNameFor(model => model.First().Email)
                 </th>
 
-                <th></th>
+                <th>
+                    <div class="text-right">
+                        @* <a asp-area="Identity" asp-page="/Account/Register" asp-route-roleName="Student" class="btn btn-secondary btn-lg active" role="button">Add New Student</a>*@
+                        <a asp-area="Identity" asp-page="/Account/Register" asp-route-courseId="@ViewBag.IdCourse" asp-route-coureName="@ViewBag.nameCourse" asp-route-roleName="Student" class="btn btn-secondary " role="button">Add New Student</a>
+
+                    </div>
+                </th>
             </tr>
         </thead>
         <tbody>
@@ -44,7 +47,7 @@
                         @Html.DisplayFor(modelItem => item.Email)
                     </td>
 
-                    <td>
+                    <td class="text-right">
 
                         <a class="btn btn-outline-secondary" asp-action="EditUser" asp-route-id="@item.Id">Edit</a>
                         <a class="btn btn-danger" asp-action="DeleteUser" asp-route-id="@item.Id">Delete</a>
