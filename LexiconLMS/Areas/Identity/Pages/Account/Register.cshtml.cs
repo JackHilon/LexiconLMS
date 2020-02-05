@@ -92,7 +92,7 @@ namespace LexiconLMS.Areas.Identity.Pages.Account
 
         }
 
-        public async Task OnGetAsync(string coureName,string RoleName,/* int SelectedCourse*/int courseId, string returnUrl = null)
+        public async Task OnGetAsync(string coureName,string RoleName,/* int SelectedCourse*/int courseId  , string returnUrl = null)
         {
             ReturnUrl = returnUrl;
 
@@ -101,6 +101,8 @@ namespace LexiconLMS.Areas.Identity.Pages.Account
             //this.SelectedCourse = SelectedCourse;
 
             this.CourseName = coureName;
+
+            //this.CourseId = courseId ?? default(int);
             this.CourseId = courseId;
             this.RoleName = RoleName;
             ExternalLogins = (await _signInManager.GetExternalAuthenticationSchemesAsync()).ToList();
@@ -115,9 +117,12 @@ namespace LexiconLMS.Areas.Identity.Pages.Account
             ExternalLogins = (await _signInManager.GetExternalAuthenticationSchemesAsync()).ToList();
             if (ModelState.IsValid)
             {
-                var user = new ApplicationUser { Name = Input.Name, Email = Input.Email, UserName = Input.Email, CourseId = courseId };
+                var user = new ApplicationUser { Name = Input.Name, Email = Input.Email, UserName = Input.Email };
                 var result = await _userManager.CreateAsync(user, Input.Password);
-
+                if (RoleName=="Student")
+                {
+                    user.CourseId = courseId;
+                }
                 result = await _userManager.AddToRoleAsync(user, RoleName);
                 
                 if (result.Succeeded)
