@@ -40,20 +40,29 @@ namespace LexiconLMS.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> ListOfCourseStudents(int? id)             //  <-------------------- List of Course's students -------
+        public async Task<IActionResult> ListOfCourseStudents(int? id ,string CourseName)             //  <-------------------- List of Course's students -------
         {
 
-            string courseName = _context.Courses.FirstOrDefault(c => c.CourseId == id).CourseName;
+            ViewBag.nameCourse = CourseName;
+            ViewBag.IdCourse = id;
+
             var allStudents = await userManager.GetUsersInRoleAsync("Student");
             var students = allStudents.Where(s => s.CourseId == id);
+            return View(students);
 
-            var model = new StudentListAndCourseName()
-            {
-                CourseName = courseName,
-                Students = students
-            };
+            //*****************Jack's method*****************
+            //string courseName = _context.Courses.FirstOrDefault(c => c.CourseId == id).CourseName;
+            //var allStudents = await userManager.GetUsersInRoleAsync("Student");
+            //var students = allStudents.Where(s => s.CourseId == id);
 
-            return View(model);
+            //var model = new StudentListAndCourseName()
+            //{
+            //    CourseName = courseName,
+            //    Students = students
+            //};
+
+            //return View(model);
+            //********************************
         }
 
         private async Task<string> GetUserRrole(ApplicationUser user)

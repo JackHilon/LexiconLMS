@@ -4,12 +4,17 @@
     ViewData["Title"] = "Register";
 }
 
-<h1>@ViewData["Title"]</h1>
+@*<h1>@ViewData["Title"]</h1>*@
+@if (@Model.RoleName == "Student")
+{
+
+    <h2 class="p-3 mb-2 bg-info text-white">Course @Model.CourseName</h2>
+}
 
 <div class="row">
     <div class="col-md-4">
-        <form asp-route-returnUrl="@Model.ReturnUrl" asp-route-RoleName="@Model.RoleName" method="post">
-            <h4>Create a new account.</h4>
+        <form asp-route-returnUrl="@Model.ReturnUrl" asp-route-courseId="@Model.CourseId" asp-route-RoleName="@Model.RoleName" asp-route-RoleName="@Model.RoleName" method="post">
+            <h2>Add a new @Model.RoleName</h2>
             <hr />
             <div asp-validation-summary="All" class="text-danger"></div>
 
@@ -37,9 +42,9 @@
 
             @*Html.DropDownListFor(m => m.SelectedCourse, Model.CourseOptions, "Please select") *@
 
-            <select asp-for="SelectedCourse" asp-items="Model.CourseOptions">
+            @*<select asp-for="SelectedCourse" asp-items="Model.CourseOptions">
                 <option value=""> Choose a Course</option>
-            </select>
+            </select>*@
 
 
             <button type="submit" class="btn btn-primary">Register</button>
