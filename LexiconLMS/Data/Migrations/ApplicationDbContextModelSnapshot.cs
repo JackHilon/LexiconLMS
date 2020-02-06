@@ -110,7 +110,7 @@ namespace LexiconLMS.Data.Migrations
                     b.Property<DateTime>("EndDate")
                         .HasColumnType("datetime2");
 
-                    b.Property<int?>("ModuleId")
+                    b.Property<int>("ModuleId")
                         .HasColumnType("int");
 
                     b.Property<string>("Name")
@@ -373,9 +373,11 @@ namespace LexiconLMS.Data.Migrations
 
             modelBuilder.Entity("LexiconLMS.Models.ModuleActivity", b =>
                 {
-                    b.HasOne("LexiconLMS.Models.Module", null)
+                    b.HasOne("LexiconLMS.Models.Module", "Module")
                         .WithMany("Activity")
-                        .HasForeignKey("ModuleId");
+                        .HasForeignKey("ModuleId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>

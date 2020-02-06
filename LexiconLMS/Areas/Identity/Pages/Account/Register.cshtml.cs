@@ -47,15 +47,19 @@ namespace LexiconLMS.Areas.Identity.Pages.Account
 
         [BindProperty]
         public InputModel Input { get; set; }
-
         public string ReturnUrl { get; set; }
         public string RoleName { get; set; }
-
+        //************
+        public int CourseId { get; set; }
+        public string CourseName { get; set; }
+        //**************
         // -- ##
 
+
+            /* Jack's method
         public int SelectedCourse { get; set; }
         public SelectList CourseOptions { get; set; }
-
+        */
         
 
         // -- ##
@@ -88,19 +92,24 @@ namespace LexiconLMS.Areas.Identity.Pages.Account
 
         }
 
-        public async Task OnGetAsync(string RoleName, int SelectedCourse, string returnUrl = null)
+        public async Task OnGetAsync(string coureName,string RoleName,/* int SelectedCourse*/int courseId  , string returnUrl = null)
         {
             ReturnUrl = returnUrl;
 
-            CourseOptions = new SelectList(_context.Courses.ToList(), nameof(Course.CourseId), nameof(Course.CourseName));
-            this.SelectedCourse = SelectedCourse;
+            //Jack's method
+            //CourseOptions = new SelectList(_context.Courses.ToList(), nameof(Course.CourseId), nameof(Course.CourseName));
+            //this.SelectedCourse = SelectedCourse;
 
+            this.CourseName = coureName;
+
+            //this.CourseId = courseId ?? default(int);
+            this.CourseId = courseId;
             this.RoleName = RoleName;
             ExternalLogins = (await _signInManager.GetExternalAuthenticationSchemesAsync()).ToList();
         }
        
 
-        public async Task<IActionResult> OnPostAsync(string RoleName, int SelectedCourse, string returnUrl = null)
+        public async Task<IActionResult> OnPostAsync(string RoleName, int courseId /*int SelectedCourse*/, string returnUrl = null)
         {
 
            // this.RoleName = RoleName;
@@ -108,9 +117,12 @@ namespace LexiconLMS.Areas.Identity.Pages.Account
             ExternalLogins = (await _signInManager.GetExternalAuthenticationSchemesAsync()).ToList();
             if (ModelState.IsValid)
             {
-                var user = new ApplicationUser { Name = Input.Name, Email = Input.Email, UserName = Input.Email, CourseId = SelectedCourse };
+                var user = new ApplicationUser { Name = Input.Name, Email = Input.Email, UserName = Input.Email };
                 var result = await _userManager.CreateAsync(user, Input.Password);
-
+                if (RoleName=="Student")
+                {
+                    user.CourseId = courseId;
+                }
                 result = await _userManager.AddToRoleAsync(user, RoleName);
                 
                 if (result.Succeeded)
@@ -134,7 +146,6 @@ namespace LexiconLMS.Areas.Identity.Pages.Account
                     }
                     else
                     {
-                        await _signInManager.SignInAsync(user, isPersistent: false);
                         return LocalRedirect(returnUrl);
                     }
                 }

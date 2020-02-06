@@ -5,44 +5,42 @@
 }
 
 
-
 @if (User.IsInRole("Teacher"))
 {
-    <h1>Teacher</h1>
+     <h3 class="p-2"><i>Teacher</i></h3>
+}
+<div class="bg-info active rounded-lg">
+    
+     @*<img src="~/img/LEXICON BG courses.jpg" class="img-fluid"  style="width: 100%" >*@ 
+    <h2 class=" text-white p-3">All Courses</h2>
+    
+</div>
 
-<nav class="container">
-        
-            <ul class="text-right"> 
-                <li class="btn-group">
-                        <a asp-action="Create" class="btn btn-primary  active" role="button">Add New Course</a>
-                </li>
-                <li class="btn-group">
+    
+    <table class="table  table-striped text-lg">
+        <thead class="bg-dark text-white">
+            <tr >
+                <th class="align-text-top"> Course Name</th>
+                <th class="align-text-top"> Course Description </th>
+                <th class="align-text-top"> Start Date</th>
+                <th>
+                    <nav>
+
+                        <ul class="text-right align-items-baseline">
+                            <li class="btn-group">
+                                <a asp-action="Create" class="btn btn-outline-info " role="button">Add New Course</a>
+                            </li>
+                            @*<li class="btn-group">
                         <a asp-area="Identity" asp-page="/Account/Register" asp-route-roleName="Student" class="btn btn-secondary active" role="button">Add New Student</a>
-                </li>
-                <li class="btn-group">
+                </li>*@
+                            <li class="btn-group">
+                                <a asp-action="ListOfTeachers" class="btn btn-outline-light " role="button">List All Teachers</a>
+                            </li>
 
-                <a asp-action="ListOfTeachers" class="btn btn-danger  active" role="button">List All Teachers</a>
-            </li>
+                        </ul>
 
-        </ul>
-
-    </nav>
-    <br>
-    <h2>All Courses</h2>
-    <br />
-    <table class="table">
-        <thead>
-            <tr>
-                <th>
-                    @Html.DisplayNameFor(model => model.CourseName)
+                    </nav>
                 </th>
-                <th>
-                    @Html.DisplayNameFor(model => model.CourseDescription)
-                </th>
-                <th>
-                    @Html.DisplayNameFor(model => model.StartDate)
-                </th>
-                <th></th>
             </tr>
         </thead>
         <tbody>
@@ -58,18 +56,16 @@
                     <td>
                         @Html.DisplayFor(modelItem => item.StartDate)
                     </td>
-                    <td>
-                        <a class="btn btn-secondary" asp-action="ListOfCourseStudents" asp-route-id="@item.CourseId">Students</a>
-                        <a class="btn btn-primary" asp-action="Details" asp-route-id="@item.CourseId">Details</a>
-                        <a class="btn btn-outline-secondary" asp-action="Edit" asp-route-id="@item.CourseId">Edit</a>
-                        <a class="btn btn-danger" asp-action="Delete" asp-route-id="@item.CourseId">Delete</a>
+                    <td class="float-right">
+                        <a class="btn btn-outline-info" asp-action="ListOfCourseStudents" asp-route-CourseName="@item.CourseName" asp-route-id="@item.CourseId">Students</a>
+                        <a class="btn btn-outline-secondary " asp-action="Details" asp-route-id="@item.CourseId">Details</a>
+                        <a class="btn btn-info " asp-action="Edit" asp-route-id="@item.CourseId">Edit</a>
+                        <a class="btn btn-outline-danger " asp-action="Delete" asp-route-id="@item.CourseId">Delete</a>
                     </td>
                 </tr>
-            }
+                }
         </tbody>
     </table>
-
-}
 
 
 @if (User.IsInRole("Student"))

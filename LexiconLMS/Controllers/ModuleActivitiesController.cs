@@ -22,7 +22,8 @@ namespace LexiconLMS.Controllers
         // GET: ModuleActivities
         public async Task<IActionResult> Index()
         {
-            return View(await _context.ModuleActivity.ToListAsync());
+            var applicationDbContext = _context.ModuleActivity.Include(m => m.Module);
+            return View(await applicationDbContext.ToListAsync());
         }
 
         // GET: ModuleActivities/Details/5
@@ -34,6 +35,7 @@ namespace LexiconLMS.Controllers
             }
 
             var moduleActivity = await _context.ModuleActivity
+                .Include(m => m.Module)
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (moduleActivity == null)
             {
@@ -46,6 +48,7 @@ namespace LexiconLMS.Controllers
         // GET: ModuleActivities/Create
         public IActionResult Create()
         {
+            ViewData["ModuleId"] = new SelectList(_context.Module, "Id", "Name");
             return View();
         }
 
@@ -54,14 +57,15 @@ namespace LexiconLMS.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Name,Description,StartDate,EndDate")] ModuleActivity moduleActivity)
+        public async Task<IActionResult> Create([Bind("Id,Name,Description,StartDate,EndDate,ModuleId")] ModuleActivity moduleActivity)
         {
             if (ModelState.IsValid)
             {
                 _context.Add(moduleActivity);
                 await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
+                return RedirectToAction("ModulePartialView", "Modules");
             }
+            ViewData["ModuleId"] = new SelectList(_context.Module, "Id", "Id", moduleActivity.ModuleId);
             return View(moduleActivity);
         }
 
@@ -78,6 +82,7 @@ namespace LexiconLMS.Controllers
             {
                 return NotFound();
             }
+            ViewData["ModuleId"] = new SelectList(_context.Module, "Id", "Id", moduleActivity.ModuleId);
             return View(moduleActivity);
         }
 
@@ -86,7 +91,7 @@ namespace LexiconLMS.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,Name,Description,StartDate,EndDate")] ModuleActivity moduleActivity)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,Name,Description,StartDate,EndDate,ModuleId")] ModuleActivity moduleActivity)
         {
             if (id != moduleActivity.Id)
             {
@@ -111,8 +116,10 @@ namespace LexiconLMS.Controllers
                         throw;
                     }
                 }
-                return RedirectToAction(nameof(Index));
+              //  return RedirectToAction(nameof(Index));
+                 return RedirectToAction("ModulePartialView", "Modules");
             }
+            ViewData["ModuleId"] = new SelectList(_context.Module, "Id", "Id", moduleActivity.ModuleId);
             return View(moduleActivity);
         }
 
@@ -125,6 +132,7 @@ namespace LexiconLMS.Controllers
             }
 
             var moduleActivity = await _context.ModuleActivity
+                .Include(m => m.Module)
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (moduleActivity == null)
             {
@@ -142,7 +150,8 @@ namespace LexiconLMS.Controllers
             var moduleActivity = await _context.ModuleActivity.FindAsync(id);
             _context.ModuleActivity.Remove(moduleActivity);
             await _context.SaveChangesAsync();
-            return RedirectToAction(nameof(Index));
+          //  return RedirectToAction(nameof(Index));
+           return RedirectToAction("ModulePartialView", "Modules");
         }
 
         private bool ModuleActivityExists(int id)

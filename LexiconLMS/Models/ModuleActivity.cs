@@ -15,5 +15,8 @@ namespace LexiconLMS.Models
         // -----
         public ICollection<Document> Documents { get; set; }
 
+        // Navigation Property
+        public int ModuleId { get; set; }
+        public Module Module { get; set; }
     }
 }
