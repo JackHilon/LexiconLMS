@@ -27,25 +27,33 @@
         <tbody>
             @foreach (var item in Model)
             {
-            <tr>
-                <td>
-                    @Html.DisplayFor(modelItem => @item.Name)
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => @item.Name)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => @item.Description)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => @item.StartDate)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => @item.EndDate)                
+                    </td>
+                    <td>
+                        <a class="btn btn-primary" asp-action="Edit" asp-route-id="@item.Id" asp-controller="ModuleActivities">Edit</a> |                    
+                        <a class="btn btn-primary" asp-action="Details" asp-route-id="@item.Id" asp-controller="ModuleActivities">Details</a> |
+                        <a class="btn btn-danger" asp-action="Delete" asp-route-id="@item.Id" asp-controller="ModuleActivities">Delete</a>
                 </td>
                 <td>
-                    @Html.DisplayFor(modelItem => @item.Description)
+                    <form asp-controller="Document" asp-action="UploadFile" method="post"
+                          enctype="multipart/form-data" style="display: inline-block">
+
+                        <input type="file" name="file" class="btn btn-warning  active" role="button" />
+                        <button type="submit" class="btn btn-info  active" role="button">Upload File</button>
+                    </form>
                 </td>
-                <td>
-                    @Html.DisplayFor(modelItem => @item.StartDate)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => @item.EndDate)
-                </td>
-                <td>
-                    <a class="btn btn-primary" asp-action="Edit" asp-route-id="@item.Id" asp-controller="ModuleActivities">Edit</a> |
-                    <a class="btn btn-primary" asp-action="Details" asp-route-id="@item.Id" asp-controller="ModuleActivities">Details</a> |
-                    <a class="btn btn-danger" asp-action="Delete" asp-route-id="@item.Id" asp-controller="ModuleActivities">Delete</a>
-                </td>
-            </tr>
+                </tr>
             }
         </tbody>
     </table>
