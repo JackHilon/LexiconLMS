@@ -92,24 +92,10 @@ namespace LexiconLMS.Controllers
         // GET: Courses/Details/5
         public async Task<IActionResult> Details(int? id)
         {
-            //if (id == null)
-            //{
-            //    return NotFound();
-            //}
-
-            //var course = await _context.Courses
-            //    .FirstOrDefaultAsync(m => m.CourseId == id);
-            //if (course == null)
-            //{
-            //    return NotFound();
-            //}
-
-            //  return View(course);
+            // Pass the Course id to Modules.
 
             TempData["Courseid"] = id;
-        //    TempData["CreateCourseid"] = id;
-         
-            return RedirectToAction("ModuleActivity", "Modules");
+            return RedirectToAction("ModulePartialView", "Modules");
         }
 
         // GET: Courses/Create

@@ -29,27 +29,27 @@ namespace LexiconLMS.Controllers
             return View(await applicationDbContext.ToListAsync());
         }
 
-        public ActionResult ModuleActivity()
+     
+        // View activity screen as partial view in the same page as Modules.
+        public ActionResult ActivityPartialView(int? id)
+        {
+            var activityView = _context.ModuleActivity
+                .Include(m => m.Module);
+            var _thisActivityView = activityView.Where(a => a.ModuleId == id);
+            return PartialView("ActivityPartialView", _thisActivityView);
+        }
+        public ActionResult ModulePartialView()
         {
             // Display Modules for the corresponding course.
-
             int data = (int)TempData["Courseid"];
             TempData.Keep();
-
             var applicationDbContext = _context.Module.Include(q => q.Course);
-            var _thisModuleCourse = applicationDbContext.Where(c => c.CourseId == data).Include(a => a.Activity);
+            var _thisModuleCourse =  applicationDbContext.Where(c => c.CourseId == data).Include(a => a.Activity);
+            return View(_thisModuleCourse);
 
-            var moduleActivityView = new ModuleActivityViewModel()
-            {
-                 Modules = _thisModuleCourse.ToList(),
-               Activities = _context.ModuleActivity.ToList()
-            };
-
-            return View(moduleActivityView);
         }
-
-        // GET: Modules/Details/5
-        public async Task<IActionResult> Details(int? id)
+            // GET: Modules/Details/5
+            public async Task<IActionResult> Details(int? id)
         {
             if (id == null)
             {
@@ -85,10 +85,11 @@ namespace LexiconLMS.Controllers
             {
                 _context.Add(@module);
                 await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(ModuleActivity));
+                return RedirectToAction(nameof(ModulePartialView));
             }
             ViewData["CourseId"] = new SelectList(_context.Courses, "CourseId", "CourseId", @module.CourseId);
-            return View(@module);
+            
+           return View(@module);
         }
 
         // GET: Modules/Edit/5
@@ -104,7 +105,8 @@ namespace LexiconLMS.Controllers
             {
                 return NotFound();
             }
-            ViewData["CourseId"] = new SelectList(_context.Courses, "CourseId", "CourseId", @module.CourseId);
+            ViewData["CourseId"] = new SelectList(_context.Courses, "CourseId", "CourseName", @module.CourseId);
+           
             return View(@module);
         }
 
@@ -138,7 +140,7 @@ namespace LexiconLMS.Controllers
                         throw;
                     }
                 }
-                return RedirectToAction(nameof(Index));
+                return RedirectToAction(nameof(ModulePartialView));
             }
             ViewData["CourseId"] = new SelectList(_context.Courses, "CourseId", "CourseId", @module.CourseId);
             return View(@module);
@@ -171,7 +173,7 @@ namespace LexiconLMS.Controllers
             var @module = await _context.Module.FindAsync(id);
             _context.Module.Remove(@module);
             await _context.SaveChangesAsync();
-            return RedirectToAction(nameof(Index));
+            return RedirectToAction(nameof(ModulePartialView));
         }
 
         private bool ModuleExists(int id)

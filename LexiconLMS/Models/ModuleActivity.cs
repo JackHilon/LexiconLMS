@@ -9,5 +9,8 @@ namespace LexiconLMS.Models
         public string Description { get; set; }
         public DateTime StartDate { get; set; }
         public DateTime EndDate { get; set; }
+        // Navigation Property
+        public int ModuleId { get; set; }
+        public Module Module { get; set; }
     }
 }

@@ -32,11 +32,11 @@
             @Html.DisplayNameFor(model => model.Course)
         </dt>
         <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Course.CourseId)
+            @Html.DisplayFor(model => model.Course.CourseName)
         </dd>
     </dl>
 </div>
 <div>
     <a asp-action="Edit" asp-route-id="@Model.Id">Edit</a> |
-    <a asp-action="ModuleActivity">Back to List</a>
+    <a asp-action="ModulePartialView">Back to List</a>
 </div>
