@@ -26,7 +26,6 @@
 
   <ItemGroup>
     <Folder Include="wwwroot\UploadFiles\" />
-    <Folder Include="wwwroot\UploadFiles\" />
   </ItemGroup>
 
 </Project>
