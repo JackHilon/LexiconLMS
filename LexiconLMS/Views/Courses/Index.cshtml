@@ -7,19 +7,19 @@
 
 @if (User.IsInRole("Teacher"))
 {
-     <h3 class="p-2"><i>Teacher</i></h3>
-}
-<div class="bg-info active rounded-lg">
-    
-     @*<img src="~/img/LEXICON BG courses.jpg" class="img-fluid"  style="width: 100%" >*@ 
-    <h2 class=" text-white p-3">All Courses</h2>
-    
-</div>
+    <h3 class="p-2"><i>Teacher</i></h3>
 
-    
+    <div class="bg-info active rounded-lg">
+
+        @*<img src="~/img/LEXICON BG courses.jpg" class="img-fluid"  style="width: 100%" >*@
+        <h2 class=" text-white p-3">All Courses</h2>
+
+    </div>
+
+
     <table class="table  table-striped text-lg">
         <thead class="bg-dark text-white">
-            <tr >
+            <tr>
                 <th class="align-text-top"> Course Name</th>
                 <th class="align-text-top"> Course Description </th>
                 <th class="align-text-top"> Start Date</th>
@@ -31,8 +31,8 @@
                                 <a asp-action="Create" class="btn btn-outline-info " role="button">Add New Course</a>
                             </li>
                             @*<li class="btn-group">
-                        <a asp-area="Identity" asp-page="/Account/Register" asp-route-roleName="Student" class="btn btn-secondary active" role="button">Add New Student</a>
-                </li>*@
+                                        <a asp-area="Identity" asp-page="/Account/Register" asp-route-roleName="Student" class="btn btn-secondary active" role="button">Add New Student</a>
+                                </li>*@
                             <li class="btn-group">
                                 <a asp-action="ListOfTeachers" class="btn btn-outline-light " role="button">List All Teachers</a>
                             </li>
@@ -63,9 +63,10 @@
                         <a class="btn btn-outline-danger " asp-action="Delete" asp-route-id="@item.CourseId">Delete</a>
                     </td>
                 </tr>
-                }
+            }
         </tbody>
     </table>
+}
 
 
 @if (User.IsInRole("Student"))
