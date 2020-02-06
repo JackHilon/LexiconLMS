@@ -48,7 +48,9 @@ namespace LexiconLMS.Controllers
         // GET: ModuleActivities/Create
         public IActionResult Create()
         {
+         
             ViewData["ModuleId"] = new SelectList(_context.Module, "Id", "Name");
+            
             return View();
         }
 
@@ -57,15 +59,29 @@ namespace LexiconLMS.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Name,Description,StartDate,EndDate,ModuleId")] ModuleActivity moduleActivity)
+        public async Task<IActionResult> Create([Bind("Id,Name,Description,StartDate,EndDate,ModuleId")] ModuleActivity moduleActivity)   
         {
             if (ModelState.IsValid)
             {
                 _context.Add(moduleActivity);
                 await _context.SaveChangesAsync();
+
+                //======================= Create a directory for activity ====================
+                var mod = _context.Module.FirstOrDefault(c => c.Id == moduleActivity.ModuleId);
+                int courseId = mod.CourseId;
+
+                string courseIdString = courseId.ToString();
+                string moduleIdString = moduleActivity.ModuleId.ToString();
+                string activityIdString = moduleActivity.Id.ToString();
+
+                string pathString = $"wwwroot/UploadFiles/{courseIdString}/{moduleIdString}/{activityIdString}";
+                System.IO.Directory.CreateDirectory(pathString);
+                //==============================================================================================
+
                 return RedirectToAction("ModulePartialView", "Modules");
             }
-            ViewData["ModuleId"] = new SelectList(_context.Module, "Id", "Id", moduleActivity.ModuleId);
+           ViewData["ModuleId"] = new SelectList(_context.Module, "Id", "Id", moduleActivity.ModuleId);
+       
             return View(moduleActivity);
         }
 
@@ -82,7 +98,7 @@ namespace LexiconLMS.Controllers
             {
                 return NotFound();
             }
-            ViewData["ModuleId"] = new SelectList(_context.Module, "Id", "Id", moduleActivity.ModuleId);
+            ViewData["ModuleId"] = new SelectList(_context.Module, "Id", "Name", moduleActivity.ModuleId);
             return View(moduleActivity);
         }
 

@@ -33,9 +33,11 @@ namespace LexiconLMS.Controllers
         // View activity screen as partial view in the same page as Modules.
         public ActionResult ActivityPartialView(int? id)
         {
+
             var activityView = _context.ModuleActivity
                 .Include(m => m.Module);
             var _thisActivityView = activityView.Where(a => a.ModuleId == id);
+     
             return PartialView("ActivityPartialView", _thisActivityView);
         }
         public ActionResult ModulePartialView()
