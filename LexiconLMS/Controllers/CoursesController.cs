@@ -12,10 +12,11 @@ using LexiconLMS.Areas.Identity.Pages.Account;
 using Microsoft.Extensions.Logging;
 using Microsoft.AspNetCore.Identity.UI.Services;
 using LexiconLMS.ViewModels;
+using Microsoft.AspNetCore.Authorization;
 
 namespace LexiconLMS.Controllers
 {
-
+        [Authorize]
     public class CoursesController : Controller
     {
         private readonly ApplicationDbContext _context;
