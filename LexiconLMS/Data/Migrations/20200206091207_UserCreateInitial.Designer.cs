@@ -4,14 +4,16 @@ using LexiconLMS.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace LexiconLMS.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20200206091207_UserCreateInitial")]
+    partial class UserCreateInitial
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -110,7 +112,7 @@ namespace LexiconLMS.Data.Migrations
                     b.Property<DateTime>("EndDate")
                         .HasColumnType("datetime2");
 
-                    b.Property<int?>("ModuleId")
+                    b.Property<int?>("ModuleId1")
                         .HasColumnType("int");
 
                     b.Property<string>("Name")
@@ -121,7 +123,7 @@ namespace LexiconLMS.Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("ModuleId");
+                    b.HasIndex("ModuleId1");
 
                     b.ToTable("ModuleActivity");
                 });
@@ -375,7 +377,7 @@ namespace LexiconLMS.Data.Migrations
                 {
                     b.HasOne("LexiconLMS.Models.Module", null)
                         .WithMany("Activity")
-                        .HasForeignKey("ModuleId");
+                        .HasForeignKey("ModuleId1");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>

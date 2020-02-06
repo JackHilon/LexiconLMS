@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 
 namespace LexiconLMS.Models
 {
@@ -9,5 +10,10 @@ namespace LexiconLMS.Models
         public string Description { get; set; }
         public DateTime StartDate { get; set; }
         public DateTime EndDate { get; set; }
+
+
+        // -----
+        public ICollection<Document> Documents { get; set; }
+
     }
 }

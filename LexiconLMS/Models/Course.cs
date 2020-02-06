@@ -12,6 +12,7 @@ namespace LexiconLMS.Models
         public string CourseDescription { get; set; }
         public DateTime StartDate { get; set; }
 
+
         //Navigation Property
         public ICollection<ApplicationUser> AppUsers { get; set; }
     }

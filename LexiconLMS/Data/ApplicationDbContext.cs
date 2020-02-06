@@ -19,6 +19,8 @@ namespace LexiconLMS.Data
         public DbSet<Module> Module { get; set; }
 
         public DbSet<ModuleActivity> ModuleActivity { get; set; }
+        
+        public DbSet<Document> Documents { get; set; }
 
     }
 }

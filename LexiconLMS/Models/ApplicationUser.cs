@@ -23,6 +23,9 @@ namespace LexiconLMS.Models
         [Display(Name = "Name"), StringLength(20)]
         public string Name { get; set; }
 
-       
+        //-----------------------------------------
+        //Navigation Property
+        public ICollection<Document> Documents { get; set; }
+
     }
 }

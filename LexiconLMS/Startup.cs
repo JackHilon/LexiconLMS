@@ -13,6 +13,8 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using LexiconLMS.Models;
+using Microsoft.Extensions.FileProviders;
+using System.IO;
 
 namespace LexiconLMS
 {
@@ -34,6 +36,13 @@ namespace LexiconLMS
             services.AddDefaultIdentity<ApplicationUser>(options => options.SignIn.RequireConfirmedAccount = false)
                 .AddRoles<IdentityRole>()
                 .AddEntityFrameworkStores<ApplicationDbContext>();
+
+            // ************************************************ Added by Jack for FU *******************************
+            services.AddSingleton<IFileProvider>(
+                new PhysicalFileProvider(
+                    Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/UploadFiles")));
+            // *****************************************************************************************************
+
             services.AddControllersWithViews();
             services.AddRazorPages();
         }

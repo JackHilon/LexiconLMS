@@ -11,6 +11,7 @@ namespace LexiconLMS.Models
         public string Name { get; set; }
         public string Description { get; set; }
         public DateTime StartDate { get; set; }
+        
         // Navigation Property
         public int CourseId { get; set; }
         public Course Course { get; set; }

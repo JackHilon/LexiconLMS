@@ -178,5 +178,6 @@ namespace LexiconLMS.Controllers
         {
             return _context.Module.Any(e => e.Id == id);
         }
+
     }
 }
