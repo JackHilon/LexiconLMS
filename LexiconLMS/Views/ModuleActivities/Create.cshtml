@@ -6,7 +6,7 @@
 
 <h1>Create</h1>
 
-<h4>ModuleActivity</h4>
+<h4>Module's Activity</h4>
 <hr />
 <div class="row">
     <div class="col-md-4">
@@ -23,17 +23,18 @@
                 <span asp-validation-for="Description" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="StartDate" class="control-label"></label>
+                <label asp-for="StartDate" class="control-label">Start Date</label>
                 <input asp-for="StartDate" class="form-control" />
                 <span asp-validation-for="StartDate" class="text-danger"></span>
             </div>
-            <div class="form-group">
+            <!-- <div class="form-group">
                 <label asp-for="EndDate" class="control-label"></label>
                 <input asp-for="EndDate" class="form-control" />
                 <span asp-validation-for="EndDate" class="text-danger"></span>
             </div>
+            -->
             <div class="form-group">
-                <label asp-for="ModuleId" class="control-label"></label>
+                <label asp-for="ModuleId" class="control-label">Module's Id</label>
                 <select asp-for="ModuleId" class="form-control" asp-items="ViewBag.ModuleId" readonly></select>
             </div>
             <div class="form-group">
