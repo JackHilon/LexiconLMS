@@ -48,7 +48,9 @@ namespace LexiconLMS.Controllers
         // GET: ModuleActivities/Create
         public IActionResult Create()
         {
+         
             ViewData["ModuleId"] = new SelectList(_context.Module, "Id", "Name");
+            
             return View();
         }
 
@@ -58,14 +60,18 @@ namespace LexiconLMS.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("Id,Name,Description,StartDate,EndDate,ModuleId")] ModuleActivity moduleActivity)
+
+            
         {
+
             if (ModelState.IsValid)
             {
                 _context.Add(moduleActivity);
                 await _context.SaveChangesAsync();
                 return RedirectToAction("ModulePartialView", "Modules");
             }
-            ViewData["ModuleId"] = new SelectList(_context.Module, "Id", "Id", moduleActivity.ModuleId);
+           ViewData["ModuleId"] = new SelectList(_context.Module, "Id", "Id", moduleActivity.ModuleId);
+       
             return View(moduleActivity);
         }
 
@@ -82,7 +88,7 @@ namespace LexiconLMS.Controllers
             {
                 return NotFound();
             }
-            ViewData["ModuleId"] = new SelectList(_context.Module, "Id", "Id", moduleActivity.ModuleId);
+            ViewData["ModuleId"] = new SelectList(_context.Module, "Id", "Name", moduleActivity.ModuleId);
             return View(moduleActivity);
         }
 
