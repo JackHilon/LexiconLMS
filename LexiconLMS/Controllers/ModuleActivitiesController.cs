@@ -10,6 +10,7 @@ using LexiconLMS.Models;
 
 namespace LexiconLMS.Controllers
 {
+    
     public class ModuleActivitiesController : Controller
     {
         private readonly ApplicationDbContext _context;
@@ -22,6 +23,7 @@ namespace LexiconLMS.Controllers
         // GET: ModuleActivities
         public async Task<IActionResult> Index()
         {
+            
             var applicationDbContext = _context.ModuleActivity.Include(m => m.Module);
             return View(await applicationDbContext.ToListAsync());
         }
@@ -48,7 +50,7 @@ namespace LexiconLMS.Controllers
         // GET: ModuleActivities/Create
         public IActionResult Create()
         {
-         
+           
             ViewData["ModuleId"] = new SelectList(_context.Module, "Id", "Name");
             
             return View();
