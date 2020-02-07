@@ -65,19 +65,6 @@ namespace LexiconLMS.Controllers
             {
                 _context.Add(moduleActivity);
                 await _context.SaveChangesAsync();
-
-                //======================= Create a directory for activity ====================
-                var mod = _context.Module.FirstOrDefault(c => c.Id == moduleActivity.ModuleId);
-                int courseId = mod.CourseId;
-
-                string courseIdString = courseId.ToString();
-                string moduleIdString = moduleActivity.ModuleId.ToString();
-                string activityIdString = moduleActivity.Id.ToString();
-
-                string pathString = $"wwwroot/UploadFiles/{courseIdString}/{moduleIdString}/{activityIdString}";
-                System.IO.Directory.CreateDirectory(pathString);
-                //==============================================================================================
-
                 return RedirectToAction("ModulePartialView", "Modules");
             }
            ViewData["ModuleId"] = new SelectList(_context.Module, "Id", "Id", moduleActivity.ModuleId);

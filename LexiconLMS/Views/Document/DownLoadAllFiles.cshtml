@@ -1,0 +1,31 @@
+﻿@model IEnumerable<LexiconLMS.Models.Document>
+
+
+
+
+
+<h5 class="text-uppercase p-2 text-center">List of Files</h5>
+<table class="table table-bordered table-striped">
+    <thead class="thead-dark text-white">
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.DocumentName)
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => @item.DocumentName)
+                </td>
+                <td>
+                    <a class="btn btn-primary" asp-action="Details" asp-route-id="@item.DocumentId" asp-controller="ModuleActivities">Details</a> |
+                    <a class="btn btn-danger" asp-action="Delete" asp-route-id="@item.DocumentId" asp-controller="ModuleActivities">Delete</a>
+                    <a class="btn btn-danger" asp-action="DownLoadFile" asp-route-id="@item.DocumentId" asp-controller="ModuleActivities">DownLoad</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

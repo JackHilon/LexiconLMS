@@ -4,7 +4,7 @@
 }
 <div class="tab-pane container p-0" id="menu1">
     <p>
-        <a class="btn btn-info" asp-controller="ModuleActivities" asp-action="Create">Add New Activity</a> 
+        <a class="btn btn-info" asp-controller="ModuleActivities" asp-action="Create">Add New Activity</a>
     </p>
     <h5 class="text-uppercase p-2 text-center">List of Activities</h5>
     <table class="table table-bordered table-striped">
@@ -38,21 +38,27 @@
                         @Html.DisplayFor(modelItem => @item.StartDate)
                     </td>
                     <td>
-                        @Html.DisplayFor(modelItem => @item.EndDate)                
+                        @Html.DisplayFor(modelItem => @item.EndDate)
                     </td>
+
                     <td>
-                        <a class="btn btn-primary" asp-action="Edit" asp-route-id="@item.Id" asp-controller="ModuleActivities">Edit</a> |                    
+                    </td>
+
+                    <td>
+                        <a class="btn btn-primary" asp-action="Edit" asp-route-id="@item.Id" asp-controller="ModuleActivities">Edit</a> |
                         <a class="btn btn-primary" asp-action="Details" asp-route-id="@item.Id" asp-controller="ModuleActivities">Details</a> |
                         <a class="btn btn-danger" asp-action="Delete" asp-route-id="@item.Id" asp-controller="ModuleActivities">Delete</a>
-                </td>
-                <td>
-                    <form asp-controller="Document" asp-action="UploadFile" method="post"
-                          enctype="multipart/form-data" style="display: inline-block">
+                    </td>
+                    <td>
+                        <form asp-controller="Document" asp-action="UploadFile" asp-route-id="@item.Id" method="post"
+                              enctype="multipart/form-data" style="display: inline-block">
 
-                        <input type="file" name="file" class="btn btn-warning  active" role="button" />
-                        <button type="submit" class="btn btn-info  active" role="button">Upload File</button>
-                    </form>
-                </td>
+                            <input type="file" name="file" class="btn btn-warning  active" role="button" />
+                            <button type="submit" class="btn btn-info  active" role="button">Upload File</button>
+
+                            <a asp-controller="Document" asp-action="DownLoadAllFiles" asp-route-id="@item.Id" class="btn btn-outline-warning">File List</a>
+                        </form>
+                    </td>
                 </tr>
             }
         </tbody>
