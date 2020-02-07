@@ -31,9 +31,9 @@ namespace LexiconLMS.Controllers
 
      
         // View activity screen as partial view in the same page as Modules.
-        public ActionResult ActivityPartialView(int? id)
+        public ActionResult ActivityPartialView(int? id ,string ModulsName)
         {
-
+            ViewBag.ModulsName = ModulsName;
             var activityView = _context.ModuleActivity
                 .Include(m => m.Module);
             var _thisActivityView = activityView.Where(a => a.ModuleId == id);
@@ -72,6 +72,8 @@ namespace LexiconLMS.Controllers
         // GET: Modules/Create
         public IActionResult Create()
         {
+            ViewBag.CourseName = TempData["CourseName"];
+            TempData.Keep();
             ViewData["CourseId"] = new SelectList(_context.Courses, "CourseId", "CourseName");
             return View();
         }

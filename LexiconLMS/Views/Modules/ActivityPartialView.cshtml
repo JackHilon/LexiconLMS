@@ -2,59 +2,61 @@
 @{
     ViewData["Title"] = "ModuleActivity";
 }
-<div class="tab-pane container p-0" id="menu1">
-    <p>
-        <a class="btn btn-info" asp-controller="ModuleActivities" asp-action="Create">Add New Activity</a> 
-    </p>
-    <h5 class="text-uppercase p-2 text-center">List of Activities</h5>
-    <table class="table table-bordered table-striped">
-        <thead class="thead-dark text-white">
-            <tr>
-                <th>
-                    @Html.DisplayNameFor(model => model.Name)
-                </th>
-                <th>
-                    @Html.DisplayNameFor(model => model.Description)
-                </th>
-                <th>
-                    @Html.DisplayNameFor(model => model.StartDate)
-                </th>
-                <th>
-                    @Html.DisplayNameFor(model => model.EndDate)
-                </th>
-            </tr>
-        </thead>
-        <tbody>
-            @foreach (var item in Model)
-            {
+    <div class="tab-pane container p-0" id="menu1">
+        
+        <h5 class="text-primary border-primary p-1 ">Module @Html.DisplayFor(modelItem => Model.FirstOrDefault().Module.Name)</h5>
+        <p>
+            <a class="btn btn-info"  asp-controller="ModuleActivities" asp-action="Create">Add New Activity</a>
+        </p>
+        <h5 class="text-uppercase p-2 text-center">List of Activities</h5>
+        <table class="table table-bordered table-striped">
+            <thead class="thead-dark text-white">
                 <tr>
-                    <td>
-                        @Html.DisplayFor(modelItem => @item.Name)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => @item.Description)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => @item.StartDate)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => @item.EndDate)                
-                    </td>
-                    <td>
-                        <a class="btn btn-primary" asp-action="Edit" asp-route-id="@item.Id" asp-controller="ModuleActivities">Edit</a> |                    
-                        <a class="btn btn-primary" asp-action="Details" asp-route-id="@item.Id" asp-controller="ModuleActivities">Details</a> |
-                        <a class="btn btn-danger" asp-action="Delete" asp-route-id="@item.Id" asp-controller="ModuleActivities">Delete</a>
-                </td>
-                <td>
-                    <form asp-controller="Document" asp-action="UploadFile" method="post"
-                          enctype="multipart/form-data" style="display: inline-block">
-
-                        <input type="file" name="file" class="btn btn-warning  active" role="button" />
-                        <button type="submit" class="btn btn-info  active" role="button">Upload File</button>
-                    </form>
-                </td>
+                    <th>
+                        @Html.DisplayNameFor(model => model.Name)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.Description)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.StartDate)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.EndDate)
+                    </th>
                 </tr>
-            }
-        </tbody>
-    </table>
-</div>
+            </thead>
+            <tbody>
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        <td>
+                            @Html.DisplayFor(modelItem => @item.Name)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => @item.Description)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => @item.StartDate)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => @item.EndDate)
+                        </td>
+                        <td>
+                            <a class="btn btn-primary" asp-action="Edit" asp-route-id="@item.Id" asp-controller="ModuleActivities">Edit</a> |
+                            <a class="btn btn-primary" asp-action="Details" asp-route-id="@item.Id" asp-controller="ModuleActivities">Details</a> |
+                            <a class="btn btn-danger" asp-action="Delete" asp-route-id="@item.Id" asp-controller="ModuleActivities">Delete</a>
+                        </td>
+                        <td>
+                            <form asp-controller="Document" asp-action="UploadFile" method="post"
+                                  enctype="multipart/form-data" style="display: inline-block">
+
+                                <input type="file" name="file" class="btn btn-warning  active" role="button" />
+                                <button type="submit" class="btn btn-info  active" role="button">Upload File</button>
+                            </form>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
