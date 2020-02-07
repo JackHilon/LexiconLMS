@@ -185,8 +185,16 @@ namespace LexiconLMS.Controllers
         }
 
         // GET: Courses/Delete/5
-        public async Task<IActionResult> Delete(int? id)
+        public async Task<IActionResult> Delete(int? id,string CourseName)
         {
+            // Get list of students attending the course.
+
+            ViewBag.nameCourse = CourseName;
+            ViewBag.IdCourse = id;
+
+            var allStudents = await userManager.GetUsersInRoleAsync("Student");
+            var students = allStudents.Where(s => s.CourseId == id);
+
             if (id == null)
             {
                 return NotFound();
@@ -205,9 +213,20 @@ namespace LexiconLMS.Controllers
         // POST: Courses/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> DeleteConfirmed(int id)
+        public async Task<IActionResult> DeleteConfirmed(int id, string CourseName)
         {
             var course = await _context.Courses.FindAsync(id);
+
+            var allStudents = await userManager.GetUsersInRoleAsync("Student");
+            var students = allStudents.Where(s => s.CourseId == id);
+
+            // Remove all the students attending the course.
+
+            foreach(var student in students)
+            {
+                _context.AppUser.Remove(student);
+            }
+            
             _context.Courses.Remove(course);
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
@@ -326,6 +345,8 @@ namespace LexiconLMS.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteUserConfirmed(string id)
         {
+
+
             var user = await GetAsync(id);
 
             _context.AppUser.Remove(user);
