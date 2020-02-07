@@ -16,15 +16,15 @@ using Microsoft.AspNetCore.Authorization;
 
 namespace LexiconLMS.Controllers
 {
-        [Authorize]
+    [Authorize]
     public class CoursesController : Controller
     {
         private readonly ApplicationDbContext _context;
         private readonly UserManager<ApplicationUser> userManager;
         private readonly RoleManager<IdentityRole> roleManager;
 
-        public CoursesController(ApplicationDbContext context, 
-            UserManager<ApplicationUser> userManager, 
+        public CoursesController(ApplicationDbContext context,
+            UserManager<ApplicationUser> userManager,
             RoleManager<IdentityRole> roleManager)
         {
             _context = context;
@@ -35,13 +35,13 @@ namespace LexiconLMS.Controllers
         [HttpGet]
         public async Task<IActionResult> ListOfTeachers()             //  <-------------------- List of users (teachers) -------
         {
-             var AllTeachers = await userManager.GetUsersInRoleAsync("Teacher");
-            
-            return  View(AllTeachers);
+            var AllTeachers = await userManager.GetUsersInRoleAsync("Teacher");
+
+            return View(AllTeachers);
         }
 
         [HttpGet]
-        public async Task<IActionResult> ListOfCourseStudents(int? id ,string CourseName)             //  <-------------------- List of Course's students -------
+        public async Task<IActionResult> ListOfCourseStudents(int? id, string CourseName)             //  <-------------------- List of Course's students -------
         {
 
             ViewBag.nameCourse = CourseName;
@@ -87,7 +87,47 @@ namespace LexiconLMS.Controllers
         // GET: Courses
         public async Task<IActionResult> Index()
         {
-            return View(await _context.Courses.ToListAsync());
+            if (User.IsInRole("Teacher"))
+            {
+                return View(await _context.Courses.ToListAsync());
+            }
+            else if (User.IsInRole("Student"))
+            {
+                //Populera StudentsModelViewModel och CoursesModulesForStudentsViewModel
+                var CourseAppUser = await userManager.GetUserAsync(User);
+                var CourseId = CourseAppUser.CourseId;
+
+                //List<Module> modules = new List<Module>();
+                //modules = await _context.Module.Include(m => m.Activity).Where(m => m.CourseId == CourseId).ToListAsync();
+                //List<Module> modules = _context.Module.Where(m => m.CourseId == 1).ToList();
+
+                List<StudentsModelViewModel> LotsOfModules = _context.Module.Where(m => m.CourseId == CourseId).Select(m => new StudentsModelViewModel
+                {
+                    Name = m.Name,
+                    Description = m.Description,
+                    StartDate = m.StartDate
+                }
+                ).ToList();
+
+                CoursesModulesForStudentsViewModel viewModel = _context.Module.Select(m => new CoursesModulesForStudentsViewModel
+                    {
+                        Name = m.Name,
+                        StartDate = m.StartDate,
+                        Description = m.Description,
+                        MyModules = LotsOfModules                    
+                    }
+                ).First();
+
+                //new StudentsModelViewModel()
+                //{
+                //    Name = 
+                //}
+
+                return View(nameof(StudentListings), viewModel);
+                //return RedirectToAction(nameof(StudentListings), viewModel);
+            }
+
+            return View();
         }
 
         // GET: Courses/Details/5
@@ -115,7 +155,7 @@ namespace LexiconLMS.Controllers
             if (ModelState.IsValid)
             {
                 course.StartDate = DateTime.Now;
-                
+
                 _context.Add(course);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
@@ -157,7 +197,7 @@ namespace LexiconLMS.Controllers
                 {
                     var newUpdatedDataCourse = await _context.Courses.FindAsync(id);
 
-                    if(newUpdatedDataCourse == null)
+                    if (newUpdatedDataCourse == null)
                     {
                         return NotFound();
                     }
@@ -165,7 +205,7 @@ namespace LexiconLMS.Controllers
                     newUpdatedDataCourse.CourseId = course.CourseId;
                     newUpdatedDataCourse.CourseName = course.CourseName;
                     newUpdatedDataCourse.CourseDescription = course.CourseDescription;
-                  //  _context.Update(course);
+                    //  _context.Update(course);
                     await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
@@ -240,9 +280,9 @@ namespace LexiconLMS.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> EditUser(string id, [Bind("Id, Name, UserName, Email, CourseId")] ApplicationUser user)
         {
-            var hisCourseId = user.CourseId; 
+            var hisCourseId = user.CourseId;
 
-             if (!string.Equals(id, user.Id))                       //if (id != user.Id)            
+            if (!string.Equals(id, user.Id))                       //if (id != user.Id)            
             {
                 return NotFound();
             }
@@ -262,7 +302,7 @@ namespace LexiconLMS.Controllers
                     newUpdatedAppUser.UserName = user.Email;
                     newUpdatedAppUser.NormalizedUserName = user.Email.ToUpper();
                     newUpdatedAppUser.NormalizedEmail = newUpdatedAppUser.NormalizedUserName;
-                    
+
                     await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
@@ -336,7 +376,20 @@ namespace LexiconLMS.Controllers
         // ================ end of Edit a teacher ============
 
 
+        public IActionResult StudentListings()
+        {
+            return View(nameof(StudentListings));
+        }
 
+    }
+
+    internal class ViewObject
+    {
+        public List<Module> MyList { get; set; }
+        public ViewObject(List<Module> moduleList)
+        {
+            MyList = moduleList;
+        }
 
     }
 }
