@@ -96,6 +96,12 @@ namespace LexiconLMS.Controllers
                 //Populera StudentsModelViewModel och CoursesModulesForStudentsViewModel
                 var CourseAppUser = await userManager.GetUserAsync(User);
                 var CourseId = CourseAppUser.CourseId;
+                var Course = _context.Courses.Find(CourseId);
+                var CourseName = Course.CourseName;
+                ViewBag.CourseName = CourseName;
+                //var Course = CourseAppUser.CourseName;
+                //var Course = CourseAppUser.Course;
+                //ViewBag.courseName = Course;
 
                 //List<Module> modules = new List<Module>();
                 //modules = await _context.Module.Include(m => m.Activity).Where(m => m.CourseId == CourseId).ToListAsync();
