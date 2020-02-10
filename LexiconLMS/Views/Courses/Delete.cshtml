@@ -31,20 +31,9 @@
             @Html.DisplayFor(model => model.StartDate)
         </dd>
     </dl>
-    <h3>Here is the List of Students attending this course. Are you sure you want to delete the course and student.?</h3>
-    @foreach (var item in Model.AppUsers)
-    {   
-        <table>
-         <tr>
-        <td>
-            @Html.DisplayFor(modelItem => item.Name)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Email)
-        </td>
-        <tr>
-        </table>
-        }
+    <h3>Delete the Course will delete the students who are attending the course as well Are you sure you want to delete.?</h3>
+
+  
         <div>
             <form asp-action="Delete">
                 <input type="hidden" asp-for="CourseId" />
