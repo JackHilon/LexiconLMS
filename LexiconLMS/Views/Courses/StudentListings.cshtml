@@ -3,42 +3,55 @@
 
 
 
-<td>
-    <h2>All Modules</h2>
+    <td>
+        <!-- <h2>All Modules</h2> -->
 
+        <div class="container">
+            <div>
+                <h2 >List of @ViewBag.courseName course modules</h2>
+            </div>
 
-    <table class="table">
-        <thead>
-            <tr>
-                <th>
-                    @Html.DisplayNameFor(model => model.Name)
-                </th>
-                <th>
-                    @Html.DisplayNameFor(model => model.Description)
-                </th>
-                <th>
-                    @Html.DisplayNameFor(model => model.StartDate)
-                </th>
-                <th></th>
-            </tr>
-        </thead>
-        <tbody>
-            @foreach (var item in Model.MyModules)
-            {
+            <!-- <div class="text-right"> -->
+            @* <a asp-area="Identity" asp-page="/Account/Register" asp-route-roleName="Student" class="btn btn-secondary btn-lg active" role="button">Add New Student</a>*@
+            @*<a asp-area="Identity" asp-page="/Account/Register" asp-route-courseId="@ViewBag.IdCourse" asp-route-coureName="@ViewBag.nameCourse" asp-route-roleName="Student" class="btn btn-secondary " role="button">Add New Student</a>*@
+
+            <!-- </div> -->
+        </div>
+
+        <table class="table">
+            <thead>
                 <tr>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.Name)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.Description)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.StartDate)
-                    </td>
+                    <th>
+                        @Html.DisplayNameFor(model => model.Name)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.Description)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.StartDate)
+                    </th>
                 </tr>
-            }
-        </tbody>
-    </table>
+            </thead>
+            <tbody>
+                @foreach (var item in Model.MyModules)
+                {
+                    <tr>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Name)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Description)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.StartDate)
+                        </td>
+                        @*<td class="float-right">
+                            <a class="btn btn-outline-secondary " asp-action="Details" asp-route-id="@item.CourseId">Details</a>
+                        </td>*@
+                    </tr>
+                }
+            </tbody>
+        </table>
 
-</td>
+    </td>
 

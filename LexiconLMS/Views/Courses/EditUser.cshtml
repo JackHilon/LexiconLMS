@@ -4,9 +4,9 @@
     ViewData["Title"] = "EditUser";
 }
 
-<h1>Edit a user (Teacher)</h1>
+<h1>Edit a user (@ViewBag.roleName)</h1>
 
-<h4>User (Teacher)</h4>
+<!--<h4>User (Teacher)</h4> -->
 <hr />
 <div class="row">
     <div class="col-md-4">
@@ -33,7 +33,7 @@
 </div>
 
 <div>
-    <a asp-action="ListOfTeachers" class="btn btn-warning active" role="button">back</a>
+    <a asp-action="Index" class="btn btn-warning active">back</a>
 </div>
 
 
