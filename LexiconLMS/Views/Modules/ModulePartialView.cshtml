@@ -2,7 +2,8 @@
 @{
     ViewData["Title"] = "ModuleActivity";
 }
-<!-- <h1>Module</h1> -->
+
+    <h1 class="p-md-2 bg-secondary text-white   active rounded-lg">Course @TempData["CourseName"]</h1> 
 
     <p>
         <a class="btn btn-info" asp-action="Create">Add New Module</a>
@@ -52,7 +53,7 @@
                             <td>
                                 <a class="btn btn-primary" asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
                                 <a class="btn btn-primary" asp-action="Details" asp-route-id="@item.Id">Details</a> |
-                                <a class="btn btn-primary" id="ActivityButton" name="@item.Id" >Activities</a> |
+                                <a class="btn btn-primary"  id="ActivityButton" name="@item.Id" >Activities</a> |
                                 <a class="btn btn-danger" asp-action="Delete" asp-route-id="@item.Id">Delete</a>
                             </td>
                         </tr>
@@ -84,4 +85,5 @@
         </script>
 
 
-
+</div>
+</div>

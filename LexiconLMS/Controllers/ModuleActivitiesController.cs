@@ -10,6 +10,7 @@ using LexiconLMS.Models;
 
 namespace LexiconLMS.Controllers
 {
+    
     public class ModuleActivitiesController : Controller
     {
         private readonly ApplicationDbContext _context;
@@ -22,6 +23,7 @@ namespace LexiconLMS.Controllers
         // GET: ModuleActivities
         public async Task<IActionResult> Index()
         {
+            
             var applicationDbContext = _context.ModuleActivity.Include(m => m.Module);
             return View(await applicationDbContext.ToListAsync());
         }
@@ -48,7 +50,7 @@ namespace LexiconLMS.Controllers
         // GET: ModuleActivities/Create
         public IActionResult Create()
         {
-         
+           
             ViewData["ModuleId"] = new SelectList(_context.Module, "Id", "Name");
             
             return View();
@@ -65,19 +67,6 @@ namespace LexiconLMS.Controllers
             {
                 _context.Add(moduleActivity);
                 await _context.SaveChangesAsync();
-
-                //======================= Create a directory for activity ====================
-                var mod = _context.Module.FirstOrDefault(c => c.Id == moduleActivity.ModuleId);
-                int courseId = mod.CourseId;
-
-                string courseIdString = courseId.ToString();
-                string moduleIdString = moduleActivity.ModuleId.ToString();
-                string activityIdString = moduleActivity.Id.ToString();
-
-                string pathString = $"wwwroot/UploadFiles/{courseIdString}/{moduleIdString}/{activityIdString}";
-                System.IO.Directory.CreateDirectory(pathString);
-                //==============================================================================================
-
                 return RedirectToAction("ModulePartialView", "Modules");
             }
            ViewData["ModuleId"] = new SelectList(_context.Module, "Id", "Id", moduleActivity.ModuleId);
