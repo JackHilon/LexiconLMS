@@ -12,6 +12,9 @@ namespace LexiconLMS.Models
         public string DocumentDescription { get; set; }
         public DateTime UploadDate { get; set; }
 
+        public byte[] Content { get; set; }
+
+
         // --------------------- For ModuleActivity ---------------------
         //ForeignKey
         public int ModuleActivityId { get; set; }

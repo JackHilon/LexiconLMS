@@ -3,20 +3,30 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
+using LexiconLMS.Data;
+using LexiconLMS.Models;
 using LexiconLMS.Models.Models.Document;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.FileProviders;
+using System.Security.Claims;
 
 namespace LexiconLMS.Controllers
 {
     public class DocumentController : Controller
     {
         private readonly IFileProvider fileProvider;
+        private readonly ApplicationDbContext _context;
+        private readonly UserManager<ApplicationUser> userManager;
 
-        public DocumentController(IFileProvider fileProvider)
+        public DocumentController(IFileProvider fileProvider,
+            ApplicationDbContext context,
+            UserManager<ApplicationUser> userManager)
         {
             this.fileProvider = fileProvider;
+            _context = context;
+            this.userManager = userManager;
         }
 
         public IActionResult Index()
@@ -25,64 +35,51 @@ namespace LexiconLMS.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> UploadFile(IFormFile file)
+        public async Task<IActionResult> UploadFile([Bind("CourseId,CourseName,CourseDescription,StartDate,AppUsers")] IFormFile file, int id)
         {
             if (file == null || file.Length == 0)
                 return Content("file not selected");
 
-            var path = Path.Combine(
-                        Directory.GetCurrentDirectory(), "wwwroot/UploadFiles",
-                        file.GetFilename());
+            var activityId = id;
 
-            using (var stream = new FileStream(path, FileMode.Create))
+            using (var memoryStream = new MemoryStream())
             {
-                await file.CopyToAsync(stream);
-            }
+                await file.CopyToAsync(memoryStream);
 
-            return RedirectToAction("Files");
+                // Upload the file if less than 2 MB
+                if (memoryStream.Length < 2097152)
+                {
+                    var UploadDateTime = DateTime.Now;
+
+                    var userId = this.User.FindFirstValue(ClaimTypes.NameIdentifier);
+                    var user = await userManager.FindByIdAsync(userId);
+
+                    var doc = new Document()
+                    {
+                        AppUser = user,
+                        ModuleActivityId = activityId,
+
+                        DocumentName = file.FileName,
+                        DocumentDescription = file.FileName,
+                        UploadDate = UploadDateTime.Date,
+
+                        Content = memoryStream.ToArray()
+                    };
+
+                    _context.Documents.Add(doc);
+
+                    await _context.SaveChangesAsync();
+                }
+
+                else
+                {
+                    ModelState.AddModelError("File", "The file is too large.");
+                }
+                return RedirectToAction("ModulePartialView", "Modules");
+            }
         }
 
-        /*
-        [HttpPost]
-        public async Task<IActionResult> UploadFiles(List<IFormFile> files)
-        {
-            if (files == null || files.Count == 0)
-                return Content("files not selected");
 
-            foreach (var file in files)
-            {
-                var path = Path.Combine(
-                        Directory.GetCurrentDirectory(), "wwwroot/UploadFiles",
-                        file.GetFilename());
-
-                using (var stream = new FileStream(path, FileMode.Create))
-                {
-                    await file.CopyToAsync(stream);
-                }
-            }
-
-            return RedirectToAction("Files");
-        }*/
-
-        /*
-        [HttpPost]
-        public async Task<IActionResult> UploadFileViaModel(FileInputModel model)
-        {
-            if (model == null ||
-                model.FileToUpload == null || model.FileToUpload.Length == 0)
-                return Content("file not selected");
-
-            var path = Path.Combine(
-                        Directory.GetCurrentDirectory(), "wwwroot/UploadFiles",
-                        model.FileToUpload.GetFilename());
-
-            using (var stream = new FileStream(path, FileMode.Create))
-            {
-                await model.FileToUpload.CopyToAsync(stream);
-            }
-
-            return RedirectToAction("Files");
-        }*/
 
         public IActionResult Files()
         {
@@ -113,6 +110,37 @@ namespace LexiconLMS.Controllers
             return File(memory, GetContentType(path), Path.GetFileName(path));
         }
 
+
+        // ------------------------------ DownLoadAllFiles ----------------------------------------------------
+
+        public async Task<IActionResult> DownLoadAllFiles(int id)
+        {
+            var listFiles = _context.Documents.Where(d => d.ModuleActivityId == id).ToList();
+            return View(listFiles);
+        }
+
+
+        // --------- Check here v --------------------------------------------------------------------------------
+        // --------------------------------- Download a file ---------------------------------------------------
+        /*
+        public void DownLoadFile(int id)
+        {
+            var doc = _context.Documents.FirstOrDefault(d => d.DocumentId == id);
+            var fileArray = doc.Content;
+            var fileName = doc.DocumentName;
+
+            var memoryStream = new MemoryStream();
+            memoryStream.Write(fileArray);
+
+            var file = new FileStream($"C:\\{fileName}", FileMode.Create, FileAccess.Write);
+            memoryStream.WriteTo(file);
+            file.Close();
+            memoryStream.Close();
+        }*/
+
+
+
+        // ---------------- Private ----------------------------------
         private string GetContentType(string path)
         {
             var types = GetMimeTypes();

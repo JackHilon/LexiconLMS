@@ -4,9 +4,9 @@
     ViewData["Title"] = "Create";
 }
 
-<h1>Create</h1>
+    <h2 class="p-md-2 bg-secondary text-white   active rounded-lg">Course @TempData["CourseName"]</h2>
 
-<h4>Module</h4>
+<h4> Add a Module</h4>
 <hr /> 
 <div class="row">
     <div class="col-md-4">
@@ -27,10 +27,10 @@
                 <input asp-for="StartDate" class="form-control" />
                 <span asp-validation-for="StartDate" class="text-danger"></span>
             </div>
-            <div class="form-group">
+            @*<div class="form-group">
                 <label asp-for="CourseId" class="control-label">Course Id</label>
                 <select asp-for="CourseId" class ="form-control" asp-items="ViewBag.CourseId" readonly></select>
-            </div>
+            </div>*@
             <div class="form-group">
                 <input type="submit" value="Create" class="btn btn-primary" />
             </div>
@@ -39,7 +39,7 @@
 </div>
 
 <div>
-    <a asp-action="ModulePartialView">Back to List</a>
+    <a  asp-action="ModulePartialView">Back to List</a>
 </div>
 
 @section Scripts {

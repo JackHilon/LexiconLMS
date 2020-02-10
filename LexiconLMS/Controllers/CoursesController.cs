@@ -137,12 +137,17 @@ namespace LexiconLMS.Controllers
         }
 
         // GET: Courses/Details/5
-        public async Task<IActionResult> Details(int? id)
+        public async Task<IActionResult> Details(int? id,string CourseName)
         {
             // Pass the Course id to Modules.
 
             TempData["Courseid"] = id;
-            return RedirectToAction("ModulePartialView", "Modules");
+            TempData["CourseName"] = CourseName;
+            //ViewData["CourseName"] = CourseName;
+           // ViewData["CourseName11"] = CourseName;
+
+
+            return  RedirectToAction("ModulePartialView", "Modules");
         }
 
         // GET: Courses/Create

@@ -58,7 +58,7 @@
                     </td>
                     <td class="float-right">
                         <a class="btn btn-outline-info" asp-action="ListOfCourseStudents" asp-route-CourseName="@item.CourseName" asp-route-id="@item.CourseId">Students</a>
-                        <a class="btn btn-outline-secondary " asp-action="Details" asp-route-id="@item.CourseId">Details</a>
+                        <a class="btn btn-outline-secondary " asp-action="Details" asp-route-CourseName="@item.CourseName" asp-route-id="@item.CourseId">Details</a>
                         <a class="btn btn-info " asp-action="Edit" asp-route-id="@item.CourseId">Edit</a>
                         <a class="btn btn-outline-danger " asp-action="Delete" asp-route-id="@item.CourseId">Delete</a>
                     </td>
