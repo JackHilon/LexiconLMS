@@ -35,7 +35,7 @@ namespace LexiconLMS.Controllers
         {
             ViewBag.ModulsName = ModulsName;
             var activityView = _context.ModuleActivity
-                .Include(m => m.Module);
+                .Include(m => m.Module).Include(d => d.Documents);
             var _thisActivityView = activityView.Where(a => a.ModuleId == id);
      
             return PartialView("ActivityPartialView", _thisActivityView);
@@ -74,7 +74,7 @@ namespace LexiconLMS.Controllers
         {
             ViewBag.CourseName = TempData["CourseName"];
             TempData.Keep();
-            ViewData["CourseId"] = new SelectList(_context.Courses, "CourseId", "CourseName");
+          //  ViewData["CourseId"] = new SelectList(_context.Courses, "CourseId", "CourseName");
             return View();
         }
 
@@ -87,6 +87,11 @@ namespace LexiconLMS.Controllers
         {
             if (ModelState.IsValid)
             {
+                // Supply the course name when you save the module record.
+
+                int data = (int)TempData["Courseid"];
+                TempData.Keep();
+                module.CourseId = data;
                 _context.Add(@module);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(ModulePartialView));
