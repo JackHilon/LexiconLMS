@@ -11,6 +11,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.FileProviders;
 using System.Security.Claims;
+using System.Collections;
 
 namespace LexiconLMS.Controllers
 {
@@ -120,23 +121,24 @@ namespace LexiconLMS.Controllers
         }
 
 
-        // --------- Check here v --------------------------------------------------------------------------------
         // --------------------------------- Download a file ---------------------------------------------------
-        /*
-        public void DownLoadFile(int id)
+        
+        public ActionResult DownLoadFile(int id)
         {
+            
             var doc = _context.Documents.FirstOrDefault(d => d.DocumentId == id);
             var fileArray = doc.Content;
             var fileName = doc.DocumentName;
 
-            var memoryStream = new MemoryStream();
-            memoryStream.Write(fileArray);
+            using (var file = new FileStream($"C:\\Users\\Elev\\Desktop\\{fileName}", FileMode.Create, FileAccess.ReadWrite))
+            {
+                file.Write(fileArray, 0, fileArray.Length);
+                //file.Close();
+                file.Flush();
+            }
 
-            var file = new FileStream($"C:\\{fileName}", FileMode.Create, FileAccess.Write);
-            memoryStream.WriteTo(file);
-            file.Close();
-            memoryStream.Close();
-        }*/
+            return RedirectToActionPermanent("DownLoadFile", id);
+        }
 
 
 
