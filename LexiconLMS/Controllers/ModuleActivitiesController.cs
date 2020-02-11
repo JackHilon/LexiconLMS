@@ -50,8 +50,8 @@ namespace LexiconLMS.Controllers
         // GET: ModuleActivities/Create
         public IActionResult Create()
         {
-           
-            ViewData["ModuleId"] = new SelectList(_context.Module, "Id", "Name");
+            
+             ViewData["ModuleId"] = new SelectList(_context.Module, "Id", "Name");
             
             return View();
         }
@@ -61,7 +61,7 @@ namespace LexiconLMS.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Name,Description,StartDate,EndDate,ModuleId")] ModuleActivity moduleActivity)   
+        public async Task<IActionResult> Create([Bind("Id,Name,Description,StartDate,EndDate,ModuleId")] ModuleActivity moduleActivity )   
         {
             if (ModelState.IsValid)
             {
