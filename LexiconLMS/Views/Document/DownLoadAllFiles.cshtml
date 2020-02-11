@@ -21,9 +21,7 @@
                     @Html.DisplayFor(modelItem => @item.DocumentName)
                 </td>
                 <td>
-                    <a class="btn btn-primary" asp-action="Details" asp-route-id="@item.DocumentId" asp-controller="ModuleActivities">Details</a> |
-                    <a class="btn btn-danger" asp-action="Delete" asp-route-id="@item.DocumentId" asp-controller="ModuleActivities">Delete</a>
-                    <a class="btn btn-danger" asp-action="DownLoadFile" asp-route-id="@item.DocumentId" asp-controller="ModuleActivities">DownLoad</a>
+                    <a asp-controller="Document" asp-action="DownLoadFile" class="btn btn-warning"  asp-route-id="@item.DocumentId">DownLoad</a>
                 </td>
             </tr>
         }

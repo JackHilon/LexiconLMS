@@ -96,6 +96,12 @@ namespace LexiconLMS.Controllers
                 //Populera StudentsModelViewModel och CoursesModulesForStudentsViewModel
                 var CourseAppUser = await userManager.GetUserAsync(User);
                 var CourseId = CourseAppUser.CourseId;
+                var Course = _context.Courses.Find(CourseId);
+                var CourseName = Course.CourseName;
+                ViewBag.CourseName = CourseName;
+                //var Course = CourseAppUser.CourseName;
+                //var Course = CourseAppUser.Course;
+                //ViewBag.courseName = Course;
 
                 //List<Module> modules = new List<Module>();
                 //modules = await _context.Module.Include(m => m.Activity).Where(m => m.CourseId == CourseId).ToListAsync();
@@ -260,18 +266,59 @@ namespace LexiconLMS.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id, string CourseName)
         {
+            // Remove all the students attending the course.
+
             var course = await _context.Courses.FindAsync(id);
 
             var allStudents = await userManager.GetUsersInRoleAsync("Student");
             var students = allStudents.Where(s => s.CourseId == id);
-
-            // Remove all the students attending the course.
-
-            foreach(var student in students)
+            if (students != null)
             {
-                _context.AppUser.Remove(student);
+                foreach(var student in students)
+                {
+                    _context.AppUser.Remove(student);
+                }
             }
-            
+            //To  Remove all activities related to the module.
+            // Get all the modules for the course.
+
+            var getallModules = _context.Module.Include(c => c.Course);
+
+            var getAllModulesForCourse = getallModules.Where(c => c.CourseId == id);
+
+            if (getAllModulesForCourse != null)
+            { 
+                    foreach (var module in getAllModulesForCourse)
+                {
+                    var getAllActivities = _context.ModuleActivity.Include(m => m.Module);
+
+                    var getActivitiesForModule = getAllActivities.Where(m => m.ModuleId == module.Id);
+
+                    if (getActivitiesForModule != null)
+                    {
+
+                        foreach (var activityitem in getActivitiesForModule)
+                        {
+                            _context.ModuleActivity.Remove(activityitem);
+                        }
+                    }
+                }
+            }
+
+            // Remove all the modules of the course
+
+            // var allModules =  _context.Module.Include(c => c.Course);
+
+            //var getAllModulesForCourse = allModules.Where(c => c.CourseId == id);
+            if (getAllModulesForCourse != null)
+            {
+                    foreach (var module in getAllModulesForCourse)
+                {
+                    _context.Module.Remove(module);
+                }
+            }
+            // Remove course.
+
             _context.Courses.Remove(course);
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
