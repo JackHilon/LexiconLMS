@@ -99,13 +99,7 @@ namespace LexiconLMS.Controllers
                 var Course = _context.Courses.Find(CourseId);
                 var CourseName = Course.CourseName;
                 ViewBag.CourseName = CourseName;
-                //var Course = CourseAppUser.CourseName;
-                //var Course = CourseAppUser.Course;
-                //ViewBag.courseName = Course;
-
-                //List<Module> modules = new List<Module>();
-                //modules = await _context.Module.Include(m => m.Activity).Where(m => m.CourseId == CourseId).ToListAsync();
-                //List<Module> modules = _context.Module.Where(m => m.CourseId == 1).ToList();
+                ViewBag.CourseId = CourseId;
 
                 List<StudentsModelViewModel> LotsOfModules = _context.Module.Where(m => m.CourseId == CourseId).Select(m => new StudentsModelViewModel
                 {
@@ -123,11 +117,6 @@ namespace LexiconLMS.Controllers
                         MyModules = LotsOfModules                    
                     }
                 ).First();
-
-                //new StudentsModelViewModel()
-                //{
-                //    Name = 
-                //}
 
                 return View(nameof(StudentListings), viewModel);
                 //return RedirectToAction(nameof(StudentListings), viewModel);
