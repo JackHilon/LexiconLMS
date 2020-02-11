@@ -2,6 +2,7 @@
 @{
     ViewData["Title"] = "ModuleActivity";
 }
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.css">
 <div class="tab-pane container p-0" id="menu1">
     <p>
         <a class="btn btn-info" asp-controller="ModuleActivities" asp-action="Create">Add New Activity</a>
@@ -42,7 +43,7 @@
                     </td>
 
                     <td>
-                        @Html.DisplayFor(modelItem => @item.Documents.FirstOrDefault().DocumentName)
+                        <a asp-controller="Document" asp-action="DownLoadAllFiles" class="btn btn-warning" asp-route-id="@item.Id">Files list</a>
                     </td>
 
                     <td>
@@ -54,9 +55,20 @@
                         <form asp-controller="Document" asp-action="UploadFile" asp-route-id="@item.Id" method="post"
                               enctype="multipart/form-data" style="display: inline-block">
 
-                        <input type="file" name="file" class="btn btn-warning  active" role="button" />
-                        <button type="submit" class="btn btn-info  active" role="button">Upload File</button>
-                    </form>
+                            <input type="file" name="file" class="btn btn-warning  active" role="button" />
+                          
+                            <button type="submit" class="btn btn-warning" data-toggle="modal" data-target="#upConfirmationModal">
+                                <i class="fa fa-upload"></i>
+                            </button> |
+
+                            <button type="submit" class="btn btn-warning" data-toggle="modal" data-target="#downConfirmationModal">
+                                <i class="fa fa-download"></i>
+                            </button> |
+                            <button type="submit" class="btn btn-warning" data-toggle="modal" data-target="#DeleteConfirmationModal"
+                                    asp-action="Delete" asp-route-id="@item.Id" asp-controller="DocumentController">
+                                <i class="fa fa-trash"></i>
+                            </button>
+                        </form>
                 </td>
                 </tr>
             }

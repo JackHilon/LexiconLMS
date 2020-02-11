@@ -164,7 +164,7 @@ namespace LexiconLMS.Controllers
             }
 
             var @module = await _context.Module
-                .Include(q => q.Course)
+                .Include(q => q.Course).Include(a => a.Activity)
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (@module == null)
             {
@@ -179,6 +179,17 @@ namespace LexiconLMS.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
+         // Remove all activities related to the module.
+
+            var getAllActivities = _context.ModuleActivity.Include(m => m.Module);
+
+            var getActivitiesForModule = getAllActivities.Where(m => m.ModuleId == id);
+
+            foreach (var activityitem in getActivitiesForModule)
+            {
+                _context.ModuleActivity.Remove(activityitem);
+            }
+
             var @module = await _context.Module.FindAsync(id);
             _context.Module.Remove(@module);
             await _context.SaveChangesAsync();
