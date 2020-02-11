@@ -11,6 +11,9 @@
             <th>
                 @Html.DisplayNameFor(model => model.DocumentName)
             </th>
+            <th>
+                @Html.DisplayNameFor(model => model.UploadDate)
+            </th>
         </tr>
     </thead>
     <tbody>
@@ -19,6 +22,9 @@
             <tr>
                 <td>
                     @Html.DisplayFor(modelItem => @item.DocumentName)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => @item.UploadDate.Date)
                 </td>
                 <td>
                     <a asp-controller="Document" asp-action="DownLoadFile" class="btn btn-warning"  asp-route-id="@item.DocumentId">DownLoad</a>
