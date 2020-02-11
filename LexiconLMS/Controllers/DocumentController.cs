@@ -137,7 +137,7 @@ namespace LexiconLMS.Controllers
                 file.Flush();
             }
 
-            return RedirectToActionPermanent("DownLoadFile", id);
+            return RedirectToActionPermanent("DownLoadAllFiles", doc.ModuleActivityId);
         }
 
 
