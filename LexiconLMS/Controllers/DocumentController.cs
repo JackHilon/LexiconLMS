@@ -36,7 +36,7 @@ namespace LexiconLMS.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> UploadFile([Bind("CourseId,CourseName,CourseDescription,StartDate,AppUsers")] IFormFile file, int id)
+        public async Task<IActionResult> UploadFile([Bind("CourseId,CourseName,CourseDescription,StartDate,AppUsers")] IFormFile file, int id, string Related)
         {
             if (file == null || file.Length == 0)
                 return Content("file not selected");
@@ -55,6 +55,10 @@ namespace LexiconLMS.Controllers
                     var userId = this.User.FindFirstValue(ClaimTypes.NameIdentifier);
                     var user = await userManager.FindByIdAsync(userId);
 
+                    var moduleId = _context.ModuleActivity.FirstOrDefault(a => a.Id == id).ModuleId;
+                    var courseId = _context.Module.FirstOrDefault(m => m.Id == moduleId).CourseId;
+
+
                     var doc = new Document()
                     {
                         AppUser = user,
@@ -63,6 +67,10 @@ namespace LexiconLMS.Controllers
                         DocumentName = file.FileName,
                         DocumentDescription = file.FileName,
                         UploadDate = UploadDateTime.Date,
+
+                        CourseId = courseId,
+
+                        Related = Related, 
 
                         Content = memoryStream.ToArray()
                     };
@@ -123,9 +131,13 @@ namespace LexiconLMS.Controllers
 
         // --------------------------------- Download a file ---------------------------------------------------
         
-        public ActionResult DownLoadFile(int id)
+        public ActionResult DownLoadFile(int? id)
         {
-            
+            if (id == null)
+            {
+                return RedirectToAction("ModulePartialView", "Modules");
+            }
+
             var doc = _context.Documents.FirstOrDefault(d => d.DocumentId == id);
             var fileArray = doc.Content;
             var fileName = doc.DocumentName;
@@ -137,7 +149,8 @@ namespace LexiconLMS.Controllers
                 file.Flush();
             }
 
-            return RedirectToActionPermanent("DownLoadAllFiles", doc.ModuleActivityId);
+             // return RedirectToActionPermanent("DownLoadAllFiles", doc.ModuleActivityId);
+            return RedirectToAction("ModulePartialView", "Modules");
         }
 
 

@@ -21,7 +21,7 @@ namespace LexiconLMS.Models
 
         [Required]
         [Display(Name = "Name"), StringLength(20)]
-        public string Name { get; set; }
+        public string SecondUserName { get; set; }
 
         //-----------------------------------------
         //Navigation Property

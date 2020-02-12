@@ -18,5 +18,9 @@ namespace LexiconLMS.Models
 
         //Navigation Property
         public ICollection<ApplicationUser> AppUsers { get; set; }
+
+        // --- ### For Course Documents ### --- ### --- ### --- ### ---
+        public ICollection<Document>? Documents { get; set; }
+        // --- ### --- ### --- ### --- ### --- ### --- ### --- ### --- ### ---
     }
 }

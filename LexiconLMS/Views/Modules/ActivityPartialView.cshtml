@@ -52,7 +52,7 @@
                         <a class="btn btn-danger" asp-action="Delete" asp-route-id="@item.Id" asp-controller="ModuleActivities">Delete</a>
                     </td>
                     <td>
-                        <form asp-controller="Document" asp-action="UploadFile" asp-route-id="@item.Id" method="post"
+                        <form asp-controller="Document" asp-action="UploadFile" asp-route-id="@item.Id" asp-route-Related="Activity" method="post"
                               enctype="multipart/form-data" style="display: inline-block">
 
                             <input type="file" name="file" class="btn btn-warning  active" role="button" />

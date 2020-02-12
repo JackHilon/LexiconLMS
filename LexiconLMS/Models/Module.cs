@@ -20,5 +20,11 @@ namespace LexiconLMS.Models
         public int CourseId { get; set; }
         public Course Course { get; set; }
         public ICollection<ModuleActivity> Activity { get; set; }
+
+
+        // --- ### For Module Documents ### --- ### --- ### --- ### ---
+        public ICollection<Document>? Documents { get; set; }
+        // --- ### --- ### --- ### --- ### --- ### --- ### --- ### --- ### ---
+
     }
 }
