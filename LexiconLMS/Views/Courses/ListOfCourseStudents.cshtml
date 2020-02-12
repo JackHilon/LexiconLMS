@@ -1,16 +1,24 @@
 ﻿@model IEnumerable<ApplicationUser>
 @*@model LexiconLMS.ViewModels.StudentListAndCourseName*@
 
+
+
 @{
     ViewData["Title"] = "ListOfCourseStudents";
 }
 
+
+
 @*<h1>List of @Html.DisplayFor(m => m.CourseName) Course Students</h1> Jack's method *@
+
+
 
 <div class="container">
     <div>
         <h2 class="p-3 mb-2 bg-info text-white rounded-lg">List of @ViewBag.nameCourse course students</h2>
     </div>
+
+
 
     @if (User.IsInRole("Teacher"))
     {
@@ -18,11 +26,17 @@
             @* <a asp-area="Identity" asp-page="/Account/Register" asp-route-roleName="Student" class="btn btn-secondary btn-lg active" role="button">Add New Student</a>*@
             <a asp-area="Identity" asp-page="/Account/Register" asp-route-courseId="@ViewBag.IdCourse" asp-route-coureName="@ViewBag.nameCourse" asp-route-roleName="Student" class="btn btn-secondary " role="button">Add New Student</a>
 
+
+
         </div>
     }
 
+
+
 </div>
 <br>
+
+
 
 
 @if (Model.Any())
@@ -30,10 +44,12 @@
     <table class="table">
         <thead>
             <tr>
-                <th>@Html.DisplayNameFor(model => model.First().SecondUserName)</th>
+                <th>@Html.DisplayNameFor(model => model.First().Name)</th>
                 <th>
                     @Html.DisplayNameFor(model => model.First().Email)
                 </th>
+
+
 
             </tr>
         </thead>
@@ -42,23 +58,29 @@
             {
                 <tr>
                     <td>
-                        @Html.DisplayFor(modelItem => item.SecondUserName)
+                        @Html.DisplayFor(modelItem => item.Name)
                     </td>
                     <td>
                         @Html.DisplayFor(modelItem => item.Email)
                     </td>
 
+
+
                     @if (User.IsInRole("Teacher"))
                     {
                         <td class="text-right">
 
-                        <a class="btn btn-outline-secondary"   asp-action="EditUser" asp-route-id="@item.Id">Edit</a>
-                        <a class="btn btn-danger" asp-action="DeleteUser" asp-route-id="@item.Id">Delete</a>
-                    </td>
+
+
+                            <a class="btn btn-outline-secondary" asp-action="EditUser" asp-route-id="@item.Id">Edit</a>
+                            <a class="btn btn-danger" asp-action="DeleteUser" asp-route-id="@item.Id">Delete</a>
+                        </td>
+                    }
                 </tr>
             }
         </tbody>
     </table>
 
-}
 
+
+}
