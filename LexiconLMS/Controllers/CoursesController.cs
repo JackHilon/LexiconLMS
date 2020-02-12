@@ -372,7 +372,7 @@ namespace LexiconLMS.Controllers
                         return NotFound();
                     }
 
-                    newUpdatedAppUser.Name = user.Name;                                     // --> Sychronize the (Email, UserName, NormalizedUserName, NormalizedEmail) to Email
+                    newUpdatedAppUser.SecondUserName = user.SecondUserName;                                     // --> Sychronize the (Email, UserName, NormalizedUserName, NormalizedEmail) to Email
                     newUpdatedAppUser.Email = user.Email;                                   // -- REMARK! -- NormalizedEmail must be unique --
                     newUpdatedAppUser.UserName = user.Email;
                     newUpdatedAppUser.NormalizedUserName = user.Email.ToUpper();
