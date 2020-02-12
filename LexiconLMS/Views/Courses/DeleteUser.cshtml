@@ -28,6 +28,6 @@
     <form asp-action="DeleteUser">
         <input type="hidden" asp-for="Id" />
         <input type="submit" value="Delete" class="btn btn-danger" /> |
-        <a asp-action="ListOfTeachers" class="btn btn-warning active" role="button">Cancle</a>
+        <a asp-action="ListOfCourseStudents" asp-route-id="@Model.CourseId" class="btn btn-warning active" role="button">Cancle</a>
     </form>
 </div>
