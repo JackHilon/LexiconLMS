@@ -19,5 +19,6 @@ namespace LexiconLMS.ViewModels
         public DateTime ActivityStartDate { get; set; }
         public List<StudentsModelViewModel> MyModules { get; set; }
         public List<StudentsActivityViewModel> MyActivities { get; set; }
+
     }
 }

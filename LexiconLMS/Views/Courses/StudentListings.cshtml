@@ -45,25 +45,27 @@
                 <th>
                     @Html.DisplayNameFor(model => model.ActivityStartDate)
                 </th>
+                
             </tr>
         </thead>
         <tbody>
             @foreach (var item in Model.MyModules)
             {
-                <tr>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.ModuleName)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.ModuleDescription)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.ModuleStartDate)
-                    </td>
-
-                    @foreach (var item2 in item.Activities)
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.ModuleName)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.ModuleDescription)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.ModuleStartDate)
+                </td>
+                @{ int counter = 0;}
+                @foreach (var item2 in item.Activities)
+                {
+                    @if (counter == 0)
                     {
-
                         <td>
                             @Html.DisplayFor(modelItem => item2.Name)
                         </td>
@@ -73,28 +75,41 @@
                         <td>
                             @Html.DisplayFor(modelItem => item2.StartDate)
                         </td>
-                        @*<td>
-                            <table>
-                                <tr>
-                                    <td>
-                                        @Html.DisplayFor(modelItem => item2.Name)
-                                    </td>
-                                    <td>
-                                        @Html.DisplayFor(modelItem => item2.Description)
-                                    </td>
-                                    <td>
-                                        @Html.DisplayFor(modelItem => item2.StartDate)
-                                    </td>
-                                    <br />
-                                </tr>
-                            </table>
-                        </td>*@
+                        
+                        counter = counter + 1;
+                    }
+                    else
+                    {
+            <tr>
+                @{ string sample = " ";}
+                <td>
+                    @Html.DisplayFor(model => sample)
+                </td>
+                <td>
+                    @Html.DisplayFor(model => sample)
+                </td>
+                <td>
+                    @Html.DisplayFor(model => sample)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item2.Name)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item2.Description)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item2.StartDate)
+                </td>
+                
+            </tr>
+            }
+
 
                     }
-                </tr>
-            }
-        </tbody>
-    </table>
+                    </tr>
+                }
+            </tbody>
+            </table>
 
-</td>
+            </td>
 

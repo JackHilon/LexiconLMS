@@ -131,7 +131,7 @@ namespace LexiconLMS.Controllers
                     MyModules = LotsOfModules
                 }
                 ).First();
-
+              
                 return View(nameof(StudentListings), viewModel);
                 //return RedirectToAction(nameof(StudentListings), viewModel);
             }
