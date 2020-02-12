@@ -8,10 +8,18 @@ namespace LexiconLMS.ViewModels
 {
     public class CoursesModulesForStudentsViewModel
     {
-        public string Name { get; set; }
-        public string Description { get; set; }
+        public string ModuleName { get; set; }
+        public string ModuleDescription { get; set; }
         [DataType(DataType.Date)]
-        public DateTime StartDate { get; set; }
+        public DateTime ModuleStartDate { get; set; }
+        public string ActivityName { get; set; }
+        public string ActivityDescription { get; set; }
+
+        [DataType(DataType.Date)]
+        public DateTime ActivityStartDate { get; set; }
+        [DataType(DataType.Date)]
+        public DateTime ActivityEndtDate { get; set; }
         public List<StudentsModelViewModel> MyModules { get; set; }
+        public List<StudentsActivityViewModel> MyActivities { get; set; }
     }
 }

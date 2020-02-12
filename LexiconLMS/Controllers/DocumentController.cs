@@ -36,7 +36,7 @@ namespace LexiconLMS.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> UploadFile([Bind("CourseId,CourseName,CourseDescription,StartDate,AppUsers")] IFormFile file, int id)
+        public async Task<IActionResult> UploadFile([Bind("CourseId,CourseName,CourseDescription,StartDate,AppUsers")] IFormFile file, int id, string Related)
         {
             if (file == null || file.Length == 0)
                 return Content("file not selected");
@@ -55,14 +55,22 @@ namespace LexiconLMS.Controllers
                     var userId = this.User.FindFirstValue(ClaimTypes.NameIdentifier);
                     var user = await userManager.FindByIdAsync(userId);
 
+                    var moduleId = _context.ModuleActivity.FirstOrDefault(a => a.Id == id).ModuleId;
+                    var courseId = _context.Module.FirstOrDefault(m => m.Id == moduleId).CourseId;
+
+
                     var doc = new Document()
                     {
                         AppUser = user,
                         ModuleActivityId = activityId,
 
-                        DocumentName = file.FileName,
+                        DocumentName = file.FileName, // <--
                         DocumentDescription = file.FileName,
                         UploadDate = UploadDateTime.Date,
+
+                        CourseId = courseId,
+
+                        Related = Related, 
 
                         Content = memoryStream.ToArray()
                     };
@@ -93,7 +101,7 @@ namespace LexiconLMS.Controllers
             return View(model);
         }
 
-        public async Task<IActionResult> Download(string filename)
+        public async Task<IActionResult> Download(string? filename)
         {
             if (filename == null)
                 return Content("filename not present");
@@ -114,7 +122,7 @@ namespace LexiconLMS.Controllers
 
         // ------------------------------ DownLoadAllFiles ----------------------------------------------------
 
-        public async Task<IActionResult> DownLoadAllFiles(int id)
+        public async Task<IActionResult> DownLoadAllFiles(int? id)
         {
             var listFiles = _context.Documents.Where(d => d.ModuleActivityId == id).ToList();
             return View(listFiles);
@@ -123,21 +131,29 @@ namespace LexiconLMS.Controllers
 
         // --------------------------------- Download a file ---------------------------------------------------
         
-        public ActionResult DownLoadFile(int id)
+        public ActionResult DownLoadFile(int? id)
         {
-            
+            if (id == null)
+            {
+                return RedirectToAction("ModulePartialView", "Modules");
+            }
+
             var doc = _context.Documents.FirstOrDefault(d => d.DocumentId == id);
             var fileArray = doc.Content;
             var fileName = doc.DocumentName;
-
+            // -- Radika 
             using (var file = new FileStream($"C:\\Users\\Elev\\Desktop\\{fileName}", FileMode.Create, FileAccess.ReadWrite))
             {
                 file.Write(fileArray, 0, fileArray.Length);
                 //file.Close();
                 file.Flush();
+                //  ViewBag.Message = "Document Downloaded Sucessfully!!!";
+                ViewBag.Message = "Document Downloaded Sucessfully!!!";
             }
+       
+            return RedirectToAction("ModulePartialView", "Modules");
 
-            return RedirectToActionPermanent("DownLoadFile", id);
+            //return RedirectToActionPermanent("DownLoadAllFiles", doc.ModuleActivityId);
         }
 
 
@@ -167,5 +183,19 @@ namespace LexiconLMS.Controllers
                 {".csv", "text/csv"}
             };
         }
+
+        // POST: Modules/Delete/5
+        [HttpPost, ActionName("Delete")]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> DeleteConfirmed(int id)
+        {
+
+            var @module = await _context.Documents.FindAsync(id);
+            _context.Documents.Remove(@module);
+            await _context.SaveChangesAsync();
+            return RedirectToAction("ModulePartialView", "Modules");
+            //return RedirectToAction(nameof(ModulePartialView));
+        }
+
     }
 }

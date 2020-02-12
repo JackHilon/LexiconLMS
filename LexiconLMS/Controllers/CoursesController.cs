@@ -99,35 +99,39 @@ namespace LexiconLMS.Controllers
                 var Course = _context.Courses.Find(CourseId);
                 var CourseName = Course.CourseName;
                 ViewBag.CourseName = CourseName;
-                //var Course = CourseAppUser.CourseName;
-                //var Course = CourseAppUser.Course;
-                //ViewBag.courseName = Course;
+                ViewBag.CourseId = CourseId;
 
-                //List<Module> modules = new List<Module>();
-                //modules = await _context.Module.Include(m => m.Activity).Where(m => m.CourseId == CourseId).ToListAsync();
-                //List<Module> modules = _context.Module.Where(m => m.CourseId == 1).ToList();
-
-                List<StudentsModelViewModel> LotsOfModules = _context.Module.Where(m => m.CourseId == CourseId).Select(m => new StudentsModelViewModel
+                List<int> modulesIds = new List<int>();
+                List<Module> Modules = await _context.Module.Where(m => m.CourseId == CourseId).ToListAsync();
+                foreach (var module in Modules)
                 {
-                    Name = m.Name,
-                    Description = m.Description,
-                    StartDate = m.StartDate
+                    modulesIds.Add(module.Id);
+                }
+
+                List<StudentsModelViewModel> LotsOfModules = _context.Module.Include(m => m.Activity).Where(m => m.CourseId == CourseId).Select(m => new StudentsModelViewModel
+                {
+                    ModuleName = m.Name,
+                    ModuleDescription = m.Description,
+                    ModuleStartDate = m.StartDate,
+                    
+                    //Activities = _context.ModuleActivity.Where(a => a.ModuleId == m.Id).Select(a => new StudentsActivityViewModel
+                    //{
+                    //    ActivityName = a.Name,
+                    //    ActivityDescription = a.Description,
+                    //    ActivityStartDate = a.StartDate
+                    //}).ToList()
+                    Activities = m.Activity
                 }
                 ).ToList();
 
                 CoursesModulesForStudentsViewModel viewModel = _context.Module.Select(m => new CoursesModulesForStudentsViewModel
-                    {
-                        Name = m.Name,
-                        StartDate = m.StartDate,
-                        Description = m.Description,
-                        MyModules = LotsOfModules                    
-                    }
+                {
+                    ModuleName = m.Name,
+                    ModuleStartDate = m.StartDate,
+                    ModuleDescription = m.Description,
+                    MyModules = LotsOfModules
+                }
                 ).First();
-
-                //new StudentsModelViewModel()
-                //{
-                //    Name = 
-                //}
 
                 return View(nameof(StudentListings), viewModel);
                 //return RedirectToAction(nameof(StudentListings), viewModel);
@@ -137,17 +141,17 @@ namespace LexiconLMS.Controllers
         }
 
         // GET: Courses/Details/5
-        public async Task<IActionResult> Details(int? id,string CourseName)
+        public async Task<IActionResult> Details(int? id, string CourseName)
         {
             // Pass the Course id to Modules.
 
             TempData["Courseid"] = id;
             TempData["CourseName"] = CourseName;
             //ViewData["CourseName"] = CourseName;
-           // ViewData["CourseName11"] = CourseName;
+            // ViewData["CourseName11"] = CourseName;
 
 
-            return  RedirectToAction("ModulePartialView", "Modules");
+            return RedirectToAction("ModulePartialView", "Modules");
         }
 
         // GET: Courses/Create
@@ -165,8 +169,6 @@ namespace LexiconLMS.Controllers
         {
             if (ModelState.IsValid)
             {
-                course.StartDate = DateTime.Now;
-
                 _context.Add(course);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
@@ -236,7 +238,7 @@ namespace LexiconLMS.Controllers
         }
 
         // GET: Courses/Delete/5
-        public async Task<IActionResult> Delete(int? id,string CourseName)
+        public async Task<IActionResult> Delete(int? id, string CourseName)
         {
             // Get list of students attending the course.
 
@@ -274,7 +276,7 @@ namespace LexiconLMS.Controllers
             var students = allStudents.Where(s => s.CourseId == id);
             if (students != null)
             {
-                foreach(var student in students)
+                foreach (var student in students)
                 {
                     _context.AppUser.Remove(student);
                 }
@@ -287,8 +289,8 @@ namespace LexiconLMS.Controllers
             var getAllModulesForCourse = getallModules.Where(c => c.CourseId == id);
 
             if (getAllModulesForCourse != null)
-            { 
-                    foreach (var module in getAllModulesForCourse)
+            {
+                foreach (var module in getAllModulesForCourse)
                 {
                     var getAllActivities = _context.ModuleActivity.Include(m => m.Module);
 
@@ -312,7 +314,7 @@ namespace LexiconLMS.Controllers
             //var getAllModulesForCourse = allModules.Where(c => c.CourseId == id);
             if (getAllModulesForCourse != null)
             {
-                    foreach (var module in getAllModulesForCourse)
+                foreach (var module in getAllModulesForCourse)
                 {
                     _context.Module.Remove(module);
                 }
@@ -368,7 +370,7 @@ namespace LexiconLMS.Controllers
                         return NotFound();
                     }
 
-                    newUpdatedAppUser.Name = user.Name;                                     // --> Sychronize the (Email, UserName, NormalizedUserName, NormalizedEmail) to Email
+                    newUpdatedAppUser.SecondUserName = user.SecondUserName;                                     // --> Sychronize the (Email, UserName, NormalizedUserName, NormalizedEmail) to Email
                     newUpdatedAppUser.Email = user.Email;                                   // -- REMARK! -- NormalizedEmail must be unique --
                     newUpdatedAppUser.UserName = user.Email;
                     newUpdatedAppUser.NormalizedUserName = user.Email.ToUpper();

@@ -7,11 +7,11 @@ using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
-namespace LexiconLMS.Data.Migrations
+namespace LexiconLMS.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20200207120148_ggggggg")]
-    partial class ggggggg
+    [Migration("20200212112152_MyFirstMig")]
+    partial class MyFirstMig
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -55,13 +55,20 @@ namespace LexiconLMS.Data.Migrations
                     b.Property<byte[]>("Content")
                         .HasColumnType("varbinary(max)");
 
+                    b.Property<int?>("CourseId")
+                        .IsRequired()
+                        .HasColumnType("int");
+
                     b.Property<string>("DocumentDescription")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("DocumentName")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("ModuleActivityId")
+                    b.Property<int?>("ModuleActivityId")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("ModuleId")
                         .HasColumnType("int");
 
                     b.Property<DateTime>("UploadDate")
@@ -71,7 +78,11 @@ namespace LexiconLMS.Data.Migrations
 
                     b.HasIndex("AppUserId");
 
+                    b.HasIndex("CourseId");
+
                     b.HasIndex("ModuleActivityId");
+
+                    b.HasIndex("ModuleId");
 
                     b.ToTable("Documents");
                 });
@@ -344,7 +355,7 @@ namespace LexiconLMS.Data.Migrations
                     b.Property<int?>("CourseId")
                         .HasColumnType("int");
 
-                    b.Property<string>("Name")
+                    b.Property<string>("SecondUserName")
                         .IsRequired()
                         .HasColumnType("nvarchar(20)")
                         .HasMaxLength(20);
@@ -360,11 +371,21 @@ namespace LexiconLMS.Data.Migrations
                         .WithMany("Documents")
                         .HasForeignKey("AppUserId");
 
+                    b.HasOne("LexiconLMS.Models.Course", "Course")
+                        .WithMany("Documents")
+                        .HasForeignKey("CourseId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.HasOne("LexiconLMS.Models.ModuleActivity", "ModuleActivity")
                         .WithMany("Documents")
                         .HasForeignKey("ModuleActivityId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .OnDelete(DeleteBehavior.Restrict);
+
+                    b.HasOne("LexiconLMS.Models.Module", "Module")
+                        .WithMany("Documents")
+                        .HasForeignKey("ModuleId")
+                        .OnDelete(DeleteBehavior.Restrict);
                 });
 
             modelBuilder.Entity("LexiconLMS.Models.Module", b =>

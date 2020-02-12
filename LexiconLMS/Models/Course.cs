@@ -9,7 +9,9 @@ namespace LexiconLMS.Models
     public class Course
     {
         public int CourseId { get; set; }
+       
         public string CourseName { get; set; }
+        
         public string CourseDescription { get; set; }
 
         [DataType(DataType.Date)]
@@ -18,5 +20,9 @@ namespace LexiconLMS.Models
 
         //Navigation Property
         public ICollection<ApplicationUser> AppUsers { get; set; }
+
+        // --- ### For Course Documents ### --- ### --- ### --- ### ---
+        public ICollection<Document>? Documents { get; set; }
+        // --- ### --- ### --- ### --- ### --- ### --- ### --- ### --- ### ---
     }
 }

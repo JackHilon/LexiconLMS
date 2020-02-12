@@ -85,6 +85,18 @@ namespace LexiconLMS.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("Id,Name,Description,StartDate,CourseId")] Module @module)
         {
+             var CourseId = (int)TempData["Courseid"];
+            TempData.Keep();
+            
+            //******* Get Course start date  ******
+            var couresStartDate = _context.Courses
+            .Where(c => c.CourseId == CourseId).Select(s => s.StartDate).FirstOrDefault();
+            //******* Check Module start date after Course start ******
+            if (@module.StartDate < couresStartDate)
+            {
+                ModelState.AddModelError("StartDate", $"The Module's start date must be after {couresStartDate}");
+
+            }
             if (ModelState.IsValid)
             {
                 // Supply the course name when you save the module record.

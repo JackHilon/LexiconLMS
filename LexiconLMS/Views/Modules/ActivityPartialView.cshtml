@@ -2,10 +2,12 @@
 @{
     ViewData["Title"] = "ModuleActivity";
 }
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.css">
 <div class="tab-pane container p-0" id="menu1">
     <p>
-        <a class="btn btn-info" asp-controller="ModuleActivities" asp-action="Create">Add New Activity</a>
+       @* <h3> @Model.FirstOrDefault().Module.Name</h3>*@
+       @* <h4>asp-route-ModuleName="@Model.FirstOrDefault().Module.Name"</h4>*@
+        <a class="btn btn-info"  asp-controller="ModuleActivities" asp-action="Create">Add New Activity</a>
     </p>
     <h5 class="text-uppercase p-2 text-center">List of Activities</h5>
     <table class="table table-bordered table-striped">
@@ -43,35 +45,56 @@
                     </td>
 
                     <td>
-                        <a asp-controller="Document" asp-action="DownLoadAllFiles" class="btn btn-warning" asp-route-id="@item.Id">Files list</a>
-                    </td>
-
-                    <td>
                         <a class="btn btn-primary" asp-action="Edit" asp-route-id="@item.Id" asp-controller="ModuleActivities">Edit</a> |
                         <a class="btn btn-primary" asp-action="Details" asp-route-id="@item.Id" asp-controller="ModuleActivities">Details</a> |
                         <a class="btn btn-danger" asp-action="Delete" asp-route-id="@item.Id" asp-controller="ModuleActivities">Delete</a>
                     </td>
                     <td>
-                        <form asp-controller="Document" asp-action="UploadFile" asp-route-id="@item.Id" method="post"
-                              enctype="multipart/form-data" style="display: inline-block">
+                        @if (@item.Documents.FirstOrDefault() != null)
 
-                            <input type="file" name="file" class="btn btn-warning  active" role="button" />
-                          
-                            <button type="submit" class="btn btn-warning" data-toggle="modal" data-target="#upConfirmationModal">
-                                <i class="fa fa-upload"></i>
-                            </button> |
+                        {
+                            @Html.DisplayFor(modelItem => @item.Documents.FirstOrDefault().DocumentName)
+                            <br />
+                            <form asp-action="DownLoadFile" asp-route-id="@item.Documents.FirstOrDefault().DocumentId" asp-controller="Document" id="Form1">
+                                <button type="submit" class="btn btn-warning" data-toggle="modal" data-target="#DownConfirmationModal" id="Download">
+                                    <i class="fa fa-download"></i>
 
-                            <button type="submit" class="btn btn-warning" data-toggle="modal" data-target="#downConfirmationModal">
-                                <i class="fa fa-download"></i>
-                            </button> |
-                            <button type="submit" class="btn btn-warning" data-toggle="modal" data-target="#DeleteConfirmationModal"
-                                    asp-action="Delete" asp-route-id="@item.Id" asp-controller="DocumentController">
-                                <i class="fa fa-trash"></i>
-                            </button>
-                        </form>
-                </td>
+                                </button>
+
+                            </form>
+
+
+                        }
+
+                    </td>
+
+                    <td>
+                        @if (@item.Documents.FirstOrDefault() == null)
+                        {
+                            <form asp-controller="Document" asp-action="UploadFile" asp-route-id="@item.Id" method="post"
+                                  enctype="multipart/form-data" style="display: inline-block">
+
+                                <input type="file" name="file" class="btn btn-warning  active" role="button" />
+                                <br>
+                                <br>
+                                <button type="submit" class="btn  btn-warning center-block" data-toggle="modal" data-target="#upConfirmationModal">
+                                    <i class="fa fa-upload"></i>
+
+                                </button>
+
+                            </form>
+                        }
+                    </td>
                 </tr>
+
             }
         </tbody>
     </table>
 </div>
+<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
+<script type="text/javascript">
+    $("body").on("submit", "#Form1", function () {
+        return confirm("Dowloaded Sucessfully!!!");
+    });
+</script>
+
