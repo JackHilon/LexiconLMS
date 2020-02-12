@@ -50,8 +50,8 @@ namespace LexiconLMS.Controllers
         // GET: ModuleActivities/Create
         public IActionResult Create()
         {
-           
-            ViewData["ModuleId"] = new SelectList(_context.Module, "Id", "Name");
+            
+             ViewData["ModuleId"] = new SelectList(_context.Module, "Id", "Name");
             
             return View();
         }
@@ -61,10 +61,31 @@ namespace LexiconLMS.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Name,Description,StartDate,EndDate,ModuleId")] ModuleActivity moduleActivity)   
+        public async Task<IActionResult> Create([Bind("Id,Name,Description,StartDate,EndDate,ModuleId")] ModuleActivity moduleActivity )   
         {
+            var id = moduleActivity.ModuleId;
+            //******* Get module start date  ******
+            var moduleStartDate = _context.Module
+            .Where(c => c.Id == id).Select(s => s.StartDate).FirstOrDefault();
+            //******* Check Activities start date after module start ******
+            if (  moduleActivity.StartDate < moduleStartDate)
+            {
+                ModelState.AddModelError("StartDate", $"The activity's start date must be after {moduleStartDate}");
+
+            }
+            //******* Check Activities start date ******
+            if (moduleActivity.StartDate<=DateTime.Now)
+            {
+                ModelState.AddModelError("StartDate", "Please enter a valid date");
+            }
+            //******* Check Activities start date ******
+            if (moduleActivity.EndDate<= moduleActivity.StartDate)
+            {
+                ModelState.AddModelError("EndDate", "Please enter a valid date");
+            }
             if (ModelState.IsValid)
             {
+                moduleActivity.Documents = null;
                 _context.Add(moduleActivity);
                 await _context.SaveChangesAsync();
                 return RedirectToAction("ModulePartialView", "Modules");

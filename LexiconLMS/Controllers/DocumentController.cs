@@ -64,7 +64,7 @@ namespace LexiconLMS.Controllers
                         AppUser = user,
                         ModuleActivityId = activityId,
 
-                        DocumentName = file.FileName,
+                        DocumentName = file.FileName, // <--
                         DocumentDescription = file.FileName,
                         UploadDate = UploadDateTime.Date,
 
@@ -101,7 +101,7 @@ namespace LexiconLMS.Controllers
             return View(model);
         }
 
-        public async Task<IActionResult> Download(string filename)
+        public async Task<IActionResult> Download(string? filename)
         {
             if (filename == null)
                 return Content("filename not present");
@@ -122,7 +122,7 @@ namespace LexiconLMS.Controllers
 
         // ------------------------------ DownLoadAllFiles ----------------------------------------------------
 
-        public async Task<IActionResult> DownLoadAllFiles(int id)
+        public async Task<IActionResult> DownLoadAllFiles(int? id)
         {
             var listFiles = _context.Documents.Where(d => d.ModuleActivityId == id).ToList();
             return View(listFiles);
@@ -141,16 +141,19 @@ namespace LexiconLMS.Controllers
             var doc = _context.Documents.FirstOrDefault(d => d.DocumentId == id);
             var fileArray = doc.Content;
             var fileName = doc.DocumentName;
-
+            // -- Radika 
             using (var file = new FileStream($"C:\\Users\\Elev\\Desktop\\{fileName}", FileMode.Create, FileAccess.ReadWrite))
             {
                 file.Write(fileArray, 0, fileArray.Length);
                 //file.Close();
                 file.Flush();
+                //  ViewBag.Message = "Document Downloaded Sucessfully!!!";
+                ViewBag.Message = "Document Downloaded Sucessfully!!!";
             }
-
-             // return RedirectToActionPermanent("DownLoadAllFiles", doc.ModuleActivityId);
+       
             return RedirectToAction("ModulePartialView", "Modules");
+
+            //return RedirectToActionPermanent("DownLoadAllFiles", doc.ModuleActivityId);
         }
 
 
@@ -180,5 +183,19 @@ namespace LexiconLMS.Controllers
                 {".csv", "text/csv"}
             };
         }
+
+        // POST: Modules/Delete/5
+        [HttpPost, ActionName("Delete")]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> DeleteConfirmed(int id)
+        {
+
+            var @module = await _context.Documents.FindAsync(id);
+            _context.Documents.Remove(@module);
+            await _context.SaveChangesAsync();
+            return RedirectToAction("ModulePartialView", "Modules");
+            //return RedirectToAction(nameof(ModulePartialView));
+        }
+
     }
 }

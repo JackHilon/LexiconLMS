@@ -4,9 +4,9 @@
     ViewData["Title"] = "Create";
 }
 
-<h1> This @ViewBag.ModuleId</h1>
+<h2 class="p-3 bg-secondary text-white rounded-lg" > Module @ViewBag.ModuleName</h2>
 
-<h4>Module's Activity</h4>
+<h4>Create an Activity</h4>
 <hr />
 <div class="row">
     <div class="col-md-4">
@@ -30,6 +30,7 @@
              <div class="form-group">
                 <label asp-for="EndDate" class="control-label"></label>
                 <input asp-for="EndDate" class="form-control" />
+                
                 <span asp-validation-for="EndDate" class="text-danger"></span>
             </div>
            
