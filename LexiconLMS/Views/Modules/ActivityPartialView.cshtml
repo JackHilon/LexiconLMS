@@ -5,7 +5,9 @@
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.css">
 <div class="tab-pane container p-0" id="menu1">
     <p>
-        <a class="btn btn-info" asp-controller="ModuleActivities" asp-action="Create">Add New Activity</a>
+       @* <h3> @Model.FirstOrDefault().Module.Name</h3>*@
+       @* <h4>asp-route-ModuleName="@Model.FirstOrDefault().Module.Name"</h4>*@
+        <a class="btn btn-info"  asp-controller="ModuleActivities" asp-action="Create">Add New Activity</a>
     </p>
     <h5 class="text-uppercase p-2 text-center">List of Activities</h5>
     <table class="table table-bordered table-striped">

@@ -12,10 +12,10 @@
     <hr />
     <dl class="row">
         <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Name)
+            @Html.DisplayNameFor(model => model.SecondUserName)
         </dt>
         <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.Name)
+            @Html.DisplayFor(model => model.SecondUserName)
         </dd>
         <dt class="col-sm-2">
             @Html.DisplayNameFor(model => model.Email)
@@ -28,6 +28,6 @@
     <form asp-action="DeleteUser">
         <input type="hidden" asp-for="Id" />
         <input type="submit" value="Delete" class="btn btn-danger" /> |
-        <a asp-action="ListOfTeachers" class="btn btn-warning active" role="button">Cancle</a>
+        <a asp-action="ListOfCourseStudents" asp-route-id="@Model.CourseId" class="btn btn-warning active" role="button">Cancle</a>
     </form>
 </div>
