@@ -45,6 +45,9 @@
                 <th>
                     @Html.DisplayNameFor(model => model.ActivityStartDate)
                 </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.ActivityEndtDate)
+                </th>
             </tr>
         </thead>
         <tbody>
@@ -60,6 +63,7 @@
                     <td>
                         @Html.DisplayFor(modelItem => item.ModuleStartDate)
                     </td>
+                    
 
                     @foreach (var item2 in item.Activities)
                     {
@@ -72,6 +76,9 @@
                         </td>
                         <td>
                             @Html.DisplayFor(modelItem => item2.StartDate)
+                        </td>
+                    <td>
+                            @Html.DisplayFor(modelItem => item2.EndDate)
                         </td>
                         @*<td>
                             <table>

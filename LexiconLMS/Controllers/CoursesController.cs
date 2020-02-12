@@ -113,6 +113,7 @@ namespace LexiconLMS.Controllers
                     ModuleName = m.Name,
                     ModuleDescription = m.Description,
                     ModuleStartDate = m.StartDate,
+                    
                     //Activities = _context.ModuleActivity.Where(a => a.ModuleId == m.Id).Select(a => new StudentsActivityViewModel
                     //{
                     //    ActivityName = a.Name,
@@ -168,8 +169,6 @@ namespace LexiconLMS.Controllers
         {
             if (ModelState.IsValid)
             {
-                course.StartDate = DateTime.Now;
-
                 _context.Add(course);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
@@ -371,7 +370,7 @@ namespace LexiconLMS.Controllers
                         return NotFound();
                     }
 
-                    newUpdatedAppUser.Name = user.Name;                                     // --> Sychronize the (Email, UserName, NormalizedUserName, NormalizedEmail) to Email
+                    newUpdatedAppUser.SecondUserName = user.SecondUserName;                                     // --> Sychronize the (Email, UserName, NormalizedUserName, NormalizedEmail) to Email
                     newUpdatedAppUser.Email = user.Email;                                   // -- REMARK! -- NormalizedEmail must be unique --
                     newUpdatedAppUser.UserName = user.Email;
                     newUpdatedAppUser.NormalizedUserName = user.Email.ToUpper();
