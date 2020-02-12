@@ -85,6 +85,7 @@ namespace LexiconLMS.Controllers
             }
             if (ModelState.IsValid)
             {
+                moduleActivity.Documents = null;
                 _context.Add(moduleActivity);
                 await _context.SaveChangesAsync();
                 return RedirectToAction("ModulePartialView", "Modules");
