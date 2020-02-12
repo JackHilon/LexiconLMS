@@ -113,6 +113,7 @@ namespace LexiconLMS.Controllers
                     ModuleName = m.Name,
                     ModuleDescription = m.Description,
                     ModuleStartDate = m.StartDate,
+                    
                     //Activities = _context.ModuleActivity.Where(a => a.ModuleId == m.Id).Select(a => new StudentsActivityViewModel
                     //{
                     //    ActivityName = a.Name,
