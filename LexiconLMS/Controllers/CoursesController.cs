@@ -101,21 +101,35 @@ namespace LexiconLMS.Controllers
                 ViewBag.CourseName = CourseName;
                 ViewBag.CourseId = CourseId;
 
-                List<StudentsModelViewModel> LotsOfModules = _context.Module.Where(m => m.CourseId == CourseId).Select(m => new StudentsModelViewModel
+                List<int> modulesIds = new List<int>();
+                List<Module> Modules = await _context.Module.Where(m => m.CourseId == CourseId).ToListAsync();
+                foreach (var module in Modules)
                 {
-                    Name = m.Name,
-                    Description = m.Description,
-                    StartDate = m.StartDate
+                    modulesIds.Add(module.Id);
+                }
+
+                List<StudentsModelViewModel> LotsOfModules = _context.Module.Include(m => m.Activity).Where(m => m.CourseId == CourseId).Select(m => new StudentsModelViewModel
+                {
+                    ModuleName = m.Name,
+                    ModuleDescription = m.Description,
+                    ModuleStartDate = m.StartDate,
+                    //Activities = _context.ModuleActivity.Where(a => a.ModuleId == m.Id).Select(a => new StudentsActivityViewModel
+                    //{
+                    //    ActivityName = a.Name,
+                    //    ActivityDescription = a.Description,
+                    //    ActivityStartDate = a.StartDate
+                    //}).ToList()
+                    Activities = m.Activity
                 }
                 ).ToList();
 
                 CoursesModulesForStudentsViewModel viewModel = _context.Module.Select(m => new CoursesModulesForStudentsViewModel
-                    {
-                        Name = m.Name,
-                        StartDate = m.StartDate,
-                        Description = m.Description,
-                        MyModules = LotsOfModules                    
-                    }
+                {
+                    ModuleName = m.Name,
+                    ModuleStartDate = m.StartDate,
+                    ModuleDescription = m.Description,
+                    MyModules = LotsOfModules
+                }
                 ).First();
 
                 return View(nameof(StudentListings), viewModel);
@@ -126,17 +140,17 @@ namespace LexiconLMS.Controllers
         }
 
         // GET: Courses/Details/5
-        public async Task<IActionResult> Details(int? id,string CourseName)
+        public async Task<IActionResult> Details(int? id, string CourseName)
         {
             // Pass the Course id to Modules.
 
             TempData["Courseid"] = id;
             TempData["CourseName"] = CourseName;
             //ViewData["CourseName"] = CourseName;
-           // ViewData["CourseName11"] = CourseName;
+            // ViewData["CourseName11"] = CourseName;
 
 
-            return  RedirectToAction("ModulePartialView", "Modules");
+            return RedirectToAction("ModulePartialView", "Modules");
         }
 
         // GET: Courses/Create
@@ -225,7 +239,7 @@ namespace LexiconLMS.Controllers
         }
 
         // GET: Courses/Delete/5
-        public async Task<IActionResult> Delete(int? id,string CourseName)
+        public async Task<IActionResult> Delete(int? id, string CourseName)
         {
             // Get list of students attending the course.
 
@@ -263,7 +277,7 @@ namespace LexiconLMS.Controllers
             var students = allStudents.Where(s => s.CourseId == id);
             if (students != null)
             {
-                foreach(var student in students)
+                foreach (var student in students)
                 {
                     _context.AppUser.Remove(student);
                 }
@@ -276,8 +290,8 @@ namespace LexiconLMS.Controllers
             var getAllModulesForCourse = getallModules.Where(c => c.CourseId == id);
 
             if (getAllModulesForCourse != null)
-            { 
-                    foreach (var module in getAllModulesForCourse)
+            {
+                foreach (var module in getAllModulesForCourse)
                 {
                     var getAllActivities = _context.ModuleActivity.Include(m => m.Module);
 
@@ -301,7 +315,7 @@ namespace LexiconLMS.Controllers
             //var getAllModulesForCourse = allModules.Where(c => c.CourseId == id);
             if (getAllModulesForCourse != null)
             {
-                    foreach (var module in getAllModulesForCourse)
+                foreach (var module in getAllModulesForCourse)
                 {
                     _context.Module.Remove(module);
                 }

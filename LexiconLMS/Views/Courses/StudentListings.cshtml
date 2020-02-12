@@ -1,5 +1,4 @@
-﻿@*@model IEnumerable<LexiconLMS.Models.Module>*@
-@model CoursesModulesForStudentsViewModel
+﻿@model CoursesModulesForStudentsViewModel
 
 <td>
 
@@ -29,13 +28,22 @@
         <thead>
             <tr>
                 <th>
-                    @Html.DisplayNameFor(model => model.Name)
+                    @Html.DisplayNameFor(model => model.ModuleName)
                 </th>
                 <th>
-                    @Html.DisplayNameFor(model => model.Description)
+                    @Html.DisplayNameFor(model => model.ModuleDescription)
                 </th>
                 <th>
-                    @Html.DisplayNameFor(model => model.StartDate)
+                    @Html.DisplayNameFor(model => model.ModuleStartDate)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.ActivityName)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.ActivityDescription)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.ActivityStartDate)
                 </th>
             </tr>
         </thead>
@@ -44,17 +52,45 @@
             {
                 <tr>
                     <td>
-                        @Html.DisplayFor(modelItem => item.Name)
+                        @Html.DisplayFor(modelItem => item.ModuleName)
                     </td>
                     <td>
-                        @Html.DisplayFor(modelItem => item.Description)
+                        @Html.DisplayFor(modelItem => item.ModuleDescription)
                     </td>
                     <td>
-                        @Html.DisplayFor(modelItem => item.StartDate)
+                        @Html.DisplayFor(modelItem => item.ModuleStartDate)
                     </td>
-                    @*<td class="float-right">
-                            <a class="btn btn-outline-secondary " asp-action="Details" asp-route-id="@item.CourseId">Details</a>
+
+                    @foreach (var item2 in item.Activities)
+                    {
+
+                        <td>
+                            @Html.DisplayFor(modelItem => item2.Name)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item2.Description)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item2.StartDate)
+                        </td>
+                        @*<td>
+                            <table>
+                                <tr>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item2.Name)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item2.Description)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item2.StartDate)
+                                    </td>
+                                    <br />
+                                </tr>
+                            </table>
                         </td>*@
+
+                    }
                 </tr>
             }
         </tbody>
