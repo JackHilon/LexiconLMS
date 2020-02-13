@@ -7,31 +7,20 @@
 
     <p>
         <a class="btn btn-info" asp-action="Create">Add New Module</a>
-        
-           
             <a class="btn btn-outline-info float-right" asp-controller="Courses" asp-action="Index">Back</a>
-           
-       
     </p>
-<div>
-    <div class="tab-content">
-        <div class="tab-pane container active p-0" id="home">
+
+    @*<div class="tab-content">*@
+        @*<div class="tab-pane container active p-0" id="home">*@
             <h5 class="text-uppercase p-2 text-center">List of Modules</h5>
-            <table class="table table-bordered table-striped">
-                <thead class="thead-dark text-white">
+
+            <table class="table table-bordered table-striped table-responsive-sm">
+                <thead class="bg-dark text-white">
                     <tr>
-                        <th>
-                            @Html.DisplayNameFor(model => model.Name)
-                        </th>
-                        <th>
-                            @Html.DisplayNameFor(model => model.Description)
-                        </th>
-                        <th>
-                            @Html.DisplayNameFor(model => model.StartDate)
-                        </th>
-                        <th>
-                            @Html.DisplayNameFor(model => model.Course)
-                        </th>
+                        <th>Name</th>
+                        <th>Description</th>
+                        <th>Start Date</th>
+                        @*<th>Course</th>*@
                     </tr>
                 </thead>
                 <tbody>
@@ -47,21 +36,21 @@
                             <td>
                                 @Html.DisplayFor(modelItem => @item.StartDate)
                             </td>
-                            <td>
+                            @*<td>
                                 @Html.DisplayFor(modelItem => @item.Course.CourseName)
-                            </td>
-                            <td>
-                                <a class="btn btn-primary" asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
-                                <a class="btn btn-primary" asp-action="Details" asp-route-id="@item.Id">Details</a> |
-                                <a class="btn btn-primary"  id="ActivityButton" name="@item.Id" >Activities</a> |
-                                <a class="btn btn-danger" asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+                            </td>*@
+                            <td class="float-right">
+                                <a class="btn btn-primary "data-toggle="tooltip" title="Edit module" asp-action="Edit" asp-route-id="@item.Id">Edit</a> 
+                                <a class="btn btn-primary "data-toggle="tooltip" title="Module's details" asp-action="Details" asp-route-id="@item.Id">Details</a> 
+                                <a class="btn btn-primary text-white "data-toggle="tooltip" title="Module's Activity"  id="ActivityButton" name="@item.Id" >Activities</a> 
+                                <a class="btn btn-danger "data-toggle="tooltip" title="Delete the module" asp-action="Delete" asp-route-id="@item.Id">Delete</a>
                             </td>
                         </tr>
                     }
                 </tbody>
             </table>
-        </div>
-        <div id="ActivityForModule">
+
+               <div id="ActivityForModule">
          
         </div>
         <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
@@ -85,5 +74,5 @@
         </script>
 
 
-</div>
-</div>
+@*</div>
+</div>*@
