@@ -5,60 +5,6 @@
     <UserSecretsId>aspnet-LexiconLMS-441CA6D2-FFBC-4018-8B42-3ED3860A0957</UserSecretsId>
   </PropertyGroup>
 
-  <ItemGroup>
-    <Compile Remove="Data\Migrations\00000000000000_CreateIdentitySchema.cs" />
-    <Compile Remove="Data\Migrations\00000000000000_CreateIdentitySchema.Designer.cs" />
-    <Compile Remove="Data\Migrations\20200128101842_Initial.cs" />
-    <Compile Remove="Data\Migrations\20200128101842_Initial.Designer.cs" />
-    <Compile Remove="Data\Migrations\20200128103721_Initial.cs" />
-    <Compile Remove="Data\Migrations\20200128103721_Initial.Designer.cs" />
-    <Compile Remove="Data\Migrations\20200128123829_NullableCourse.cs" />
-    <Compile Remove="Data\Migrations\20200128123829_NullableCourse.Designer.cs" />
-    <Compile Remove="Data\Migrations\20200129090049_initialCreate.cs" />
-    <Compile Remove="Data\Migrations\20200129090049_initialCreate.Designer.cs" />
-    <Compile Remove="Data\Migrations\20200129225337_SeedUser.cs" />
-    <Compile Remove="Data\Migrations\20200129225337_SeedUser.Designer.cs" />
-    <Compile Remove="Data\Migrations\20200130075829_checkdate.cs" />
-    <Compile Remove="Data\Migrations\20200130075829_checkdate.Designer.cs" />
-    <Compile Remove="Data\Migrations\20200131092853_init.cs" />
-    <Compile Remove="Data\Migrations\20200131092853_init.Designer.cs" />
-    <Compile Remove="Data\Migrations\20200131094619_addmodule.cs" />
-    <Compile Remove="Data\Migrations\20200131094619_addmodule.Designer.cs" />
-    <Compile Remove="Data\Migrations\20200131095158_init1.cs" />
-    <Compile Remove="Data\Migrations\20200131095158_init1.Designer.cs" />
-    <Compile Remove="Data\Migrations\20200205103437_Initialappuser.cs" />
-    <Compile Remove="Data\Migrations\20200205103437_Initialappuser.Designer.cs" />
-    <Compile Remove="Data\Migrations\20200206074453_init2.cs" />
-    <Compile Remove="Data\Migrations\20200206074453_init2.Designer.cs" />
-    <Compile Remove="Data\Migrations\20200206091207_UserCreateInitial.cs" />
-    <Compile Remove="Data\Migrations\20200206091207_UserCreateInitial.Designer.cs" />
-    <Compile Remove="Data\Migrations\20200206092807_mymigration.cs" />
-    <Compile Remove="Data\Migrations\20200206092807_mymigration.Designer.cs" />
-    <Compile Remove="Data\Migrations\20200207120148_ggggggg.cs" />
-    <Compile Remove="Data\Migrations\20200207120148_ggggggg.Designer.cs" />
-    <Compile Remove="Data\Migrations\20200210080156_test2.cs" />
-    <Compile Remove="Data\Migrations\20200210080156_test2.Designer.cs" />
-    <Compile Remove="Data\Migrations\20200211095614_DocWithCourse.cs" />
-    <Compile Remove="Data\Migrations\20200211095614_DocWithCourse.Designer.cs" />
-    <Compile Remove="Data\Migrations\20200211152357_thirdMig.cs" />
-    <Compile Remove="Data\Migrations\20200211152357_thirdMig.Designer.cs" />
-    <Compile Remove="Data\Migrations\20200211153921_fourthMig.cs" />
-    <Compile Remove="Data\Migrations\20200211153921_fourthMig.Designer.cs" />
-    <Compile Remove="Data\Migrations\20200211154136_fifthMig.cs" />
-    <Compile Remove="Data\Migrations\20200211154136_fifthMig.Designer.cs" />
-    <Compile Remove="Data\Migrations\20200211154413_sixthMig.cs" />
-    <Compile Remove="Data\Migrations\20200211154413_sixthMig.Designer.cs" />
-    <Compile Remove="Data\Migrations\20200212093554_seventhmig.cs" />
-    <Compile Remove="Data\Migrations\20200212093554_seventhmig.Designer.cs" />
-    <Compile Remove="Data\Migrations\20200212101358_SecondMigAd.cs" />
-    <Compile Remove="Data\Migrations\20200212101358_SecondMigAd.Designer.cs" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Content Remove="appsettings.Development.json" />
-    <Content Remove="appsettings.json" />
-  </ItemGroup>
-
 
   <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.Diagnostics.EntityFrameworkCore" Version="3.0.0" />
@@ -72,7 +18,6 @@
 
 
   <ItemGroup>
-    <Folder Include="Data\Migrations\" />
     <Folder Include="wwwroot\UploadFiles\" />
   </ItemGroup>
 

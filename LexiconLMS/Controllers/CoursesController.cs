@@ -113,6 +113,7 @@ namespace LexiconLMS.Controllers
                     ModuleName = m.Name,
                     ModuleDescription = m.Description,
                     ModuleStartDate = m.StartDate,
+                    
                     //Activities = _context.ModuleActivity.Where(a => a.ModuleId == m.Id).Select(a => new StudentsActivityViewModel
                     //{
                     //    ActivityName = a.Name,
@@ -131,7 +132,7 @@ namespace LexiconLMS.Controllers
                     MyModules = LotsOfModules
                 }
                 ).First();
-
+              
                 return View(nameof(StudentListings), viewModel);
                 //return RedirectToAction(nameof(StudentListings), viewModel);
             }
@@ -168,8 +169,6 @@ namespace LexiconLMS.Controllers
         {
             if (ModelState.IsValid)
             {
-                course.StartDate = DateTime.Now;
-
                 _context.Add(course);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));

@@ -1,50 +1,25 @@
 ﻿@model CoursesModulesForStudentsViewModel
 
-<td>
+    
 
-    @*<table class=" = " table">*@
-    <table class="table">
+       
+       <h2 class="p-3 rounded-lg bg-secondary text-white">List of @ViewBag.courseName course modules</h2>
+                
+               <a class="m-2 btn btn-outline-info" asp-action="ListOfCourseStudents" asp-route-CourseName="@ViewBag.CourseName" asp-route-id="@ViewBag.CourseId">List All Course Students</a>
+    
+    <table class="table  table-striped text-md-left table-responsive-sm">
         <thead>
+           
             <tr>
-                <th>
-                    <h2>List of @ViewBag.courseName course modules</h2>
-                </th>
-            </tr>
-            <tr>
-                <th>
-                    <ul class="text-left align-items-baseline">
-                        <li class="btn-group">
-                            <a class="btn btn-outline-info" asp-action="ListOfCourseStudents" asp-route-CourseName="@ViewBag.CourseName" asp-route-id="@ViewBag.CourseId">List All Course Students</a>
-                        </li>
-                    </ul>
-                </th>
-            </tr>
-        </thead>
-        <tbody>
-        </tbody>
-    </table>
+              
+                <th class="lms-modules-container"> Module Name</th>
+                <th class="lms-modules-container"> Module Description</th>
+                <th class="lms-modules-container">Module Start Date</th>
 
-    <table class="table">
-        <thead>
-            <tr>
-                <th>
-                    @Html.DisplayNameFor(model => model.ModuleName)
-                </th>
-                <th>
-                    @Html.DisplayNameFor(model => model.ModuleDescription)
-                </th>
-                <th>
-                    @Html.DisplayNameFor(model => model.ModuleStartDate)
-                </th>
-                <th>
-                    @Html.DisplayNameFor(model => model.ActivityName)
-                </th>
-                <th>
-                    @Html.DisplayNameFor(model => model.ActivityDescription)
-                </th>
-                <th>
-                    @Html.DisplayNameFor(model => model.ActivityStartDate)
-                </th>
+                <th class="lms-activities-container"> Activity Name</th>
+                <th class="lms-activities-container">Activity Description</th>
+                <th class="lms-activities-container">Activity Start Date</th>
+                <th class="lms-activities-container">Activity End Date</th>
             </tr>
         </thead>
         <tbody>
@@ -60,41 +35,61 @@
                     <td>
                         @Html.DisplayFor(modelItem => item.ModuleStartDate)
                     </td>
-
+                    @{ int counter = 0;}
                     @foreach (var item2 in item.Activities)
                     {
+                        @if (counter == 0)
+                        {
+                            <td>
+                                @Html.DisplayFor(modelItem => item2.Name)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item2.Description)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item2.StartDate)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item2.EndDate)
+                            </td>
 
-                        <td>
-                            @Html.DisplayFor(modelItem => item2.Name)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => item2.Description)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => item2.StartDate)
-                        </td>
-                        @*<td>
-                            <table>
-                                <tr>
-                                    <td>
-                                        @Html.DisplayFor(modelItem => item2.Name)
-                                    </td>
-                                    <td>
-                                        @Html.DisplayFor(modelItem => item2.Description)
-                                    </td>
-                                    <td>
-                                        @Html.DisplayFor(modelItem => item2.StartDate)
-                                    </td>
-                                    <br />
-                                </tr>
-                            </table>
-                        </td>*@
+                            counter = counter + 1;
+                        }
+                        else
+                        {
+                        <tr>
+                            @{ string sample = " ";}
+                            <td>
+                                @Html.DisplayFor(model => sample)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(model => sample)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(model => sample)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item2.Name)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item2.Description)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item2.StartDate)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item2.EndDate)
+                            </td>
+
+                        </tr>
+                    }
+
 
                     }
-                </tr>
-            }
+                    </tr>
+                }
         </tbody>
     </table>
+        @******@
 
-</td>
 

@@ -13,7 +13,9 @@ namespace LexiconLMS.ViewModels
         public string ModuleDescription { get; set; }
         [DataType(DataType.Date)]
         public DateTime ModuleStartDate { get; set; }
+       
         //public ICollection<StudentsActivityViewModel> Activities { get; set; }
         public ICollection<ModuleActivity> Activities { get; set; }
+        public ICollection<Document> Documents { get; set; }
     }
 }

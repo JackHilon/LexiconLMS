@@ -12,6 +12,8 @@ namespace LexiconLMS.ViewModels
         public string ActivityDescription { get; set; }
 
         [DataType(DataType.Date)]
-        public DateTime ActivityStartDate { get; set; } 
+        public DateTime ActivityStartDate { get; set; }
+        public int DocumentId { get; set; }
+        public string DocumentName { get; set; }
     }
 }

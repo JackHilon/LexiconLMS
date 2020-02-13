@@ -17,7 +17,10 @@ namespace LexiconLMS.ViewModels
 
         [DataType(DataType.Date)]
         public DateTime ActivityStartDate { get; set; }
+        [DataType(DataType.Date)]
+        public DateTime ActivityEndtDate { get; set; }
         public List<StudentsModelViewModel> MyModules { get; set; }
         public List<StudentsActivityViewModel> MyActivities { get; set; }
+
     }
 }

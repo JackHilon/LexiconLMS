@@ -24,6 +24,7 @@ namespace LexiconLMS.ViewModels
         //public DateTime ActivityStartDate { get; set; }
 
         public ICollection<ModuleActivity> Activities { get; set; }
+       
 
 
     }
