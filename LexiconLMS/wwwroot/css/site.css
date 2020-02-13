@@ -69,3 +69,23 @@ body {
   white-space: nowrap;
   line-height: 60px; /* Vertically center the text there */
 }
+
+/* My Custom CSS rules */
+.modules-details {
+    background-color: indianred;
+    color: white;
+}
+
+.lms-modules-container {
+    background: indianred;
+    color: white;
+}
+
+
+.lms-activities-container {
+    background: darksalmon;
+    color: white;
+}
+
+
+
