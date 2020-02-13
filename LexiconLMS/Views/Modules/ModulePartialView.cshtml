@@ -37,7 +37,7 @@
                             <td>
                                 @Html.DisplayFor(modelItem => @item.StartDate)
                             </td>
-                            @*<td>
+                            <td>
                                 @Html.DisplayFor(modelItem => @item.Course.CourseName)
                             </td>
                             <td>
@@ -46,8 +46,9 @@
                                 <a class="btn btn-primary" id="ActivityButton" name="@item.Id">Activities</a> |
                                 <a class="btn btn-danger" asp-action="Delete" asp-route-id="@item.Id">Delete</a>
                             </td>
+                            
+                              
                             <td>
-                                @* --- here (a file already exists) ---*@
                                 @if (@item.Documents.FirstOrDefault() != null)
 
                                 {
@@ -62,7 +63,7 @@
                             </td>
 
                             <td>
-                                @* --- here (a file does not exist) ---*@
+                               
                                 @if (@item.Documents.FirstOrDefault() == null)
                                 {
                                     <form asp-controller="Document" asp-action="UploadFile" asp-route-id="@item.Id" asp-route-Related="Module" method="post"
