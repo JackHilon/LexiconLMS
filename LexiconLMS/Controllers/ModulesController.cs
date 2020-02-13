@@ -46,7 +46,7 @@ namespace LexiconLMS.Controllers
             int data = (int)TempData["Courseid"];
             TempData.Keep();
             var applicationDbContext = _context.Module.Include(q => q.Course);
-            var _thisModuleCourse =  applicationDbContext.Where(c => c.CourseId == data).Include(a => a.Activity);
+            var _thisModuleCourse =  applicationDbContext.Where(c => c.CourseId == data).Include(a => a.Activity).Include(a => a.Documents);
             return View(_thisModuleCourse);
 
         }

@@ -3,7 +3,7 @@
 @{
     ViewData["Title"] = "Index";
 }
-
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.css">
 
 @if (User.IsInRole("Teacher"))
 {
@@ -62,10 +62,48 @@
                         <a class="btn btn-info " asp-action="Edit" asp-route-id="@item.CourseId">Edit</a>
                         <a class="btn btn-outline-danger " asp-action="Delete" asp-route-id="@item.CourseId">Delete</a>
                     </td>
+                    <td>
+                        @* --- here (a file already exists) ---*@
+                        @if (@item.Documents.FirstOrDefault() != null)
+
+                        {
+                            @Html.DisplayFor(modelItem => @item.Documents.FirstOrDefault().DocumentName)
+                            <br />
+                            <form asp-action="DownLoadFile" asp-route-id="@item.Documents.ToList().FirstOrDefault().DocumentId" asp-controller="Document" id="Form1">
+                                <button type="submit" class="btn btn-warning" data-toggle="modal" data-target="#DownConfirmationModal" id="Download">
+                                    <i class="fa fa-download"></i>
+                                </button>
+                            </form>
+                        }
+                    </td>
+
+                    <td>
+                        @* --- here (a file does not exist) ---*@
+                        @if (@item.Documents.FirstOrDefault() == null)
+                        {
+                        <form asp-controller="Document" asp-action="UploadFile" asp-route-id="@item.CourseId" asp-route-Related="Course" method="post"
+                              enctype="multipart/form-data" style="display: inline-block">
+
+                            <input type="file" name="file" class="btn btn-warning  active" role="button" />
+                            <br>
+                            <br>
+                            <button type="submit" class="btn  btn-warning center-block" data-toggle="modal" data-target="#upConfirmationModal">
+                                <i class="fa fa-upload"></i>
+                            </button>
+                        </form>
+                        }
+                    </td>
                 </tr>
             }
         </tbody>
     </table>
 }
+<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
+<script type="text/javascript">
+    $("body").on("submit", "#Form1", function () {
+        return confirm("Dowloaded Sucessfully!!!");
+    });
+</script>
+
 
 
