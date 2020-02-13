@@ -16,5 +16,6 @@ namespace LexiconLMS.ViewModels
        
         //public ICollection<StudentsActivityViewModel> Activities { get; set; }
         public ICollection<ModuleActivity> Activities { get; set; }
+        public ICollection<Document> Documents { get; set; }
     }
 }
