@@ -41,54 +41,93 @@ namespace LexiconLMS.Controllers
             if (file == null || file.Length == 0)
                 return Content("file not selected");
 
-            var activityId = id;
 
-            using (var memoryStream = new MemoryStream())
-            {
-                await file.CopyToAsync(memoryStream);
-
-                // Upload the file if less than 2 MB
-                if (memoryStream.Length < 2097152)
+                using (var memoryStream = new MemoryStream())
                 {
-                    var UploadDateTime = DateTime.Now;
+                    await file.CopyToAsync(memoryStream);
 
-                    var userId = this.User.FindFirstValue(ClaimTypes.NameIdentifier);
-                    var user = await userManager.FindByIdAsync(userId);
-
-                    var moduleId = _context.ModuleActivity.FirstOrDefault(a => a.Id == id).ModuleId;
-                    var courseId = _context.Module.FirstOrDefault(m => m.Id == moduleId).CourseId;
-
-
-                    var doc = new Document()
+                    // Upload the file if less than 2 MB
+                    if (memoryStream.Length < 2097152)
                     {
-                        AppUser = user,
-                        ModuleActivityId = activityId,
+                        var UploadDateTime = DateTime.Now;
 
-                        DocumentName = file.FileName, // <--
-                        DocumentDescription = file.FileName,
-                        UploadDate = UploadDateTime.Date,
+                        var userId = this.User.FindFirstValue(ClaimTypes.NameIdentifier);
+                        var user = await userManager.FindByIdAsync(userId);
 
-                        CourseId = courseId,
+                        var doc = new Document()
+                        {
+                            AppUser = user,
+                            
+                            DocumentName = file.FileName, // <--
+                            DocumentDescription = file.FileName,
+                            UploadDate = UploadDateTime.Date,
+                            
+                            Related = Related,
 
-                        Related = Related, 
+                            Content = memoryStream.ToArray()
+                        };
 
-                        Content = memoryStream.ToArray()
-                    };
+                    doc = RelatedDocument(doc, id, Related);
 
                     _context.Documents.Add(doc);
 
-                    await _context.SaveChangesAsync();
+                        await _context.SaveChangesAsync();
+                    }
+
+                    else
+                    {
+                        ModelState.AddModelError("File", "The file is too large.");
+                    }
+
+                if (Related == "Activity")
+                {
+                    return RedirectToAction("ModulePartialView", "Modules");
+                }
+                if (Related == "Module")
+                {
+                    return RedirectToAction("ModulePartialView", "Modules");
+                }
+                else //--if (Related == "Course")
+                {
+                    return RedirectToAction("Index", "Courses");
                 }
 
-                else
-                {
-                    ModelState.AddModelError("File", "The file is too large.");
-                }
-                return RedirectToAction("ModulePartialView", "Modules");
-            }
+            } // end using
         }
 
+        private Document RelatedDocument(Document doc, int id, string related) // Initialize a document based on related string 
+        {
+            int activityId; //Or .. make them nullable keys in the related tables ?!
+            int moduleId;   //Or .. make them nullable keys in the related tables ?!
+            int courseId;
 
+            var Related = related;
+
+            if (Related == "Activity")
+            {
+                activityId = id;
+                moduleId = _context.ModuleActivity.FirstOrDefault(a => a.Id == id).ModuleId;
+                courseId = _context.Module.FirstOrDefault(m => m.Id == moduleId).CourseId;
+                doc.ModuleActivityId = activityId;
+                doc.ModuleId = moduleId;
+                doc.CourseId = courseId;
+            }
+
+            if (Related == "Module")
+            {
+                moduleId = id;
+                courseId = _context.Module.FirstOrDefault(m => m.Id == moduleId).CourseId;
+                doc.ModuleId = moduleId;
+                doc.CourseId = courseId;
+            }
+
+            if (Related == "Course")
+            {
+                courseId = id;
+                doc.CourseId = courseId;
+            }
+            return doc; 
+        }
 
         public IActionResult Files()
         {
@@ -137,10 +176,10 @@ namespace LexiconLMS.Controllers
             {
                 return RedirectToAction("ModulePartialView", "Modules");
             }
-
             var doc = _context.Documents.FirstOrDefault(d => d.DocumentId == id);
             var fileArray = doc.Content;
             var fileName = doc.DocumentName;
+            var related = doc.Related;
             // -- Radika 
             using (var file = new FileStream($"C:\\Users\\Elev\\Desktop\\{fileName}", FileMode.Create, FileAccess.ReadWrite))
             {
@@ -150,8 +189,23 @@ namespace LexiconLMS.Controllers
                 //  ViewBag.Message = "Document Downloaded Sucessfully!!!";
                 ViewBag.Message = "Document Downloaded Sucessfully!!!";
             }
-       
-            return RedirectToAction("ModulePartialView", "Modules");
+
+            //---
+            if (related == "Activity")
+            {
+                return RedirectToAction("ModulePartialView", "Modules");
+            }
+            if (related == "Module")
+            {
+                return RedirectToAction("ModulePartialView", "Modules");
+            }
+            else //--if (related == "Course")
+            {
+                return RedirectToAction("Index", "Courses");
+            }
+            //---
+
+            // --(second one)-- return RedirectToAction("ModulePartialView", "Modules");
 
             //return RedirectToActionPermanent("DownLoadAllFiles", doc.ModuleActivityId);
         }
