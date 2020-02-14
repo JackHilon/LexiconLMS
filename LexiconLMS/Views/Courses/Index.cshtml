@@ -15,30 +15,35 @@
         <h2 class=" text-white p-3">All Courses</h2>
 
     </div>
+    <div >
+        <ul class="text-right ">
+            <li class="btn-group float-left">
+                <a asp-action="Create" class="btn btn-outline-info " role="button">Add New Course</a>
+            </li>
+            @*<li class="btn-group">
+                <a asp-area="Identity" asp-page="/Account/Register" asp-route-roleName="Student" class="btn btn-secondary active" role="button">Add New Student</a>
+        </li>*@
+            <li class="btn-group pr-5">
+                <a asp-action="ListOfTeachers" class="btn btn-outline-secondary " role="button">List All Teachers</a>
+            </li>
 
+        </ul>
+    </div>
     <table class="table  table-striped text-md-left table-responsive-sm">
-        <thead class="bg-dark text-white">
+        <thead class="bg-dark text-white ">
             <tr>
                 <th class="align-text-top"> Course Name</th>
                 <th class="align-text-top"> Course Description </th>
                 <th class="align-text-top"> Start Date</th>
+                <th class="align-text-top"> </th>
+                <th class="align-text-top"> Document</th>
+                
                 <th>
-                    <nav>
+                    
 
-                        <ul class="text-right align-items-baseline">
-                            <li class="btn-group">
-                                <a asp-action="Create" class="btn btn-outline-info " role="button">Add New Course</a>
-                            </li>
-                            @*<li class="btn-group">
-                                        <a asp-area="Identity" asp-page="/Account/Register" asp-route-roleName="Student" class="btn btn-secondary active" role="button">Add New Student</a>
-                                </li>*@
-                            <li class="btn-group">
-                                <a asp-action="ListOfTeachers" class="btn btn-outline-light " role="button">List All Teachers</a>
-                            </li>
+                        
 
-                        </ul>
-
-                    </nav>
+                    
                 </th>
             </tr>
         </thead>
@@ -56,40 +61,39 @@
                         @Html.DisplayFor(modelItem => item.StartDate)
                     </td>
                     <td class="float-right">
-                        <a class="btn btn-outline-info" asp-action="ListOfCourseStudents" asp-route-CourseName="@item.CourseName" asp-route-id="@item.CourseId">Students</a>
-                        <a class="btn btn-outline-secondary " asp-action="Details" asp-route-CourseName="@item.CourseName" asp-route-id="@item.CourseId">Details</a>
-                        <a class="btn btn-info " asp-action="Edit" asp-route-id="@item.CourseId">Edit</a>
-                        <a class="btn btn-outline-danger " asp-action="Delete" asp-route-id="@item.CourseId">Delete</a>
+                        <a class="btn btn-sm btn-outline-info" asp-action="ListOfCourseStudents" asp-route-CourseName="@item.CourseName" asp-route-id="@item.CourseId">Students</a>
+                        <a class="btn btn-sm btn-outline-secondary " asp-action="Details" asp-route-CourseName="@item.CourseName" asp-route-id="@item.CourseId">Details</a>
+                        <a class="btn btn-sm btn-info " asp-action="Edit" asp-route-id="@item.CourseId">Edit</a>
+                        <a class="btn btn-sm btn-outline-danger " asp-action="Delete" asp-route-id="@item.CourseId">Delete</a>
                     </td>
                     <td>
                         @* --- here (a file already exists) ---*@
                         @if (@item.Documents.FirstOrDefault() != null)
 
                         {
-                            @Html.DisplayFor(modelItem => @item.Documents.FirstOrDefault().DocumentName)
-                            <br />
-                            <form asp-action="DownLoadFile" asp-route-id="@item.Documents.ToList().FirstOrDefault().DocumentId" asp-controller="Document" id="Form1">
                                 <button type="submit" class="btn btn-warning" data-toggle="modal" data-target="#DownConfirmationModal" id="Download">
                                     <i class="fa fa-download"></i>
                                 </button>
+                            @Html.DisplayFor(modelItem => @item.Documents.FirstOrDefault().DocumentName)
+                            <br />
+                            <form asp-action="DownLoadFile" asp-route-id="@item.Documents.ToList().FirstOrDefault().DocumentId" asp-controller="Document" id="Form1">
                             </form>
                         }
-                    </td>
+                   
 
-                    <td>
-                        @* --- here (a file does not exist) ---*@
-                        @if (@item.Documents.FirstOrDefault() == null)
+                        else if (@item.Documents.FirstOrDefault() == null)
                         {
-                        <form asp-controller="Document" asp-action="UploadFile" asp-route-id="@item.CourseId" asp-route-Related="Course" method="post"
-                              enctype="multipart/form-data" style="display: inline-block">
 
-                            <input type="file" name="file" class="btn btn-warning  active" role="button" />
-                            <br>
-                            <br>
-                            <button type="submit" class="btn  btn-warning center-block" data-toggle="modal" data-target="#upConfirmationModal">
-                                <i class="fa fa-upload"></i>
-                            </button>
-                        </form>
+                            <form class="form-inline" asp-controller="Document" asp-action="UploadFile" asp-route-id="@item.CourseId" asp-route-Related="Course" method="post"
+                                  enctype="multipart/form-data">
+                                <div class="form-group">
+                                    <input type="file" name="file" class="btn btn-secondary active" role="button" />
+                                    <button type="submit" class="btn btn-outline-primary" data-toggle="modal" data-target="#upConfirmationModal">
+                                        <i class="fa fa-upload"></i>
+                                    </button>
+                                </div>
+                            </form>
+
                         }
                     </td>
                 </tr>
