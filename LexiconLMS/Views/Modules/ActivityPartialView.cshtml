@@ -4,26 +4,32 @@
 }
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.css">
 <div class="tab-pane container p-0" id="menu1">
+    <h5 class="text-uppercase p-2 text-center bg-secondary text-white rounded-lg ">List of Activities</h5>
     <p>
        @* <h3> @Model.FirstOrDefault().Module.Name</h3>*@
        @* <h4>asp-route-ModuleName="@Model.FirstOrDefault().Module.Name"</h4>*@
-        <a class="btn btn-info"  asp-controller="ModuleActivities" asp-action="Create">Add New Activity</a>
+       
     </p>
-    <h5 class="text-uppercase p-2 text-center">List of Activities</h5>
-    <table class="table table-bordered table-striped">
-        <thead class="thead-dark text-white">
+    <table class="table  table-responsive-sm bg-white text-dark" >
+        <thead style="background-color:indianred"class="text-white">
             <tr>
                 <th>
-                    @Html.DisplayNameFor(model => model.Name)
+                    Name
                 </th>
                 <th>
-                    @Html.DisplayNameFor(model => model.Description)
+                   Description
                 </th>
                 <th>
-                    @Html.DisplayNameFor(model => model.StartDate)
+                   Start Date
                 </th>
                 <th>
-                    @Html.DisplayNameFor(model => model.EndDate)
+                    End Date
+                </th>
+                <th>
+                   
+                </th>
+                <th>
+                    <a class="btn btn-sm btn-secondary   float-md-right" asp-controller="ModuleActivities" asp-action="Create">Add New Activity</a>
                 </th>
             </tr>
         </thead>
@@ -45,42 +51,40 @@
                     </td>
 
                     <td>
-                        <a class="btn btn-primary" asp-action="Edit" asp-route-id="@item.Id" asp-controller="ModuleActivities">Edit</a> |
-                        <a class="btn btn-primary" asp-action="Details" asp-route-id="@item.Id" asp-controller="ModuleActivities">Details</a> |
-                        <a class="btn btn-danger" asp-action="Delete" asp-route-id="@item.Id" asp-controller="ModuleActivities">Delete</a>
+                        <a class="btn btn-sm btn-outline-secondary" asp-action="Edit" asp-route-id="@item.Id" asp-controller="ModuleActivities">Edit</a> 
+                        <a class="btn btn-sm btn-outline-secondary" asp-action="Details" asp-route-id="@item.Id" asp-controller="ModuleActivities">Details</a> 
+                        <a class="btn btn-sm btn-danger" asp-action="Delete" asp-route-id="@item.Id" asp-controller="ModuleActivities">Delete</a>
                     </td>
                     <td>
                         @if (@item.Documents.FirstOrDefault() != null)
 
                         {
-                            @Html.DisplayFor(modelItem => @item.Documents.FirstOrDefault().DocumentName)
-                            <br />
-                            <form asp-action="DownLoadFile" asp-route-id="@item.Documents.FirstOrDefault().DocumentId" asp-controller="Document" id="Form1">
                                 <button type="submit" class="btn btn-warning" data-toggle="modal" data-target="#DownConfirmationModal" id="Download">
                                     <i class="fa fa-download"></i>
 
                                 </button>
+                            @Html.DisplayFor(modelItem => @item.Documents.FirstOrDefault().DocumentName)
+                            <br />
+                            <form asp-action="DownLoadFile" asp-route-id="@item.Documents.FirstOrDefault().DocumentId" asp-controller="Document" id="Form1">
 
                             </form>
 
 
                         }
 
-                    </td>
-
-                    <td>
-                        @if (@item.Documents.FirstOrDefault() == null)
+                    
+                       else if (@item.Documents.FirstOrDefault() == null)
                         {
                             <form asp-controller="Document" asp-action="UploadFile" asp-route-id="@item.Id" asp-route-Related="Activity" method="post"
                                   enctype="multipart/form-data" style="display: inline-block">
-
-                                <input type="file" name="file" class="btn btn-warning  active" role="button" />
-                                <br>
-                                <br>
-                                <button type="submit" class="btn  btn-warning center-block" data-toggle="modal" data-target="#upConfirmationModal">
+                                <button type="submit" class="btn  btn-outline-secondary center-block" data-toggle="modal" data-target="#upConfirmationModal">
                                     <i class="fa fa-upload"></i>
 
                                 </button>
+
+                                <input type="file" name="file" class="btn btn-outline-secondary  active" role="button" />
+                                <br>
+                                <br>
 
                             </form>
                         }
