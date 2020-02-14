@@ -181,7 +181,8 @@ namespace LexiconLMS.Controllers
             var fileName = doc.DocumentName;
             var related = doc.Related;
             // -- Radika 
-            using (var file = new FileStream($"C:\\Users\\Elev\\Desktop\\{fileName}", FileMode.Create, FileAccess.ReadWrite))
+            //using (var file = new FileStream($"C:\\Users\\Mikael\\Desktop\\{fileName}", FileMode.Create, FileAccess.ReadWrite))
+            using (var file = new FileStream($"{fileName}", FileMode.Create, FileAccess.ReadWrite))
             {
                 file.Write(fileArray, 0, fileArray.Length);
                 //file.Close();
