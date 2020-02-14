@@ -191,17 +191,24 @@ namespace LexiconLMS.Controllers
             }
 
             //---
-            if (related == "Activity")
-            {
-                return RedirectToAction("ModulePartialView", "Modules");
-            }
-            if (related == "Module")
-            {
-                return RedirectToAction("ModulePartialView", "Modules");
-            }
-            else //--if (related == "Course")
+            if (User.IsInRole("Student"))
             {
                 return RedirectToAction("Index", "Courses");
+            }
+            else
+            { 
+                    if (related == "Activity")
+                    {
+                        return RedirectToAction("ModulePartialView", "Modules");
+                    }
+                    if (related == "Module")
+                    {
+                        return RedirectToAction("ModulePartialView", "Modules");
+                    }
+                    else //--if (related == "Course")
+                    {
+                        return RedirectToAction("Index", "Courses");
+                    }
             }
             //---
 
