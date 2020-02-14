@@ -49,6 +49,19 @@ namespace LexiconLMS.Controllers
 
             var allStudents = await userManager.GetUsersInRoleAsync("Student");
             var students = allStudents.Where(s => s.CourseId == id);
+
+            var documents = await _context.Documents.ToListAsync();
+            foreach (var student in students)
+            {
+                foreach (var document in documents)
+                {
+                    if(document.AppUser == student)
+                    {
+                        student.Documents.Add(document);
+                    }
+                }
+            }
+
             return View(students);
 
             //*****************Jack's method*****************
@@ -108,8 +121,11 @@ namespace LexiconLMS.Controllers
                     modulesIds.Add(module.Id);
                 }
 
-                List<StudentsModelViewModel> LotsOfModules = _context.Module.Include(m => m.Activity).Where(m => m.CourseId == CourseId).Select(m => new StudentsModelViewModel
-                {
+                List<StudentsModelViewModel> LotsOfModules = _context.Module
+                                                           .Where(m => m.CourseId == CourseId)
+                                                           .Include(m => m.Activity).ThenInclude(d => d.Documents)
+                                                           .Select(m => new StudentsModelViewModel
+                                                           {
                     ModuleName = m.Name,
                     ModuleDescription = m.Description,
                     ModuleStartDate = m.StartDate,

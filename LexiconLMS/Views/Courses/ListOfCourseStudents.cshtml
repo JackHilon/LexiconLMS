@@ -3,11 +3,12 @@
 
 
 
+
 @{
     ViewData["Title"] = "ListOfCourseStudents";
 }
 
-
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.css">
 
 @*<h1>List of @Html.DisplayFor(m => m.CourseName) Course Students</h1> Jack's method *@
 
@@ -56,27 +57,46 @@
         <tbody>
             @foreach (var item in Model)
             {
-                <tr>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.SecondUserName)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.Email)
-                    </td>
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.SecondUserName)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Email)
+                </td>
 
-
-
-                    @if (User.IsInRole("Teacher"))
+                @if(User.IsInRole("Teacher"))
+                { 
+                <td>
+                    @*@if (@item.Documents.FirstOrDefault() != null)*@
+                    @if(@item.Documents != null)
                     {
-                        <td class="text-right">
+                        @Html.DisplayFor(modelItem => @item.Documents.FirstOrDefault().DocumentName)
+                        <br />
+                        <form asp-action="DownLoadFile" asp-route-id="@item.Documents.FirstOrDefault().DocumentId" asp-controller="Document" id="Form1">
+                            <button type="submit" class="btn btn-warning" data-toggle="modal" data-target="#DownConfirmationModal" id="Download">
+                                <i class="fa fa-download"></i>
+
+                            </button>
+
+                        </form>
 
 
-
-                            <a class="btn btn-outline-secondary" asp-action="EditUser" asp-route-id="@item.Id">Edit</a>
-                            <a class="btn btn-danger" asp-action="DeleteUser" asp-route-id="@item.Id">Delete</a>
-                        </td>
                     }
-                </tr>
+
+               
+                    
+                </td>
+                
+                    <td class="text-right">
+
+
+
+                        <a class="btn btn-outline-secondary" asp-action="EditUser" asp-route-id="@item.Id">Edit</a>
+                        <a class="btn btn-danger" asp-action="DeleteUser" asp-route-id="@item.Id">Delete</a>
+                    </td>
+                }
+            </tr>
             }
         </tbody>
     </table>
