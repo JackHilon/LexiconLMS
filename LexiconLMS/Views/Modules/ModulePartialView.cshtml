@@ -37,47 +37,45 @@
                             <td>
                                 @Html.DisplayFor(modelItem => @item.StartDate)
                             </td>
-                            <td>
+                            @*<td>
                                 @Html.DisplayFor(modelItem => @item.Course.CourseName)
-                            </td>
-                            <td>
-                                <a class="btn btn-primary" asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
-                                <a class="btn btn-primary" asp-action="Details" asp-route-id="@item.Id">Details</a> |
-                                <a class="btn btn-primary" id="ActivityButton" name="@item.Id">Activities</a> |
+                            </td>*@
+                            <td class="btn-group">
+                                <a class="btn btn-primary" asp-action="Edit" asp-route-id="@item.Id">Edit</a> 
+                                <a class="btn btn-primary" asp-action="Details" asp-route-id="@item.Id">Details</a> 
+                                <a class="btn btn-primary text-white" id="ActivityButton" name="@item.Id">Activities</a> 
                                 <a class="btn btn-danger" asp-action="Delete" asp-route-id="@item.Id">Delete</a>
                             </td>
-                            
-                              
-                            <td>
-                                @if (@item.Documents.FirstOrDefault() != null)
+                                  <td>
+                                
+                                     @if (@item.Documents.FirstOrDefault() != null)
+                                     {
 
-                                {
-                                    @Html.DisplayFor(modelItem => @item.Documents.FirstOrDefault().DocumentName)
+                                         @Html.DisplayFor(modelItem => @item.Documents.FirstOrDefault().DocumentName)
                                     <br />
                                     <form asp-action="DownLoadFile" asp-route-id="@item.Documents.FirstOrDefault().DocumentId" asp-controller="Document" id="Form1">
                                         <button type="submit" class="btn btn-warning" data-toggle="modal" data-target="#DownConfirmationModal" id="Download">
                                             <i class="fa fa-download"></i>
                                         </button>
                                     </form>
-                                }
-                            </td>
+                                         }
 
-                            <td>
-                               
-                                @if (@item.Documents.FirstOrDefault() == null)
+                                  else if(@item.Documents.FirstOrDefault() == null)
                                 {
-                                    <form asp-controller="Document" asp-action="UploadFile" asp-route-id="@item.Id" asp-route-Related="Module" method="post"
+
+
+                                    <form class="float-left" asp-controller="Document" asp-action="UploadFile" asp-route-id="@item.Id" asp-route-Related="Module" method="post"
                                           enctype="multipart/form-data" style="display: inline-block">
 
-                                        <input type="file" name="file" class="btn btn-warning  active" role="button" />
-                                        <br>
-                                        <br>
                                         <button type="submit" class="btn  btn-warning center-block" data-toggle="modal" data-target="#upConfirmationModal">
-                                            <i class="fa fa-upload"></i>
-                                        </button>
+                                            <i class="fa fa-upload"></i> </button>
+                                        <input type="file" name="file" class="btn btn-warning  active" role="button" />
+                                        
                                     </form>
+
                                 }
-                            </td>
+                                
+                           </td>
                         </tr>
                     }
                 </tbody>
