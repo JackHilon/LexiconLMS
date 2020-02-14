@@ -142,7 +142,8 @@ namespace LexiconLMS.Controllers
             var fileArray = doc.Content;
             var fileName = doc.DocumentName;
             // -- Radika 
-            using (var file = new FileStream($"C:\\Users\\Elev\\Desktop\\{fileName}", FileMode.Create, FileAccess.ReadWrite))
+            //using (var file = new FileStream($"C:\\Users\\Mikael\\Desktop\\{fileName}", FileMode.Create, FileAccess.ReadWrite))
+            using (var file = new FileStream($"{fileName}", FileMode.Create, FileAccess.ReadWrite))
             {
                 file.Write(fileArray, 0, fileArray.Length);
                 //file.Close();

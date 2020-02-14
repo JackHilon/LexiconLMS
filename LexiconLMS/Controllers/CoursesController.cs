@@ -49,6 +49,19 @@ namespace LexiconLMS.Controllers
 
             var allStudents = await userManager.GetUsersInRoleAsync("Student");
             var students = allStudents.Where(s => s.CourseId == id);
+
+            var documents = await _context.Documents.ToListAsync();
+            foreach (var student in students)
+            {
+                foreach (var document in documents)
+                {
+                    if(document.AppUser == student)
+                    {
+                        student.Documents.Add(document);
+                    }
+                }
+            }
+
             return View(students);
 
             //*****************Jack's method*****************
