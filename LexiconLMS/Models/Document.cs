@@ -13,7 +13,7 @@ namespace LexiconLMS.Models
         public string DocumentDescription { get; set; }
         public DateTime UploadDate { get; set; }
 
-        public string Related { get; set; } // asp-route-RoleName="@Model.RoleName"
+        public string Related { get; set; } // asp-route-RoleName="Activity"
                                             // = {Course, Module, Activity}
         public byte[] Content { get; set; }
 

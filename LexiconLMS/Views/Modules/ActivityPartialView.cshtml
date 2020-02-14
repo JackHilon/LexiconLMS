@@ -71,7 +71,7 @@
                     <td>
                         @if (@item.Documents.FirstOrDefault() == null)
                         {
-                            <form asp-controller="Document" asp-action="UploadFile" asp-route-id="@item.Id" method="post"
+                            <form asp-controller="Document" asp-action="UploadFile" asp-route-id="@item.Id" asp-route-Related="Activity" method="post"
                                   enctype="multipart/form-data" style="display: inline-block">
 
                                 <input type="file" name="file" class="btn btn-warning  active" role="button" />

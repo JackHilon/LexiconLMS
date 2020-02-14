@@ -89,7 +89,7 @@ namespace LexiconLMS.Controllers
         {
             if (User.IsInRole("Teacher"))
             {
-                return View(await _context.Courses.ToListAsync());
+                return View(await _context.Courses.Include(a => a.Documents).ToListAsync());
             }
             else if (User.IsInRole("Student"))
             {
