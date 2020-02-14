@@ -15,30 +15,35 @@
         <h2 class=" text-white p-3">All Courses</h2>
 
     </div>
+    <div >
+        <ul class="text-right ">
+            <li class="btn-group float-left">
+                <a asp-action="Create" class="btn btn-outline-info " role="button">Add New Course</a>
+            </li>
+            @*<li class="btn-group">
+                <a asp-area="Identity" asp-page="/Account/Register" asp-route-roleName="Student" class="btn btn-secondary active" role="button">Add New Student</a>
+        </li>*@
+            <li class="btn-group pr-5">
+                <a asp-action="ListOfTeachers" class="btn btn-outline-secondary " role="button">List All Teachers</a>
+            </li>
 
+        </ul>
+    </div>
     <table class="table  table-striped text-md-left table-responsive-sm">
         <thead class="bg-dark text-white ">
             <tr>
                 <th class="align-text-top"> Course Name</th>
                 <th class="align-text-top"> Course Description </th>
                 <th class="align-text-top"> Start Date</th>
+                <th class="align-text-top"> </th>
+                <th class="align-text-top"> Document</th>
+                
                 <th>
-                    <nav>
+                    
 
-                        <ul class="text-right align-items-baseline">
-                            <li class="btn-group">
-                                <a asp-action="Create" class="btn btn-outline-info " role="button">Add New Course</a>
-                            </li>
-                            @*<li class="btn-group">
-                                        <a asp-area="Identity" asp-page="/Account/Register" asp-route-roleName="Student" class="btn btn-secondary active" role="button">Add New Student</a>
-                                </li>*@
-                            <li class="btn-group">
-                                <a asp-action="ListOfTeachers" class="btn btn-outline-light " role="button">List All Teachers</a>
-                            </li>
+                        
 
-                        </ul>
-
-                    </nav>
+                    
                 </th>
             </tr>
         </thead>
