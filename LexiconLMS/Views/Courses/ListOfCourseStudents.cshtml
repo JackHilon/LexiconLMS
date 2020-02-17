@@ -79,11 +79,14 @@
 
                 @if(User.IsInRole("Teacher"))
                 { 
-                <td>
-                    @*@if (@item.Documents.FirstOrDefault() != null)*@
-                    @if(@item.Documents != null)
+            <td>
+                @*@if (@item.Documents.FirstOrDefault() != null)*@
+                @if (@item.Documents != null)
+                {
+                    @foreach (var doc in item.Documents)
                     {
-                        @Html.DisplayFor(modelItem => @item.Documents.FirstOrDefault().DocumentName)
+                        @*@Html.DisplayFor(modelItem => @item.Documents.FirstOrDefault().DocumentName)*@
+                        @Html.DisplayFor(modelItem => doc.DocumentName);
                         <br />
                         <form asp-action="DownLoadFile" asp-route-id="@item.Documents.FirstOrDefault().DocumentId" asp-controller="Document" id="Form1">
                             <button type="submit" class="btn btn-warning" data-toggle="modal" data-target="#DownConfirmationModal" id="Download">
@@ -92,13 +95,13 @@
                             </button>
 
                         </form>
-
-
                     }
 
-               
-                    
-                </td>
+                }
+
+
+
+            </td>
                 
                     <td class="text-right">
 
