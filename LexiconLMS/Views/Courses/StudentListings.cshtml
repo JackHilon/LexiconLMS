@@ -16,7 +16,7 @@
             <th class="lms-activities-container">Activity End Date</th>
             <th class="lms-activities-container">Activity DocumentName</th>
             <th class="lms-activities-container">Upload Assignment Documents</th>
-            @*<th class="lms-activities-container">Uploaded Assignment Documents</th>*@
+            <th class="lms-activities-container">Uploaded date</th>
         </tr>
     </thead>
     <tbody>
@@ -143,19 +143,23 @@
                                     </td>
                                     @if (item2.Documents.Count == 1)
                                     {
+                                        @if (DateTime.Now>item2.EndDate)
+                                        {
                                         <td>
 
                                             <form asp-controller="Document" asp-action="UploadFile" asp-route-id="@item2.Id" asp-route-Related="Activity" method="post"
                                                   enctype="multipart/form-data" style="display: inline-block">
-                                                <input type="file" name="file" class="btn btn-warning  active" role="button" />
-                                                <br>
-                                                <br>
-                                                <button type="submit" class="btn  btn-warning center-block" data-toggle="modal" data-target="#upConfirmationModal">
+                                                <input type="file" name="file" class="btn btn-sm btn-outline-secondary  active" role="button" />
+                                                <button type="submit" class="btn  btn-warning btn-sm" data-toggle="modal" data-target="#upConfirmationModal">
                                                     <i class="fa fa-upload"></i>
                                                 </button>
                                             </form>
+
                                         </td>
+                                        <td></td>
+                                        }
                                     }
+
                                 }
                                 else
                                 {
