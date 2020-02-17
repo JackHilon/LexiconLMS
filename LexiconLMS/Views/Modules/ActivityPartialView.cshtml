@@ -6,27 +6,27 @@
 <div class="tab-pane container p-0" id="menu1">
     <h5 class="text-uppercase p-2 text-center bg-secondary text-white rounded-lg ">List of Activities</h5>
     <p>
-       @* <h3> @Model.FirstOrDefault().Module.Name</h3>*@
-       @* <h4>asp-route-ModuleName="@Model.FirstOrDefault().Module.Name"</h4>*@
-       
+        @* <h3> @Model.FirstOrDefault().Module.Name</h3>*@
+        @* <h4>asp-route-ModuleName="@Model.FirstOrDefault().Module.Name"</h4>*@
+
     </p>
-    <table class="table  table-responsive-sm bg-white text-dark" >
-        <thead style="background-color:indianred"class="text-white">
+    <table class="table  table-responsive-sm bg-white text-dark">
+        <thead style="background-color:indianred" class="text-white">
             <tr>
                 <th>
                     Name
                 </th>
                 <th>
-                   Description
+                    Description
                 </th>
                 <th>
-                   Start Date
+                    Start Date
                 </th>
                 <th>
                     End Date
                 </th>
                 <th>
-                   
+
                 </th>
                 <th>
                     <a class="btn btn-sm btn-secondary   float-md-right" asp-controller="ModuleActivities" asp-action="Create">Add New Activity</a>
@@ -51,27 +51,33 @@
                     </td>
 
                     <td>
-                        <a class="btn btn-sm btn-outline-secondary" asp-action="Edit" asp-route-id="@item.Id" asp-controller="ModuleActivities">Edit</a> 
-                        <a class="btn btn-sm btn-outline-secondary" asp-action="Details" asp-route-id="@item.Id" asp-controller="ModuleActivities">Details</a> 
+                        <a class="btn btn-sm btn-outline-secondary" asp-action="Edit" asp-route-id="@item.Id" asp-controller="ModuleActivities">Edit</a>
+                        <a class="btn btn-sm btn-outline-secondary" asp-action="Details" asp-route-id="@item.Id" asp-controller="ModuleActivities">Details</a>
                         <a class="btn btn-sm btn-danger" asp-action="Delete" asp-route-id="@item.Id" asp-controller="ModuleActivities">Delete</a>
-                        <a class="btn btn-sm btn-danger " asp-action="DelDoc" asp-controller="Document" asp-route-id="@item.Id" asp-route-Related="Activity">DelDoc</a>
                     </td>
                     <td>
                         @if (@item.Documents.FirstOrDefault(d => d.Related == "Activity") != null)
 
                         {
-                                <button type="submit" class="btn btn-warning" data-toggle="modal" data-target="#DownConfirmationModal" id="Download">
-                                    <i class="fa fa-download"></i>
 
-                                </button>
                             @Html.DisplayFor(modelItem => @item.Documents.FirstOrDefault(d => d.Related == "Activity").DocumentName)
                             <br />
                             <form asp-action="DownLoadFile" asp-route-id="@item.Documents.FirstOrDefault(d => d.Related == "Activity").DocumentId" asp-controller="Document" id="Form1">
+
+                                <button type="submit" class="btn btn-warning" data-toggle="modal" data-target="#DownConfirmationModal" id="Download">
+                                    <i class="fa fa-download"></i>
+                                </button>
+
+                                <a class="btn btn-sm btn-danger " asp-action="DelDoc" asp-controller="Document" asp-route-id="@item.Id" asp-route-Related="Activity">
+                                    <span class="glyphicon glyphicon-trash" aria-hidden="true">
+                                        Trash
+                                    </span>
+                                </a>
                             </form>
                         }
 
-                    
-                       else if (@item.Documents.FirstOrDefault(d => d.Related == "Activity") == null)
+
+                        else if (@item.Documents.FirstOrDefault(d => d.Related == "Activity") == null)
                         {
                             <form asp-controller="Document" asp-action="UploadFile" asp-route-id="@item.Id" asp-route-Related="Activity" method="post"
                                   enctype="multipart/form-data" style="display: inline-block">
