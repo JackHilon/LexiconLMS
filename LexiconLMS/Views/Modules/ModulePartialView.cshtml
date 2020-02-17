@@ -2,91 +2,98 @@
 @{
     ViewData["Title"] = "ModuleActivity";
 }
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.css">
 
 
-    <h1 class="p-md-2 bg-secondary text-white   active rounded-lg">Course @TempData["CourseName"]</h1> 
+<h1 class="p-md-2 bg-secondary text-white   active rounded-lg">Course @TempData["CourseName"]</h1>
 
-    <p>
-        <a class="btn btn-outline-info" asp-action="Create">Add New Module</a>
-            <a class="btn btn-outline-secondary float-right" asp-controller="Courses" asp-action="Index">Back</a>
-    </p>
-   
-            <h5 class="text-uppercase p-2 text-center rounded-lg bg-info text-white" >List of Modules</h5>
+<p>
+    <a class="btn btn-outline-info" asp-action="Create">Add New Module</a>
+    <a class="btn btn-outline-secondary float-right" asp-controller="Courses" asp-action="Index">Back</a>
+</p>
 
-            <table class="table table-striped text-md-left table-responsive-sm">
-                <thead class="bg-dark text-white">
-                    <tr>
-                        <th>Name</th>
-                        <th>Description</th>
-                        <th>Start Date</th>
-                        <th>   </th>
-                        <th>Document</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    @foreach (var item in Model)
+<h5 class="text-uppercase p-2 text-center rounded-lg bg-info text-white">List of Modules</h5>
+
+<table class="table table-striped text-md-left table-responsive-sm">
+    <thead class="bg-dark text-white">
+        <tr>
+            <th>Name</th>
+            <th>Description</th>
+            <th>Start Date</th>
+            <th>   </th>
+            <th>Document</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => @item.Name)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => @item.Description)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => @item.StartDate)
+                </td>
+                @*<td>
+                        @Html.DisplayFor(modelItem => @item.Course.CourseName)
+                    </td>*@
+                <td class="btn-group">
+                    <a class="btn btn-sm btn-secondary text-white" id="ActivityButton" name="@item.Id">Activities</a>
+                    <a class="btn btn-sm btn-outline-secondary" asp-action="Edit" asp-route-id="@item.Id">Edit</a>
+                    <a class="btn btn-sm btn-outline-secondary" asp-action="Details" asp-route-id="@item.Id">Details</a>
+                    <a class="btn btn-sm btn-danger" asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+                </td>
+                <td>
+
+                    @if (@item.Documents.FirstOrDefault(d => d.Related == "Module") != null)
                     {
-                        <tr>
-                            <td>
-                                @Html.DisplayFor(modelItem => @item.Name)
-                            </td>
-                            <td>
-                                @Html.DisplayFor(modelItem => @item.Description)
-                            </td>
-                            <td>
-                                @Html.DisplayFor(modelItem => @item.StartDate)
-                            </td>
-                            @*<td>
-                                @Html.DisplayFor(modelItem => @item.Course.CourseName)
-                            </td>*@
-                        <td class="btn-group">
-                            <a class="btn btn-sm btn-secondary text-white" id="ActivityButton" name="@item.Id">Activities</a>
-                            <a class="btn btn-sm btn-outline-secondary" asp-action="Edit" asp-route-id="@item.Id">Edit</a>
-                            <a class="btn btn-sm btn-outline-secondary" asp-action="Details" asp-route-id="@item.Id">Details</a>
-                            <a class="btn btn-sm btn-danger" asp-action="Delete" asp-route-id="@item.Id">Delete</a>
-                            <a class="btn btn-sm btn-danger " asp-action="DelDoc" asp-controller="Document" asp-route-id="@item.Id" asp-route-Related="Module">DelDoc</a>
-                        </td>
-                                  <td>
-                                
-                                     @if (@item.Documents.FirstOrDefault(d => d.Related == "Module") != null)
-                                     {
-                                        <button type="submit" class="btn btn-warning" data-toggle="modal" data-target="#DownConfirmationModal" id="Download">
-                                            <i class="fa fa-download"></i>
-                                        </button>
-
-                                         @Html.DisplayFor(modelItem => @item.Documents.FirstOrDefault(d => d.Related == "Module").DocumentName)
-                                    <br />
-                                    <form asp-action="DownLoadFile" asp-route-id="@item.Documents.FirstOrDefault(d => d.Related == "Module").DocumentId" asp-controller="Document" id="Form1">
-                                    </form>
-                                         }
-
-                                  else if(@item.Documents.FirstOrDefault(d => d.Related == "Module") == null)
-                                {
 
 
-                                    <form class="float-left" asp-controller="Document" asp-action="UploadFile" asp-route-id="@item.Id" asp-route-Related="Module" method="post"
-                                          enctype="multipart/form-data" style="display: inline-block">
+                        @Html.DisplayFor(modelItem => @item.Documents.FirstOrDefault(d => d.Related == "Module").DocumentName)
+                        <br />
+                        <form asp-action="DownLoadFile" asp-route-id="@item.Documents.FirstOrDefault(d => d.Related == "Module").DocumentId" asp-controller="Document" id="Form1">
+                            <button type="submit" class="btn btn-warning" data-toggle="modal" data-target="#DownConfirmationModal" id="Download">
+                                <i class="fa fa-download"></i>
+                            </button>
 
-                                        <button type="submit" class="btn  btn-outline-secondary center-block" data-toggle="modal" data-target="#upConfirmationModal">
-                                            <i class="fa fa-upload"></i> </button>
-                                        <input type="file" name="file" class="btn btn-secondary  active" role="button" />
-                                        
-                                    </form>
-
-                                }
-                                
-                           </td>
-                        </tr>
+                            <a class="btn btn-sm btn-danger " asp-action="DelDoc" asp-controller="Document" asp-route-id="@item.Id" asp-route-Related="Module">
+                                <span class="glyphicon glyphicon-trash" aria-hidden="true">
+                                    Trash
+                                </span>
+                            </a>
+                        </form>
                     }
-                </tbody>
-            </table>
-        </div>
-        <div id="ActivityForModule">
 
+                    else if (@item.Documents.FirstOrDefault(d => d.Related == "Module") == null)
+                    {
+
+
+                        <form class="float-left" asp-controller="Document" asp-action="UploadFile" asp-route-id="@item.Id" asp-route-Related="Module" method="post"
+                              enctype="multipart/form-data" style="display: inline-block">
+
+                            <button type="submit" class="btn  btn-outline-secondary center-block" data-toggle="modal" data-target="#upConfirmationModal">
+                                <i class="fa fa-upload"></i>
+                            </button>
+                            <input type="file" name="file" class="btn btn-secondary  active" role="button" />
+
+                        </form>
+
+                    }
+
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
         </div>
-        <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
-        <script type="text/javascript">
+<div id="ActivityForModule">
+
+</div>
+<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
+<script type="text/javascript">
                     $(document).ready(function () {
             $('[id*=ActivityButton]').on('click', function () {
                     $.ajax({
@@ -103,13 +110,13 @@
                     });
                 });
                 });
-        </script>
-        <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
-        <script type="text/javascript">
-            $("body").on("submit", "#Form1", function () {
-                return confirm("Dowloaded Sucessfully!!!");
-            });
-        </script>
+</script>
+<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
+<script type="text/javascript">
+    $("body").on("submit", "#Form1", function () {
+        return confirm("Dowloaded Sucessfully!!!");
+    });
+</script>
 
 
     </div>
