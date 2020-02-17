@@ -62,29 +62,33 @@
                             {
                                 <td>
                                     @Html.DisplayFor(modelItem => item3.DocumentName)
+
                                     <br />
                                     <form asp-action="DownLoadFile" asp-route-id="@item2.Documents.FirstOrDefault().DocumentId" asp-controller="Document" id="Form1">
-                                        <button type="submit" class="btn btn-info" data-toggle="modal" data-target="#DownConfirmationModal" id="Download">
+                                        <button type="submit" class="btn btn-primary" data-toggle="modal" data-target="#DownConfirmationModal" id="Download">
                                             <i class="fa fa-download"></i>
                                         </button>
                                     </form>
                                 </td>
-                            }
-                            else if (item2.Documents.Count == 1)
-                            {
-                                <td>
+                                @if (item2.Documents.Count == 1)
+                                {
 
-                                    <form asp-controller="Document" asp-action="UploadFile" asp-route-id="@item2.Id" asp-route-Related="Activity" method="post"
-                                          enctype="multipart/form-data" style="display: inline-block">
-                                        <input type="file" name="file" class="btn btn-warning  active" role="button" />
-                                        <br>
-                                        <br>
-                                        <button type="submit" class="btn  btn-warning center-block" data-toggle="modal" data-target="#upConfirmationModal">
-                                            <i class="fa fa-upload"></i>
+                                    <td>
 
-                                        </button>
-                                    </form>
-                                </td>
+                                        <form asp-controller="Document" asp-action="UploadFile" asp-route-id="@item2.Id" asp-route-Related="Activity" method="post"
+                                              enctype="multipart/form-data" style="display: inline-block">
+                                            <input type="file" name="file" class="btn btn-sm btn-outline-secondary  active" role="button" />
+                                            <button type="submit" class="btn  btn-warning btn-sm" data-toggle="modal" data-target="#upConfirmationModal">
+                                                <i class="fa fa-upload"></i>
+                                            </button>
+
+                                        </form>
+
+                                    </td>
+
+
+                                }
+
                             }
                             else
                             {
@@ -93,10 +97,12 @@
                                     {
                                         @Html.DisplayFor(modelItem => item3.DocumentName)
                                     }
+
                                 </td>
                                 <td>
                                     @Html.DisplayFor(modelItem => item3.UploadDate)
                                 </td>
+
                             }
                         }
                     }
