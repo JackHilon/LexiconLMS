@@ -1,0 +1,52 @@
+﻿@model ListStudentAssgnmnt
+
+
+<h1>List of @Model. assignments</h1>
+
+
+
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>Student Name</th>
+
+            <th>Assignment</th>
+
+            <th>Give a grade</th>
+
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var student in @Model.Students)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(Item => student.SecondUserName)
+                </td>
+                <td>
+                    @Html.DisplayFor(Item => student.Documents.FirstOrDefault(a => a.ModuleActivityId == @Model.ActivityId).DocumentName)
+                </td>
+
+                <td>
+                    @if (student.Documents.FirstOrDefault(a => a.ModuleActivityId == @Model.ActivityId) != null)
+                    {
+
+
+                        @Html.DisplayFor(Item => student.Documents.FirstOrDefault(a => a.ModuleActivityId == @Model.ActivityId).DocumentName) <br />
+                        <form asp-action="DownLoadFile" asp-route-id="@student.Documents.FirstOrDefault(a => a.ModuleActivityId == @Model.ActivityId).DocumentId" asp-controller="Document" id="Form1">
+                            <button type="submit" class="btn btn-warning" data-toggle="modal" data-target="#DownConfirmationModal" id="Download">
+                                <i class="fa fa-download"></i>
+                            </button>
+                        </form>
+                    }
+                    else
+                    {
+                        <p></p>
+                    }
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+

@@ -12,6 +12,8 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.FileProviders;
 using System.Security.Claims;
 using System.Collections;
+using LexiconLMS.ViewModels;
+using Microsoft.EntityFrameworkCore;
 
 namespace LexiconLMS.Controllers
 {
@@ -101,48 +103,6 @@ namespace LexiconLMS.Controllers
             } // end using
         }
 
-        private Document RelatedDocument(Document doc, int id, string related) // Initialize a document based on related string 
-        {
-            int activityId; //Or .. make them nullable keys in the related tables ?!
-            int moduleId;   //Or .. make them nullable keys in the related tables ?!
-            int courseId;
-
-            var Related = related;
-
-            if (Related == "Activity")
-            {
-                activityId = id;
-                moduleId = _context.ModuleActivity.FirstOrDefault(a => a.Id == id).ModuleId;
-                courseId = _context.Module.FirstOrDefault(m => m.Id == moduleId).CourseId;
-                doc.ModuleActivityId = activityId;
-                doc.ModuleId = moduleId;
-                doc.CourseId = courseId;
-
-                doc.ModuleActivity = _context.ModuleActivity.Find(activityId);
-                doc.Module = _context.Module.Find(moduleId);
-                doc.Course = _context.Courses.Find(courseId);
-            }
-
-            if (Related == "Module")
-            {
-                moduleId = id;
-                courseId = _context.Module.FirstOrDefault(m => m.Id == moduleId).CourseId;
-                doc.ModuleId = moduleId;
-                doc.CourseId = courseId;
-
-                doc.Module = _context.Module.Find(moduleId);
-                doc.Course = _context.Courses.Find(courseId);
-            }
-
-            if (Related == "Course")
-            {
-                courseId = id;
-                doc.CourseId = courseId;
-
-                doc.Course = _context.Courses.Find(courseId);
-            }
-            return doc; 
-        }
 
         public IActionResult Files()
         {
@@ -213,34 +173,6 @@ namespace LexiconLMS.Controllers
                 return DelDocBackTo(related);
         }
 
-
-
-        // ---------------- Private ----------------------------------
-        private string GetContentType(string path)
-        {
-            var types = GetMimeTypes();
-            var ext = Path.GetExtension(path).ToLowerInvariant();
-            return types[ext];
-        }
-
-        private Dictionary<string, string> GetMimeTypes()
-        {
-            return new Dictionary<string, string>
-            {
-                {".txt", "text/plain"},
-                {".pdf", "application/pdf"},
-                {".doc", "application/vnd.ms-word"},
-                {".docx", "application/vnd.ms-word"},
-                {".xls", "application/vnd.ms-excel"},
-                {".xlsx", "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"},
-                {".png", "image/png"},
-                {".jpg", "image/jpeg"},
-                {".jpeg", "image/jpeg"},
-                {".gif", "image/gif"},
-                {".csv", "text/csv"}
-            };
-        }
-
         public async Task<IActionResult> DelDoc(int? id, string Related)
         {
             if (id == null)
@@ -269,6 +201,64 @@ namespace LexiconLMS.Controllers
             await _context.SaveChangesAsync();
 
             return DelDocBackTo(related);
+        }
+
+        // ================================ The teacher see the list of assignments of an activity ==================================
+
+        [HttpGet]
+        public async Task<IActionResult> SeeAssignments(int? id)             //  <-------------------- List of users (teachers) -------
+        {
+            if (id == null)
+            {
+                return RedirectToAction("ModulePartialView", "Modules");
+            }
+
+            var activityId = id;
+            var activityName = _context.ModuleActivity.FirstOrDefault(a => a.Id == id).Name;
+            var moduleId = _context.ModuleActivity.FirstOrDefault(a => a.Id == id).ModuleId;
+            var courseId = _context.Module.FirstOrDefault(m => m.Id == moduleId).Id;
+
+            var allStudents = _context.AppUser.Where(user => user.CourseId == courseId).Include(a => a.Documents).ToList();
+            
+            var model = new ListStudentAssgnmnt()
+            {
+                ActivityName = activityName,
+                ActivityId = (int) activityId,
+                Students = allStudents,
+            }; 
+
+            return View(model);
+        }
+
+
+
+
+
+
+        // ---------------- Private ----------------------------------
+        private string GetContentType(string path)
+        {
+            var types = GetMimeTypes();
+            var ext = Path.GetExtension(path).ToLowerInvariant();
+            return types[ext];
+        }
+
+        private Dictionary<string, string> GetMimeTypes()
+        {
+            return new Dictionary<string, string>
+            {
+                {".txt", "text/plain"},
+                {".pdf", "application/pdf"},
+                {".doc", "application/vnd.ms-word"},
+                {".docx", "application/vnd.ms-word"},
+                {".xls", "application/vnd.ms-excel"},
+                {".xlsx", "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"},
+                {".png", "image/png"},
+                {".jpg", "image/jpeg"},
+                {".jpeg", "image/jpeg"},
+                {".gif", "image/gif"},
+                {".csv", "text/csv"}
+            };
         }
 
         private Document DelDocRelated(int? id, string related)
@@ -307,7 +297,48 @@ namespace LexiconLMS.Controllers
             }
         }
 
+        private Document RelatedDocument(Document doc, int id, string related) // Initialize a document based on related string 
+        {
+            int activityId; //Or .. make them nullable keys in the related tables ?!
+            int moduleId;   //Or .. make them nullable keys in the related tables ?!
+            int courseId;
 
+            var Related = related;
+
+            if (Related == "Activity")
+            {
+                activityId = id;
+                moduleId = _context.ModuleActivity.FirstOrDefault(a => a.Id == id).ModuleId;
+                courseId = _context.Module.FirstOrDefault(m => m.Id == moduleId).CourseId;
+                doc.ModuleActivityId = activityId;
+                doc.ModuleId = moduleId;
+                doc.CourseId = courseId;
+
+                doc.ModuleActivity = _context.ModuleActivity.Find(activityId);
+                doc.Module = _context.Module.Find(moduleId);
+                doc.Course = _context.Courses.Find(courseId);
+            }
+
+            if (Related == "Module")
+            {
+                moduleId = id;
+                courseId = _context.Module.FirstOrDefault(m => m.Id == moduleId).CourseId;
+                doc.ModuleId = moduleId;
+                doc.CourseId = courseId;
+
+                doc.Module = _context.Module.Find(moduleId);
+                doc.Course = _context.Courses.Find(courseId);
+            }
+
+            if (Related == "Course")
+            {
+                courseId = id;
+                doc.CourseId = courseId;
+
+                doc.Course = _context.Courses.Find(courseId);
+            }
+            return doc;
+        }
 
 
 
