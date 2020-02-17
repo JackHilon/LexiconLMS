@@ -16,9 +16,19 @@
 
 <div class="container">
     <div>
-        <h2 class="p-3 mb-2 bg-info text-white rounded-lg">List of @ViewBag.nameCourse course students
-        <a class="btn btn-outline-light float-right">back to list of modules</a> 
-        </h2>
+        <h2 class="p-3 mb-2 bg-info text-white rounded-lg">
+            List of @ViewBag.nameCourse course students
+
+            @if (User.IsInRole("Teacher"))
+            {
+
+                <a asp-action="Index" class="btn btn-outline-light float-right">back to All Courses</a>
+            }
+            else
+            {
+        <a asp-action="Index" class="btn btn-outline-light float-right">back to @ViewBag.nameCourse Course Modules</a>
+            }
+            </h2>
     </div>
 
 
