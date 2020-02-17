@@ -61,6 +61,7 @@
                 <th>
                     @Html.DisplayNameFor(model => model.First().Email)
                 </th>
+                <th> All Document</th>
 
 
 
@@ -76,6 +77,7 @@
                 <td>
                     @Html.DisplayFor(modelItem => item.Email)
                 </td>
+               
 
                 @if(User.IsInRole("Teacher"))
                 { 
