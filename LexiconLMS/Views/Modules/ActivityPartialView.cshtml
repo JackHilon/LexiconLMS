@@ -26,7 +26,7 @@
                     End Date
                 </th>
                 <th>
-
+                    Module's name
                 </th>
                 <th>
                     <a class="btn btn-sm btn-secondary   float-md-right" asp-controller="ModuleActivities" asp-action="Create">Add New Activity</a>
@@ -48,6 +48,9 @@
                     </td>
                     <td>
                         @Html.DisplayFor(modelItem => @item.EndDate)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => @item.Module.Name)
                     </td>
 
                     <td>
