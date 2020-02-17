@@ -15,14 +15,14 @@
         <h2 class=" text-white p-3">All Courses</h2>
 
     </div>
-    <div >
+    <div>
         <ul class="text-right ">
             <li class="btn-group float-left">
                 <a asp-action="Create" class="btn btn-outline-info " role="button">Add New Course</a>
             </li>
             @*<li class="btn-group">
-                <a asp-area="Identity" asp-page="/Account/Register" asp-route-roleName="Student" class="btn btn-secondary active" role="button">Add New Student</a>
-        </li>*@
+                        <a asp-area="Identity" asp-page="/Account/Register" asp-route-roleName="Student" class="btn btn-secondary active" role="button">Add New Student</a>
+                </li>*@
             <li class="btn-group pr-5">
                 <a asp-action="ListOfTeachers" class="btn btn-outline-secondary " role="button">List All Teachers</a>
             </li>
@@ -37,13 +37,13 @@
                 <th class="align-text-top"> Start Date</th>
                 <th class="align-text-top"> </th>
                 <th class="align-text-top"> Document</th>
-                
+
                 <th>
-                    
 
-                        
 
-                    
+
+
+
                 </th>
             </tr>
         </thead>
@@ -65,30 +65,31 @@
                         <a class="btn btn-sm btn-outline-secondary " asp-action="Details" asp-route-CourseName="@item.CourseName" asp-route-id="@item.CourseId">Details</a>
                         <a class="btn btn-sm btn-info " asp-action="Edit" asp-route-id="@item.CourseId">Edit</a>
                         <a class="btn btn-sm btn-outline-danger " asp-action="Delete" asp-route-id="@item.CourseId">Delete</a>
+                        <a class="btn btn-sm btn-outline-danger " asp-action="DelDoc" asp-controller="Document" asp-route-id="@item.CourseId" asp-route-Related="Course">DelDoc</a>
                     </td>
                     <td>
                         @* --- here (a file already exists) ---*@
-                        @if (@item.Documents.FirstOrDefault() != null)
+                        @if (@item.Documents.FirstOrDefault(d => d.Related == "Course") != null)
 
                         {
-                            @Html.DisplayFor(modelItem => @item.Documents.FirstOrDefault().DocumentName)
+                            @Html.DisplayFor(modelItem => @item.Documents.FirstOrDefault(d => d.Related == "Course").DocumentName)
                             <br />
-                            <form asp-action="DownLoadFile" asp-route-id="@item.Documents.ToList().FirstOrDefault().DocumentId" asp-controller="Document" id="Form1">
+                            <form asp-action="DownLoadFile" asp-route-id="@item.Documents.ToList().FirstOrDefault(d => d.Related == "Course").DocumentId" asp-controller="Document" id="Form1">
                                 <button type="submit" class="btn btn-warning" data-toggle="modal" data-target="#DownConfirmationModal" id="Download">
                                     <i class="fa fa-download"></i>
                                 </button>
                             </form>
                         }
-                   
 
-                        else if (@item.Documents.FirstOrDefault() == null)
+
+                        else if (@item.Documents.FirstOrDefault(d => d.Related == "Course") == null)
                         {
 
                             <form class="form-inline" asp-controller="Document" asp-action="UploadFile" asp-route-id="@item.CourseId" asp-route-Related="Course" method="post"
                                   enctype="multipart/form-data">
                                 <div class="form-group">
                                     <input type="file" name="file" class="btn btn-secondary active" role="button" />
-                                    <button type="submit" class="btn btn-outline-success" data-toggle="modal" data-target="#upConfirmationModal">
+                                    <button type="submit" class="btn btn-outline-secondary" data-toggle="modal" data-target="#upConfirmationModal">
                                         <i class="fa fa-upload"></i>
                                     </button>
                                 </div>

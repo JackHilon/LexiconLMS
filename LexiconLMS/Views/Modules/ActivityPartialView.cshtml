@@ -54,9 +54,10 @@
                         <a class="btn btn-sm btn-outline-secondary" asp-action="Edit" asp-route-id="@item.Id" asp-controller="ModuleActivities">Edit</a> 
                         <a class="btn btn-sm btn-outline-secondary" asp-action="Details" asp-route-id="@item.Id" asp-controller="ModuleActivities">Details</a> 
                         <a class="btn btn-sm btn-danger" asp-action="Delete" asp-route-id="@item.Id" asp-controller="ModuleActivities">Delete</a>
+                        <a class="btn btn-sm btn-danger " asp-action="DelDoc" asp-controller="Document" asp-route-id="@item.Id" asp-route-Related="Activity">DelDoc</a>
                     </td>
                     <td>
-                        @if (@item.Documents.FirstOrDefault() != null)
+                        @if (@item.Documents.FirstOrDefault(d => d.Related == "Activity") != null)
 
                         {
                             @Html.DisplayFor(modelItem => @item.Documents.FirstOrDefault().DocumentName)
@@ -67,13 +68,14 @@
                                     <i class="fa fa-download"></i>
 
                                 </button>
+                            @Html.DisplayFor(modelItem => @item.Documents.FirstOrDefault(d => d.Related == "Activity").DocumentName)
+                            <br />
+                            <form asp-action="DownLoadFile" asp-route-id="@item.Documents.FirstOrDefault(d => d.Related == "Activity").DocumentId" asp-controller="Document" id="Form1">
                             </form>
-
-
                         }
 
                     
-                       else if (@item.Documents.FirstOrDefault() == null)
+                       else if (@item.Documents.FirstOrDefault(d => d.Related == "Activity") == null)
                         {
                             <form asp-controller="Document" asp-action="UploadFile" asp-route-id="@item.Id" asp-route-Related="Activity" method="post"
                                   enctype="multipart/form-data" style="display: inline-block">
@@ -83,14 +85,15 @@
                             
                                 <button type="submit" class="btn  btn-outline-secondary center-block" data-toggle="modal" data-target="#upConfirmationModal">
                                     <i class="fa fa-upload"></i>
-
                                 </button>
 
+                                <input type="file" name="file" class="btn btn-outline-secondary  active" role="button" />
+                                <br>
+                                <br>
                             </form>
                         }
                     </td>
                 </tr>
-
             }
         </tbody>
     </table>

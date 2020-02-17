@@ -111,6 +111,10 @@ namespace LexiconLMS.Controllers
                 doc.ModuleActivityId = activityId;
                 doc.ModuleId = moduleId;
                 doc.CourseId = courseId;
+
+                doc.ModuleActivity = _context.ModuleActivity.Find(activityId);
+                doc.Module = _context.Module.Find(moduleId);
+                doc.Course = _context.Courses.Find(courseId);
             }
 
             if (Related == "Module")
@@ -119,12 +123,17 @@ namespace LexiconLMS.Controllers
                 courseId = _context.Module.FirstOrDefault(m => m.Id == moduleId).CourseId;
                 doc.ModuleId = moduleId;
                 doc.CourseId = courseId;
+
+                doc.Module = _context.Module.Find(moduleId);
+                doc.Course = _context.Courses.Find(courseId);
             }
 
             if (Related == "Course")
             {
                 courseId = id;
                 doc.CourseId = courseId;
+
+                doc.Course = _context.Courses.Find(courseId);
             }
             return doc; 
         }
@@ -181,8 +190,7 @@ namespace LexiconLMS.Controllers
             var fileName = doc.DocumentName;
             var related = doc.Related;
             // -- Radika 
-            //using (var file = new FileStream($"C:\\Users\\Mikael\\Desktop\\{fileName}", FileMode.Create, FileAccess.ReadWrite))
-            using (var file = new FileStream($"{fileName}", FileMode.Create, FileAccess.ReadWrite))
+            using (var file = new FileStream($"C:\\Users\\Elev\\Desktop\\{fileName}", FileMode.Create, FileAccess.ReadWrite))
             {
                 file.Write(fileArray, 0, fileArray.Length);
                 //file.Close();
@@ -190,32 +198,7 @@ namespace LexiconLMS.Controllers
                 //  ViewBag.Message = "Document Downloaded Sucessfully!!!";
                 ViewBag.Message = "Document Downloaded Sucessfully!!!";
             }
-
-            //---
-            if (User.IsInRole("Student"))
-            {
-                return RedirectToAction("Index", "Courses");
-            }
-            else
-            { 
-                    if (related == "Activity")
-                    {
-                        return RedirectToAction("ModulePartialView", "Modules");
-                    }
-                    if (related == "Module")
-                    {
-                        return RedirectToAction("ModulePartialView", "Modules");
-                    }
-                    else //--if (related == "Course")
-                    {
-                        return RedirectToAction("Index", "Courses");
-                    }
-            }
-            //---
-
-            // --(second one)-- return RedirectToAction("ModulePartialView", "Modules");
-
-            //return RedirectToActionPermanent("DownLoadAllFiles", doc.ModuleActivityId);
+            return DelDocBackTo(related);
         }
 
 
@@ -246,8 +229,78 @@ namespace LexiconLMS.Controllers
             };
         }
 
+        public async Task<IActionResult> DelDoc(int? id, string Related)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            var deletedDoc = DelDocRelated(id, Related);
+
+            if (deletedDoc == null)
+            {
+                return DelDocBackTo(Related);
+            }
+
+            return View(deletedDoc);
+        }
+
+        [HttpPost, ActionName("DelDoc")]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> DelDocConfirmed(int id)
+        {
+            var deletedDoc = await _context.Documents.FindAsync(id);
+            var related = deletedDoc.Related;
+
+            _context.Documents.Remove(deletedDoc);
+            await _context.SaveChangesAsync();
+
+            return DelDocBackTo(related);
+        }
+
+        private Document DelDocRelated(int? id, string related)
+        {
+            var deletedDoc = new Document();
+
+            switch (related)
+            {
+                case "Course":
+                    deletedDoc = _context.Documents.FirstOrDefault(c => c.Related == related && c.CourseId == id);
+                    break;
+
+                case "Module":
+                    deletedDoc = _context.Documents.FirstOrDefault(c => c.Related == related && c.ModuleId == id);
+                    break;
+
+                default: // -- case (Related == "Activity")
+                    deletedDoc = _context.Documents.FirstOrDefault(c => c.Related == related && c.ModuleActivityId == id);
+                    break;
+            }
+            return deletedDoc;
+        }
+
+        private ActionResult DelDocBackTo(string related)
+        {
+            switch (related)
+            {
+                case "Course":
+                    return RedirectToAction("Index", "Courses");
+
+                case "Module":
+                    return RedirectToAction("ModulePartialView", "Modules");
+
+                default: // -- case (related == "Activity")
+                    return RedirectToAction("ModulePartialView", "Modules");
+            }
+        }
+
+
+
+
+
         // POST: Modules/Delete/5
-        [HttpPost, ActionName("Delete")]
+        [HttpPost, ActionName("Delete")]                             // -- ?????????????????????????????????????????
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
@@ -258,6 +311,6 @@ namespace LexiconLMS.Controllers
             return RedirectToAction("ModulePartialView", "Modules");
             //return RedirectToAction(nameof(ModulePartialView));
         }
-
+                                                                      // -- ??????????????????????????????????????????
     }
 }
