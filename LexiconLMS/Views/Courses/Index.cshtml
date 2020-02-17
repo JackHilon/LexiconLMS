@@ -71,12 +71,12 @@
                         @if (@item.Documents.FirstOrDefault() != null)
 
                         {
-                                <button type="submit" class="btn btn-warning" data-toggle="modal" data-target="#DownConfirmationModal" id="Download">
-                                    <i class="fa fa-download"></i>
-                                </button>
                             @Html.DisplayFor(modelItem => @item.Documents.FirstOrDefault().DocumentName)
                             <br />
                             <form asp-action="DownLoadFile" asp-route-id="@item.Documents.ToList().FirstOrDefault().DocumentId" asp-controller="Document" id="Form1">
+                                <button type="submit" class="btn btn-warning" data-toggle="modal" data-target="#DownConfirmationModal" id="Download">
+                                    <i class="fa fa-download"></i>
+                                </button>
                             </form>
                         }
                    
@@ -86,11 +86,11 @@
 
                             <form class="form-inline" asp-controller="Document" asp-action="UploadFile" asp-route-id="@item.CourseId" asp-route-Related="Course" method="post"
                                   enctype="multipart/form-data">
-                                    <button type="submit" class="btn btn-outline-secondary" data-toggle="modal" data-target="#upConfirmationModal">
-                                        <i class="fa fa-upload"></i>
-                                    </button>
                                 <div class="form-group">
                                     <input type="file" name="file" class="btn btn-secondary active" role="button" />
+                                    <button type="submit" class="btn btn-outline-success" data-toggle="modal" data-target="#upConfirmationModal">
+                                        <i class="fa fa-upload"></i>
+                                    </button>
                                 </div>
                             </form>
 

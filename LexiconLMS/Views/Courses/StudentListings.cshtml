@@ -20,7 +20,8 @@
             <th class="lms-activities-container">Activity Description</th>
             <th class="lms-activities-container">Activity Start Date</th>
             <th class="lms-activities-container">Activity End Date</th>
-            <th class="lms-activities-container">Activity DocumentName</th>
+            <th class="lms-activities-container">Activity Document Name</th>
+            <th class="lms-activities-container">Student Document Name</th>
         </tr>
     </thead>
     <tbody>
@@ -56,14 +57,12 @@
                         @if (@item2.Documents.FirstOrDefault() != null)
 
                         {
-                            <td>
-                                @Html.DisplayFor(modelItem => item2.Documents.FirstOrDefault().DocumentName)
-                                <br />
+                            <td class="btn-group">
                                 <form asp-action="DownLoadFile" asp-route-id="@item2.Documents.FirstOrDefault().DocumentId" asp-controller="Document" id="Form1">
-                                    <button type="submit" class="btn btn-warning" data-toggle="modal" data-target="#DownConfirmationModal" id="Download">
-                                        <i class="fa fa-download"></i>
-
-                                    </button>
+                                @Html.DisplayFor(modelItem => item2.Documents.FirstOrDefault().DocumentName)
+                                    <button type="submit" class="btn btn-warning btn-group" data-toggle="modal" data-target="#DownConfirmationModal" id="Download">
+                                        <i class="fa fa-download"></i> </button>
+                                <br />
 
                                 </form>
                             </td>
