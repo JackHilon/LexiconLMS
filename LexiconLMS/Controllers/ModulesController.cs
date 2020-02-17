@@ -197,12 +197,42 @@ namespace LexiconLMS.Controllers
             var getAllActivities = _context.ModuleActivity.Include(m => m.Module);
 
             var getActivitiesForModule = getAllActivities.Where(m => m.ModuleId == id);
+         
+            //get all the documents.
+            var getAllDocuments = _context.Documents.Include(a => a.ModuleActivity);
 
+            // Delete all the documents for the activities of the module
+            foreach (var activityitem in getActivitiesForModule)
+            {
+                var getDocumentForActivity = getAllDocuments.Where(m => m.ModuleActivityId == activityitem.Id);
+
+                foreach (var document in getDocumentForActivity)
+                {
+                    _context.Documents.Remove(document);
+                }
+
+              //  _context.ModuleActivity.Remove(activityitem);
+
+            }
+
+            // Remove all the activities
             foreach (var activityitem in getActivitiesForModule)
             {
                 _context.ModuleActivity.Remove(activityitem);
+
             }
 
+            // Remove all the documents for the module
+
+            var getAllModuleDocuments = _context.Documents.Include(a => a.Module);
+            var getDocumentForModule = getAllModuleDocuments.Where(m => m.ModuleId == id);
+
+            foreach (var document in getDocumentForModule)
+            {
+                _context.Documents.Remove(document);
+            }
+
+            // remove the module
             var @module = await _context.Module.FindAsync(id);
             _context.Module.Remove(@module);
             await _context.SaveChangesAsync();

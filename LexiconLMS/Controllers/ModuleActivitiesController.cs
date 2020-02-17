@@ -173,6 +173,17 @@ namespace LexiconLMS.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
+            // Remove all documents for the activities
+
+            var getAllDocuments = _context.Documents.Include(a => a.ModuleActivity);
+            var getDocumentForActivity = getAllDocuments.Where(m => m.ModuleActivityId == id);
+
+            foreach (var document in getDocumentForActivity)
+            {
+                _context.Documents.Remove(document);
+            }
+
+
             var moduleActivity = await _context.ModuleActivity.FindAsync(id);
             _context.ModuleActivity.Remove(moduleActivity);
             await _context.SaveChangesAsync();
