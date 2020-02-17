@@ -40,27 +40,28 @@
                             @*<td>
                                 @Html.DisplayFor(modelItem => @item.Course.CourseName)
                             </td>*@
-                            <td class="btn-group">
-                                <a class="btn btn-sm btn-secondary text-white" id="ActivityButton" name="@item.Id">Activities</a> 
-                                <a class="btn btn-sm btn-outline-secondary" asp-action="Edit" asp-route-id="@item.Id">Edit</a> 
-                                <a class="btn btn-sm btn-outline-secondary" asp-action="Details" asp-route-id="@item.Id">Details</a> 
-                                <a class="btn btn-sm btn-danger" asp-action="Delete" asp-route-id="@item.Id">Delete</a>
-                            </td>
+                        <td class="btn-group">
+                            <a class="btn btn-sm btn-secondary text-white" id="ActivityButton" name="@item.Id">Activities</a>
+                            <a class="btn btn-sm btn-outline-secondary" asp-action="Edit" asp-route-id="@item.Id">Edit</a>
+                            <a class="btn btn-sm btn-outline-secondary" asp-action="Details" asp-route-id="@item.Id">Details</a>
+                            <a class="btn btn-sm btn-danger" asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+                            <a class="btn btn-sm btn-danger " asp-action="DelDoc" asp-controller="Document" asp-route-id="@item.Id" asp-route-Related="Module">DelDoc</a>
+                        </td>
                                   <td>
                                 
-                                     @if (@item.Documents.FirstOrDefault() != null)
+                                     @if (@item.Documents.FirstOrDefault(d => d.Related == "Module") != null)
                                      {
                                         <button type="submit" class="btn btn-warning" data-toggle="modal" data-target="#DownConfirmationModal" id="Download">
                                             <i class="fa fa-download"></i>
                                         </button>
 
-                                         @Html.DisplayFor(modelItem => @item.Documents.FirstOrDefault().DocumentName)
+                                         @Html.DisplayFor(modelItem => @item.Documents.FirstOrDefault(d => d.Related == "Module").DocumentName)
                                     <br />
-                                    <form asp-action="DownLoadFile" asp-route-id="@item.Documents.FirstOrDefault().DocumentId" asp-controller="Document" id="Form1">
+                                    <form asp-action="DownLoadFile" asp-route-id="@item.Documents.FirstOrDefault(d => d.Related == "Module").DocumentId" asp-controller="Document" id="Form1">
                                     </form>
                                          }
 
-                                  else if(@item.Documents.FirstOrDefault() == null)
+                                  else if(@item.Documents.FirstOrDefault(d => d.Related == "Module") == null)
                                 {
 
 
