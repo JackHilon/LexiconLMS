@@ -68,10 +68,8 @@
                                     <i class="fa fa-download"></i>
                                 </button>
 
-                                <a class="btn btn-sm btn-danger " asp-action="DelDoc" asp-controller="Document" asp-route-id="@item.Id" asp-route-Related="Activity">
-                                    <span class="glyphicon glyphicon-trash" aria-hidden="true">
-                                        Trash
-                                    </span>
+                                <a class="btn btn-lg btn-danger btn-lg fa fa-trash " asp-action="DelDoc" asp-controller="Document" asp-route-id="@item.Id" asp-route-Related="Activity">
+                                    
                                 </a>
                             </form>
                         }
