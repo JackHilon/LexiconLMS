@@ -78,18 +78,24 @@ namespace LexiconLMS.Controllers
                     {
                         ModelState.AddModelError("File", "The file is too large.");
                     }
-
-                if (Related == "Activity")
-                {
-                    return RedirectToAction("ModulePartialView", "Modules");
-                }
-                if (Related == "Module")
-                {
-                    return RedirectToAction("ModulePartialView", "Modules");
-                }
-                else //--if (Related == "Course")
+                if (User.IsInRole("Student"))
                 {
                     return RedirectToAction("Index", "Courses");
+                }
+                else
+                {
+                    if (Related == "Activity")
+                    {
+                        return RedirectToAction("ModulePartialView", "Modules");
+                    }
+                    if (Related == "Module")
+                    {
+                        return RedirectToAction("ModulePartialView", "Modules");
+                    }
+                    else //--if (Related == "Course")
+                    {
+                        return RedirectToAction("Index", "Courses");
+                    }
                 }
 
             } // end using
@@ -198,7 +204,13 @@ namespace LexiconLMS.Controllers
                 //  ViewBag.Message = "Document Downloaded Sucessfully!!!";
                 ViewBag.Message = "Document Downloaded Sucessfully!!!";
             }
-            return DelDocBackTo(related);
+            if (User.IsInRole("Student"))
+            {
+                return RedirectToAction("Index", "Courses");
+            }
+            else
+
+                return DelDocBackTo(related);
         }
 
 

@@ -1,27 +1,22 @@
-﻿@model CoursesModulesForStudentsViewModel
-
-
+﻿@using Microsoft.AspNetCore.Identity
+@model CoursesModulesForStudentsViewModel
+@inject UserManager<ApplicationUser> userManager
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.css">
-
 <h2 class="p-3 rounded-lg bg-secondary text-white">List of @ViewBag.courseName course modules</h2>
-
 <a class="m-2 btn btn-outline-info" asp-action="ListOfCourseStudents" asp-route-CourseName="@ViewBag.CourseName" asp-route-id="@ViewBag.CourseId">List All Course Students</a>
-
 <table class="table  table-striped text-md-left table-responsive-sm">
     <thead>
-
         <tr>
-
             <th class="lms-modules-container"> Module Name</th>
             <th class="lms-modules-container"> Module Description</th>
             <th class="lms-modules-container">Module Start Date</th>
-
             <th class="lms-activities-container"> Activity Name</th>
             <th class="lms-activities-container">Activity Description</th>
             <th class="lms-activities-container">Activity Start Date</th>
             <th class="lms-activities-container">Activity End Date</th>
-            <th class="lms-activities-container">Activity Document Name</th>
-            <th class="lms-activities-container">Student Document Name</th>
+            <th class="lms-activities-container">Activity DocumentName</th>
+            <th class="lms-activities-container">Upload Assignment Documents</th>
+            <th class="lms-activities-container">Uploaded Assignment Documents</th>
         </tr>
     </thead>
     <tbody>
@@ -54,18 +49,51 @@
                         <td>
                             @Html.DisplayFor(modelItem => item2.EndDate)
                         </td>
-                        @if (@item2.Documents.FirstOrDefault() != null)
-
+                        @if (@item2.Documents != null)
                         {
-                            <td class="btn-group">
-                                <form asp-action="DownLoadFile" asp-route-id="@item2.Documents.FirstOrDefault().DocumentId" asp-controller="Document" id="Form1">
-                                @Html.DisplayFor(modelItem => item2.Documents.FirstOrDefault().DocumentName)
-                                    <button type="submit" class="btn btn-warning btn-group" data-toggle="modal" data-target="#DownConfirmationModal" id="Download">
-                                        <i class="fa fa-download"></i> </button>
-                                <br />
+                            @foreach (var item3 in item2.Documents)
+                            {
+                                var usid = item3.AppUser.Id;
 
-                                </form>
-                            </td>
+                                var Usr = await userManager.FindByIdAsync(usid);
+
+                                @if ((@item3 != null) && (await userManager.IsInRoleAsync(Usr, "Teacher")))
+                                {
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item3.DocumentName)
+                                        <br />
+                                        <form asp-action="DownLoadFile" asp-route-id="@item2.Documents.FirstOrDefault().DocumentId" asp-controller="Document" id="Form1">
+                                            <button type="submit" class="btn btn-warning" data-toggle="modal" data-target="#DownConfirmationModal" id="Download">
+                                                <i class="fa fa-download"></i>
+                                            </button>
+                                        </form>
+                                    </td>
+                                }
+                                @if (item2.Documents.Count == 1)
+                                {
+                                    <td>
+
+                                        <form asp-controller="Document" asp-action="UploadFile" asp-route-id="@item2.Id" asp-route-Related="Activity" method="post"
+                                              enctype="multipart/form-data" style="display: inline-block">
+                                            <input type="file" name="file" class="btn btn-warning  active" role="button" />
+                                            <br>
+                                            <br>
+                                            <button type="submit" class="btn  btn-warning center-block" data-toggle="modal" data-target="#upConfirmationModal">
+                                                <i class="fa fa-upload"></i>
+                                            </button>
+                                        </form>
+                                    </td>
+                                }
+                                else
+                                {
+                                    <td>
+                                        @if ((@item3 != null) && (await userManager.IsInRoleAsync(Usr, "Student")))
+                                        {
+                                            @Html.DisplayFor(modelItem => item3.DocumentName)
+                                        }
+                                    </td>
+                                }
+                            }
                         }
                         counter = counter + 1;
                     }
@@ -94,36 +122,67 @@
                         <td>
                             @Html.DisplayFor(modelItem => item2.EndDate)
                         </td>
-                        @if (@item2.Documents.FirstOrDefault() != null)
-
+                        @if (@item2.Documents != null)
                         {
-                            <td>
-                                @Html.DisplayFor(modelItem => item2.Documents.FirstOrDefault().DocumentName)
-                                <br />
-                                <form asp-action="DownLoadFile" asp-route-id="@item2.Documents.FirstOrDefault().DocumentId" asp-controller="Document" id="Form1">
-                                    <button type="submit" class="btn btn-warning" data-toggle="modal" data-target="#DownConfirmationModal" id="Download">
-                                        <i class="fa fa-download"></i>
+                            @foreach (var item3 in item2.Documents)
+                            {
+                                var usid = item3.AppUser.Id;
 
-                                    </button>
+                                var Usr = await userManager.FindByIdAsync(usid);
+                                @if ((@item3 != null) && (await userManager.IsInRoleAsync(Usr, "Teacher")))
+                                {
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item3.DocumentName)
 
-                                </form>
-                            </td>
+                                        <br />
+                                        <form asp-action="DownLoadFile" asp-route-id="@item2.Documents.FirstOrDefault().DocumentId" asp-controller="Document" id="Form1">
+                                            <button type="submit" class="btn btn-warning" data-toggle="modal" data-target="#DownConfirmationModal" id="Download">
+                                                <i class="fa fa-download"></i>
+                                            </button>
+                                        </form>
+                                    </td>
+                                    @if (item2.Documents.Count == 1)
+                                    {
+                                        <td>
+
+                                            <form asp-controller="Document" asp-action="UploadFile" asp-route-id="@item2.Id" asp-route-Related="Activity" method="post"
+                                                  enctype="multipart/form-data" style="display: inline-block">
+                                                <input type="file" name="file" class="btn btn-warning  active" role="button" />
+                                                <br>
+                                                <br>
+                                                <button type="submit" class="btn  btn-warning center-block" data-toggle="modal" data-target="#upConfirmationModal">
+                                                    <i class="fa fa-upload"></i>
+                                                </button>
+                                            </form>
+                                        </td>
+                                    }
+                                }
+                                else
+                                {
+                                    <td>
+                                        @if ((@item3 != null) && (await userManager.IsInRoleAsync(Usr, "Student")))
+                                        {
+                                            @Html.DisplayFor(modelItem => item3.DocumentName)
+                                        }
+
+                                    </td>
+                                }
+                            }
                         }
-
                     </tr>
                 }
-
-
                 }
                 </tr>
             }
     </tbody>
 </table>
 @******@
-
 <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
 <script type="text/javascript">
     $("body").on("submit", "#Form1", function () {
         return confirm("Dowloaded Sucessfully!!!");
     });
 </script>
+
+
+
