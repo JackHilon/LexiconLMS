@@ -123,7 +123,7 @@ namespace LexiconLMS.Controllers
 
                 List<StudentsModelViewModel> LotsOfModules = _context.Module
                                                            .Where(m => m.CourseId == CourseId)
-                                                           .Include(m => m.Activity).ThenInclude(d => d.Documents)
+                                                           .Include(m => m.Activity).ThenInclude(d => d.Documents).ThenInclude(a => a.AppUser)
                                                            .Select(m => new StudentsModelViewModel
                                                            {
                     ModuleName = m.Name,
