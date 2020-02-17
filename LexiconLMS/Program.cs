@@ -25,7 +25,7 @@ namespace LexiconLMS
                 var services = scope.ServiceProvider;
                 var context = services.GetRequiredService<ApplicationDbContext>();
 
-                context.Database.Migrate();
+                //context.Database.Migrate();
 
                 var config = host.Services.GetRequiredService<IConfiguration>();
 
