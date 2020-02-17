@@ -64,7 +64,7 @@
                                     @Html.DisplayFor(modelItem => item3.DocumentName)
                                     <br />
                                     <form asp-action="DownLoadFile" asp-route-id="@item2.Documents.FirstOrDefault().DocumentId" asp-controller="Document" id="Form1">
-                                        <button type="submit" class="btn btn-warning" data-toggle="modal" data-target="#DownConfirmationModal" id="Download">
+                                        <button type="submit" class="btn btn-info" data-toggle="modal" data-target="#DownConfirmationModal" id="Download">
                                             <i class="fa fa-download"></i>
                                         </button>
                                     </form>
@@ -81,6 +81,7 @@
                                         <br>
                                         <button type="submit" class="btn  btn-warning center-block" data-toggle="modal" data-target="#upConfirmationModal">
                                             <i class="fa fa-upload"></i>
+
                                         </button>
                                     </form>
                                 </td>
@@ -137,18 +138,17 @@
                                 {
                                     <td>
                                         @Html.DisplayFor(modelItem => item3.DocumentName)
-
+                                        
                                         <br />
                                         <form asp-action="DownLoadFile" asp-route-id="@item2.Documents.FirstOrDefault().DocumentId" asp-controller="Document" id="Form1">
-                                            <button type="submit" class="btn btn-warning" data-toggle="modal" data-target="#DownConfirmationModal" id="Download">
+                                            <button type="submit" class="btn btn-primary" data-toggle="modal" data-target="#DownConfirmationModal" id="Download">
                                                 <i class="fa fa-download"></i>
                                             </button>
                                         </form>
                                     </td>
                                     @if (item2.Documents.Count == 1)
                                     {
-                                        @if (DateTime.Now>item2.EndDate)
-                                        {
+                                        
                                         <td>
 
                                             <form asp-controller="Document" asp-action="UploadFile" asp-route-id="@item2.Id" asp-route-Related="Activity" method="post"
@@ -157,11 +157,12 @@
                                                 <button type="submit" class="btn  btn-warning btn-sm" data-toggle="modal" data-target="#upConfirmationModal">
                                                     <i class="fa fa-upload"></i>
                                                 </button>
+                                              
                                             </form>
 
                                         </td>
-                                        <td></td>
-                                        }
+                                        
+                                     
                                     }
 
                                 }
