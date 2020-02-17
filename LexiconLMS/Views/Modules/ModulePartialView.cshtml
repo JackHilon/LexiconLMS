@@ -9,7 +9,7 @@
 
 <p>
     <a class="btn btn-outline-info" asp-action="Create">Add New Module</a>
-    <a class="btn btn-outline-secondary float-right" asp-controller="Courses" asp-action="Index">Back</a>
+    <a class="btn btn-outline-secondary float-right" asp-controller="Courses" asp-action="Index">Back to all courses</a>
 </p>
 
 <h5 class="text-uppercase p-2 text-center rounded-lg bg-info text-white">List of Modules</h5>
@@ -59,10 +59,8 @@
                                 <i class="fa fa-download"></i>
                             </button>
 
-                            <a class="btn btn-sm btn-danger " asp-action="DelDoc" asp-controller="Document" asp-route-id="@item.Id" asp-route-Related="Module">
-                                <span class="glyphicon glyphicon-trash" aria-hidden="true">
-                                    Trash
-                                </span>
+                            <a class="btn btn-danger btn-lg fa fa-trash" asp-action="DelDoc" asp-controller="Document" asp-route-id="@item.Id" asp-route-Related="Module">
+                               
                             </a>
                         </form>
                     }

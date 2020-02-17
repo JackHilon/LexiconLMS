@@ -26,6 +26,9 @@
                     End Date
                 </th>
                 <th>
+                    Module's name
+                </th>
+                <th>
 
                 </th>
                 <th>
@@ -49,6 +52,9 @@
                     <td>
                         @Html.DisplayFor(modelItem => @item.EndDate)
                     </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => @item.Module.Name)
+                    </td>
 
                     <td>
                         <a class="btn btn-sm btn-outline-secondary" asp-action="Edit" asp-route-id="@item.Id" asp-controller="ModuleActivities">Edit</a>
@@ -68,10 +74,8 @@
                                     <i class="fa fa-download"></i>
                                 </button>
 
-                                <a class="btn btn-sm btn-danger " asp-action="DelDoc" asp-controller="Document" asp-route-id="@item.Id" asp-route-Related="Activity">
-                                    <span class="glyphicon glyphicon-trash" aria-hidden="true">
-                                        Trash
-                                    </span>
+                                <a class="btn btn-lg btn-danger btn-lg fa fa-trash " asp-action="DelDoc" asp-controller="Document" asp-route-id="@item.Id" asp-route-Related="Activity">
+                                    
                                 </a>
                             </form>
                         }
@@ -81,11 +85,15 @@
                         {
                             <form asp-controller="Document" asp-action="UploadFile" asp-route-id="@item.Id" asp-route-Related="Activity" method="post"
                                   enctype="multipart/form-data" style="display: inline-block">
+
+                                <input type="file" name="file" class="btn btn-outline-secondary  active" role="button" />
+                                <br>
+                            
                                 <button type="submit" class="btn  btn-outline-secondary center-block" data-toggle="modal" data-target="#upConfirmationModal">
                                     <i class="fa fa-upload"></i>
                                 </button>
 
-                                <input type="file" name="file" class="btn btn-outline-secondary  active" role="button" />
+                                @*<input type="file" name="file" class="btn btn-outline-secondary  active" role="button" />*@
                                 <br>
                                 <br>
                             </form>
