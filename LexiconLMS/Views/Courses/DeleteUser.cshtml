@@ -27,7 +27,14 @@
 
     <form asp-action="DeleteUser">
         <input type="hidden" asp-for="Id" />
-        <input type="submit" value="Delete" class="btn btn-danger" /> |
-        <a asp-action="ListOfCourseStudents" asp-route-id="@Model.CourseId" class="btn btn-warning active" role="button">Cancle</a>
+        <input type="submit" value="Delete" class="btn btn-danger" />
+        @if (@ViewBag.UserType != "Teacher")
+        {
+            <a asp-action="ListOfCourseStudents" asp-route-id="@Model.CourseId" class="btn btn-warning active" role="button">Cancle</a>
+        }
+        else
+        {
+            <a asp-action="ListOfTeachers" asp-route-id="@Model.CourseId" class="btn btn-warning active">Cancel</a>
+        }
     </form>
 </div>

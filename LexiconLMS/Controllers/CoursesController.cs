@@ -472,8 +472,9 @@ namespace LexiconLMS.Controllers
 
 
         // =============== Delete a teacher ================
-        public async Task<IActionResult> DeleteUser(string? id)
+        public async Task<IActionResult> DeleteUser(string? id ,string UserType)
         {
+            ViewBag.UserType = UserType;
             if (id == null)
             {
                 return NotFound();
