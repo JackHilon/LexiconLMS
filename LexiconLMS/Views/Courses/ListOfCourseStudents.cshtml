@@ -52,8 +52,12 @@
                 <th>
                     @Html.DisplayNameFor(model => model.First().Email)
                 </th>
-                <th> All Document</th>
-                <th class="float-md-right"> Edit / Delete Student</th>
+                @if (User.IsInRole("Teacher"))
+                {
+                    <th> All Document</th>
+                    <th class="float-md-right"> Edit / Delete Student</th>
+                }
+
 
 
 
