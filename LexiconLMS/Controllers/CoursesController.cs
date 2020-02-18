@@ -126,6 +126,7 @@ namespace LexiconLMS.Controllers
                                                            .Include(m => m.Activity).ThenInclude(d => d.Documents).ThenInclude(a => a.AppUser)
                                                            .Select(m => new StudentsModelViewModel
                                                            {
+                    ModuleId = m.Id,
                     ModuleName = m.Name,
                     ModuleDescription = m.Description,
                     ModuleStartDate = m.StartDate,
