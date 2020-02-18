@@ -60,6 +60,7 @@
                         <a class="btn btn-sm btn-outline-secondary" asp-action="Edit" asp-route-id="@item.Id" asp-controller="ModuleActivities">Edit</a>
                         <a class="btn btn-sm btn-outline-secondary" asp-action="Details" asp-route-id="@item.Id" asp-controller="ModuleActivities">Details</a>
                         <a class="btn btn-sm btn-danger" asp-action="Delete" asp-route-id="@item.Id" asp-controller="ModuleActivities">Delete</a>
+                        <a class="btn btn-sm btn-info" asp-action="SeeAssignments" asp-route-id="@item.Id" asp-controller="Document">Assignments</a>
                     </td>
                     <td>
                         @if (@item.Documents.FirstOrDefault(d => d.Related == "Activity") != null)
