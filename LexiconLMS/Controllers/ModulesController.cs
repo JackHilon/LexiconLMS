@@ -61,6 +61,7 @@ namespace LexiconLMS.Controllers
 
             var @module = await _context.Module
                 .Include(a=> a.Course)
+                .Include(a => a.Documents)
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (@module == null)
             {
