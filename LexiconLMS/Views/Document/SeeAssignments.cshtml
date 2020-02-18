@@ -1,10 +1,8 @@
 ﻿@model ListStudentAssgnmnt
 
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.css">
 
-<h1>List of @Model. assignments</h1>
-
-
-
+<h1>List of @Model.ActivityName assignments</h1>
 
 <table class="table">
     <thead>
@@ -14,6 +12,7 @@
             <th>Assignment</th>
 
             <th>Give a grade</th>
+            <th>The current grade</th>
 
         </tr>
     </thead>
@@ -24,16 +23,11 @@
                 <td>
                     @Html.DisplayFor(Item => student.SecondUserName)
                 </td>
+
                 <td>
                     @Html.DisplayFor(Item => student.Documents.FirstOrDefault(a => a.ModuleActivityId == @Model.ActivityId).DocumentName)
-                </td>
-
-                <td>
                     @if (student.Documents.FirstOrDefault(a => a.ModuleActivityId == @Model.ActivityId) != null)
                     {
-
-
-                        @Html.DisplayFor(Item => student.Documents.FirstOrDefault(a => a.ModuleActivityId == @Model.ActivityId).DocumentName) <br />
                         <form asp-action="DownLoadFile" asp-route-id="@student.Documents.FirstOrDefault(a => a.ModuleActivityId == @Model.ActivityId).DocumentId" asp-controller="Document" id="Form1">
                             <button type="submit" class="btn btn-warning" data-toggle="modal" data-target="#DownConfirmationModal" id="Download">
                                 <i class="fa fa-download"></i>
@@ -45,8 +39,25 @@
                         <p></p>
                     }
                 </td>
+
+                <td>
+                    <a class="btn btn-sm btn-outline-primary" asp-action="GiveGrade" asp-controller="Document" asp-route-id="@student.Id" asp-route-ActivityId="@Model.ActivityId" asp-route-Grade="A">A</a>
+                    <a class="btn btn-sm btn-outline-secondary" asp-action="GiveGrade" asp-controller="Document" asp-route-id="@student.Id" asp-route-ActivityId="@Model.ActivityId" asp-route-Grade="B">B</a>
+                    <a class="btn btn-sm btn-outline-success" asp-action="GiveGrade" asp-controller="Document" asp-route-id="@student.Id" asp-route-ActivityId="@Model.ActivityId" asp-route-Grade="C">C</a>
+                    <a class="btn btn-sm btn-outline-dark" asp-action="GiveGrade" asp-controller="Document" asp-route-id="@student.Id" asp-route-ActivityId="@Model.ActivityId" asp-route-Grade="D">D</a>
+                    <a class="btn btn-sm btn-outline-warning" asp-action="GiveGrade" asp-controller="Document" asp-route-id="@student.Id" asp-route-ActivityId="@Model.ActivityId" asp-route-Grade="E">E</a>
+                    <a class="btn btn-sm btn-outline-danger" asp-action="GiveGrade" asp-controller="Document" asp-route-id="@student.Id" asp-route-ActivityId="@Model.ActivityId" asp-route-Grade="F">F</a>
+                </td>
+
+                <td>
+                    @Html.DisplayFor(Item => student.Documents.FirstOrDefault(a => a.ModuleActivityId == @Model.ActivityId).Grade)
+                </td>
+
             </tr>
         }
     </tbody>
 </table>
+<div>
+    <a class="btn btn-info" asp-action="ModulePartialView" asp-controller="Modules">Back to List Of Modules</a>
+</div>
 

@@ -17,6 +17,8 @@ namespace LexiconLMS.Models
                                             // = {Course, Module, Activity}
         public byte[] Content { get; set; }
 
+        public string Grade { get; set; }
+
 
 
         // --------------------- For ModuleActivity ---------------------

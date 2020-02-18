@@ -5,6 +5,28 @@
     <UserSecretsId>aspnet-LexiconLMS-441CA6D2-FFBC-4018-8B42-3ED3860A0957</UserSecretsId>
   </PropertyGroup>
 
+  <ItemGroup>
+    <Compile Remove="Data\Migrations\20200212140437_Jack-Change.cs" />
+    <Compile Remove="Data\Migrations\20200212140437_Jack-Change.Designer.cs" />
+    <Compile Remove="Data\Migrations\20200212144820_ModuleValidation.cs" />
+    <Compile Remove="Data\Migrations\20200212144820_ModuleValidation.Designer.cs" />
+    <Compile Remove="Data\Migrations\20200212153556_testinit.cs" />
+    <Compile Remove="Data\Migrations\20200212153556_testinit.Designer.cs" />
+    <Compile Remove="Data\Migrations\20200212153926_testinit2.cs" />
+    <Compile Remove="Data\Migrations\20200212153926_testinit2.Designer.cs" />
+    <Compile Remove="Data\Migrations\20200217153726_GradesAdd.cs" />
+    <Compile Remove="Data\Migrations\20200217153726_GradesAdd.Designer.cs" />
+    <Compile Remove="Data\Migrations\20200217154245_GradesAdd.cs" />
+    <Compile Remove="Data\Migrations\20200217154245_GradesAdd.Designer.cs" />
+    <Compile Remove="Data\Migrations\ApplicationDbContextModelSnapshot.cs" />
+    <Compile Remove="Migrations\20200213175247_LatestChanges.cs" />
+    <Compile Remove="Migrations\20200213175247_LatestChanges.Designer.cs" />
+    <Compile Remove="Migrations\20200217153845_GradesAdd2.cs" />
+    <Compile Remove="Migrations\20200217153845_GradesAdd2.Designer.cs" />
+    <Compile Remove="Migrations\20200217154637_Gradesjack.cs" />
+    <Compile Remove="Migrations\20200217154637_Gradesjack.Designer.cs" />
+  </ItemGroup>
+
 
   <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.Diagnostics.EntityFrameworkCore" Version="3.0.0" />
@@ -18,6 +40,7 @@
 
 
   <ItemGroup>
+    <Folder Include="Data\Migrations\" />
     <Folder Include="wwwroot\UploadFiles\" />
   </ItemGroup>
 
