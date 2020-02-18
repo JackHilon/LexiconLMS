@@ -43,6 +43,8 @@
     </dl>
 </div>
 <div>
-    <a class="btn btn-primary" asp-action="Edit" asp-route-id="@Model.Id">Edit</a> |
-    <a class="btn btn-outline-info" asp-controller="Modules"  asp-action="ModulePartialView">Back to List Of Modules</a>
+    @*<a class="btn btn-primary" asp-action="Edit" asp-route-id="@Model.Id">Edit</a> |
+        <a class="btn btn-outline-info" asp-controller="Modules"  asp-action="ModulePartialView">Back to List Of Modules</a>*@
+
+    <a class="btn btn-outline-info" asp-controller="Courses" asp-action="Index">Back to List Of Modules</a>
 </div>

@@ -24,7 +24,7 @@
         {
             <tr>
                 <td>
-                    @Html.DisplayFor(modelItem => item.ModuleName)
+                    <a asp-action="Details" asp-controller="Modules" asp-route-id="@item.ModuleId">@Html.DisplayFor(modelItem => item.ModuleName)</a>
                 </td>
                 @*<td>
                     @Html.DisplayFor(modelItem => item.ModuleDescription)
@@ -38,8 +38,8 @@
                     @if (counter == 0)
                     {
                         <td>
-                            @Html.DisplayFor(modelItem => item2.Name)
-                        </td>
+                            <a asp-action="Details" asp-controller="ModuleActivities" asp-route-id="@item2.Id">@Html.DisplayFor(modelItem => item2.Name)</a>
+</td>
                         @*<td>
                             @Html.DisplayFor(modelItem => item2.Description)
                         </td>*@
@@ -111,7 +111,7 @@
                             @Html.DisplayFor(model => sample)
                         </td>
                         <td>
-                            @Html.DisplayFor(modelItem => item2.Name)
+                            <a asp-action="Details" asp-controller="ModuleActivities" asp-route-id="@item2.Id">@Html.DisplayFor(modelItem => item2.Name)</a>
                         </td>
                         @*<td>
                             @Html.DisplayFor(modelItem => item2.Description)
