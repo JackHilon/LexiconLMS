@@ -211,7 +211,7 @@ namespace LexiconLMS.Controllers
                     _context.Documents.Remove(document);
                 }
 
-              //  _context.ModuleActivity.Remove(activityitem);
+              
 
             }
 
