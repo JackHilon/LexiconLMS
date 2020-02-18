@@ -205,8 +205,8 @@ namespace LexiconLMS.Controllers
 
         // ================================ The teacher see the list of assignments of an activity ==================================
 
-        [HttpGet]
-        public async Task<IActionResult> SeeAssignments(int? id)             //  <-------------------- List of users (teachers) -------
+        
+        public async Task<IActionResult> SeeAssignments(int? id)             //  id of Activity
         {
             if (id == null)
             {
@@ -227,11 +227,41 @@ namespace LexiconLMS.Controllers
                 Students = allStudents,
             }; 
 
-            return View(model);
+            return View("SeeAssignments", model);
         }
 
+        // ======================================= Give a Grade to a student for an activity ===========================================
+        [HttpGet]
+        public async Task<ActionResult> GiveGrade(string Grade, string? id, int? ActivityId)    // user id
+        {
+            var currentActivityId = ActivityId;
 
+            if (id == null || ActivityId == null)
+            {
+                return NotFound();
+            }
 
+            _context.Documents
+                .Include(u => u.AppUser)
+                .Include(a => a.ModuleActivity)
+                .FirstOrDefault(a => a.AppUser.Id == id && a.ModuleActivityId == ActivityId).Grade = Grade;
+
+            await _context.SaveChangesAsync();
+
+            // ---------------------------------------------
+            var moduleId = _context.ModuleActivity.FirstOrDefault(a => a.Id == currentActivityId).ModuleId;
+            var courseId = _context.Module.FirstOrDefault(m => m.Id == moduleId).Id;
+
+            var model = new ListStudentAssgnmnt()
+            {
+                ActivityName = _context.ModuleActivity.FirstOrDefault(a => a.Id == currentActivityId).Name,
+                ActivityId = (int) currentActivityId,
+                Students = _context.AppUser.Where(user => user.CourseId == courseId).Include(a => a.Documents).ToList()
+            };
+            // ---------------------------------------------
+
+            return View("SeeAssignments", model);
+        }
 
 
 

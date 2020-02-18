@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace LexiconLMS.Migrations
 {
-    public partial class MyFirstMig : Migration
+    public partial class addgradeadd : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -27,8 +27,8 @@ namespace LexiconLMS.Migrations
                 {
                     CourseId = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    CourseName = table.Column<string>(nullable: true),
-                    CourseDescription = table.Column<string>(nullable: true),
+                    CourseName = table.Column<string>(nullable: false),
+                    CourseDescription = table.Column<string>(nullable: false),
                     StartDate = table.Column<DateTime>(nullable: false)
                 },
                 constraints: table =>
@@ -97,8 +97,8 @@ namespace LexiconLMS.Migrations
                 {
                     Id = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    Name = table.Column<string>(nullable: true),
-                    Description = table.Column<string>(nullable: true),
+                    Name = table.Column<string>(nullable: false),
+                    Description = table.Column<string>(nullable: false),
                     StartDate = table.Column<DateTime>(nullable: false),
                     CourseId = table.Column<int>(nullable: false)
                 },
@@ -204,8 +204,8 @@ namespace LexiconLMS.Migrations
                 {
                     Id = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    Name = table.Column<string>(nullable: true),
-                    Description = table.Column<string>(nullable: true),
+                    Name = table.Column<string>(nullable: false),
+                    Description = table.Column<string>(nullable: false),
                     StartDate = table.Column<DateTime>(nullable: false),
                     EndDate = table.Column<DateTime>(nullable: false),
                     ModuleId = table.Column<int>(nullable: false)
@@ -230,11 +230,13 @@ namespace LexiconLMS.Migrations
                     DocumentName = table.Column<string>(nullable: true),
                     DocumentDescription = table.Column<string>(nullable: true),
                     UploadDate = table.Column<DateTime>(nullable: false),
+                    Related = table.Column<string>(nullable: true),
                     Content = table.Column<byte[]>(nullable: true),
+                    Grade = table.Column<string>(nullable: true),
                     ModuleActivityId = table.Column<int>(nullable: true),
                     AppUserId = table.Column<string>(nullable: true),
                     ModuleId = table.Column<int>(nullable: true),
-                    CourseId = table.Column<int>(nullable: false)
+                    CourseId = table.Column<int>(nullable: true)
                 },
                 constraints: table =>
                 {

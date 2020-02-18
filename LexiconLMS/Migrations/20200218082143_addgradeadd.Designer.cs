@@ -10,8 +10,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace LexiconLMS.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20200212153556_testinit")]
-    partial class testinit
+    [Migration("20200218082143_addgradeadd")]
+    partial class addgradeadd
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -64,6 +64,9 @@ namespace LexiconLMS.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("DocumentName")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Grade")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<int?>("ModuleActivityId")

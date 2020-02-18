@@ -64,6 +64,9 @@ namespace LexiconLMS.Migrations
                     b.Property<string>("DocumentName")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<string>("Grade")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<int?>("ModuleActivityId")
                         .HasColumnType("int");
 
