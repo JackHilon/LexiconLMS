@@ -19,7 +19,7 @@ namespace LexiconLMS.Models
 
         //-----------------------
 
-        [Required]
+        
         [Display(Name = "Name"), StringLength(20)]
         public string SecondUserName { get; set; }
 

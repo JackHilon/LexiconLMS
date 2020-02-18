@@ -393,8 +393,9 @@ namespace LexiconLMS.Controllers
 
         // ----------------- Edit a teacher -------------------------------------------------------
 
-        public async Task<IActionResult> EditUser(string? id)
+        public async Task<IActionResult> EditUser(string? id,string UserType)
         {
+            ViewBag.UserType = UserType;
             if (id == null)
             {
                 return NotFound();
@@ -410,7 +411,7 @@ namespace LexiconLMS.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> EditUser(string id, [Bind("Id, Name, UserName, Email, CourseId")] ApplicationUser user)
+        public async Task<IActionResult> EditUser(string id, [Bind("Id, SecondUserName, UserName, Email, CourseId")] ApplicationUser user)
         {
             var hisCourseId = user.CourseId;
 
