@@ -55,11 +55,11 @@
                         @Html.DisplayFor(modelItem => @item.Documents.FirstOrDefault(d => d.Related == "Module").DocumentName)
                         <br />
                         <form asp-action="DownLoadFile" asp-route-id="@item.Documents.FirstOrDefault(d => d.Related == "Module").DocumentId" asp-controller="Document" id="Form1">
-                            <button type="submit" class="btn btn-warning" data-toggle="modal" data-target="#DownConfirmationModal" id="Download">
+                            <button type="submit" class="btn btn-warning btn-sm" data-toggle="modal" data-target="#DownConfirmationModal" id="Download">
                                 <i class="fa fa-download"></i>
                             </button>
 
-                            <a class="btn btn-danger btn-lg fa fa-trash" asp-action="DelDoc" asp-controller="Document" asp-route-id="@item.Id" asp-route-Related="Module">
+                            <a class="btn btn-danger btn-sm btn-lg fa fa-trash" asp-action="DelDoc" asp-controller="Document" asp-route-id="@item.Id" asp-route-Related="Module">
                                
                             </a>
                         </form>
@@ -72,10 +72,10 @@
                         <form class="float-left" asp-controller="Document" asp-action="UploadFile" asp-route-id="@item.Id" asp-route-Related="Module" method="post"
                               enctype="multipart/form-data" style="display: inline-block">
 
-                            <button type="submit" class="btn  btn-outline-secondary center-block" data-toggle="modal" data-target="#upConfirmationModal">
+                            <button type="submit" class="btn  btn-outline-secondary center-block btn-sm" data-toggle="modal" data-target="#upConfirmationModal">
                                 <i class="fa fa-upload"></i>
                             </button>
-                            <input type="file" name="file" class="btn btn-secondary  active" role="button" />
+                            <input type="file" name="file" class="btn btn-secondary  active btn-sm" role="button" />
 
                         </form>
 

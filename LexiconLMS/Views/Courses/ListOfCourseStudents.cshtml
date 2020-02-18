@@ -26,7 +26,7 @@
             }
             else
             {
-        <a asp-action="Index" class="btn btn-outline-light float-right">back to @ViewBag.nameCourse Course Modules</a>
+              <a asp-action="Index" class="btn btn-outline-light float-right">back to @ViewBag.nameCourse Course Modules</a>
             }
             </h2>
     </div>
@@ -39,19 +39,10 @@
             @* <a asp-area="Identity" asp-page="/Account/Register" asp-route-roleName="Student" class="btn btn-secondary btn-lg active" role="button">Add New Student</a>*@
             <a asp-area="Identity" asp-page="/Account/Register" asp-route-courseId="@ViewBag.IdCourse" asp-route-coureName="@ViewBag.nameCourse" asp-route-roleName="Student" class="btn btn-secondary " role="button">Add New Student</a>
 
-
-
         </div>
     }
-
-
-
 </div>
 <br>
-
-
-
-
 @if (Model.Any())
 {
     <table class="table">
@@ -62,6 +53,7 @@
                     @Html.DisplayNameFor(model => model.First().Email)
                 </th>
                 <th> All Document</th>
+                <th class="float-md-right"> Edit / Delete Student</th>
 
 
 
@@ -91,7 +83,7 @@
                         @Html.DisplayFor(modelItem => doc.DocumentName);
                         <br />
                         <form asp-action="DownLoadFile" asp-route-id="@item.Documents.FirstOrDefault().DocumentId" asp-controller="Document" id="Form1">
-                            <button type="submit" class="btn btn-warning" data-toggle="modal" data-target="#DownConfirmationModal" id="Download">
+                            <button type="submit" class="btn btn-warning btn-sm" data-toggle="modal" data-target="#DownConfirmationModal" id="Download">
                                 <i class="fa fa-download"></i>
 
                             </button>
@@ -109,8 +101,8 @@
 
 
 
-                        <a class="btn btn-outline-secondary" asp-action="EditUser" asp-route-id="@item.Id">Edit</a>
-                        <a class="btn btn-danger" asp-action="DeleteUser" asp-route-id="@item.Id">Delete</a>
+                        <a class="btn btn-outline-secondary btn-sm" asp-action="EditUser" asp-route-id="@item.Id">Edit</a>
+                        <a class="btn btn-danger btn-sm" asp-action="DeleteUser" asp-route-id="@item.Id">Delete</a>
                     </td>
                 }
             </tr>

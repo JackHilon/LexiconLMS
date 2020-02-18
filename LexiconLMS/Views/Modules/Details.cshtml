@@ -4,39 +4,88 @@
     ViewData["Title"] = "Details";
 }
 
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.css">
+
 <h1>Details</h1>
 
 <div>
     <h4>Module</h4>
     <hr />
     <dl class="row">
-        <dt class = "col-sm-2">
+        <dt class="col-sm-2">
             @Html.DisplayNameFor(model => model.Name)
         </dt>
-        <dd class = "col-sm-10">
+        <dd class="col-sm-10">
             @Html.DisplayFor(model => model.Name)
         </dd>
-        <dt class = "col-sm-2">
+        <dt class="col-sm-2">
             @Html.DisplayNameFor(model => model.Description)
         </dt>
-        <dd class = "col-sm-10">
+        <dd class="col-sm-10">
             @Html.DisplayFor(model => model.Description)
         </dd>
-        <dt class = "col-sm-2">
+        <dt class="col-sm-2">
             @Html.DisplayNameFor(model => model.StartDate)
         </dt>
-        <dd class = "col-sm-10">
+        <dd class="col-sm-10">
             @Html.DisplayFor(model => model.StartDate)
         </dd>
-        <dt class = "col-sm-2">
+        <dt class="col-sm-2">
             @Html.DisplayNameFor(model => model.Course)
         </dt>
-        <dd class = "col-sm-10">
+        <dd class="col-sm-10">
             @Html.DisplayFor(model => model.Course.CourseName)
         </dd>
+
+        @if (User.IsInRole("Student"))
+        {
+            foreach (var doc in Model.Documents)
+            {
+                @*@if (doc(d => d.Related == "Module") != null)*@
+                @if (doc != null)
+                {
+                    @if (doc.Related == "Module")
+                    {
+
+                        @*@Html.DisplayFor(modelItem => Model.Documents.FirstOrDefault(d => d.Related == "Module").DocumentName)*@
+                        @Html.DisplayFor(model => doc.DocumentName)
+                        <br />
+                        <form asp-action="DownLoadFile" asp-route-id="@doc.DocumentId" asp-controller="Document" id="Form1">
+                            <button type="submit" class="btn btn-warning" data-toggle="modal" data-target="#DownConfirmationModal" id="Download">
+                                <i class="fa fa-download"></i>
+                            </button>
+
+                            @*<a class="btn btn-danger btn-lg fa fa-trash" asp-action="DelDoc" asp-controller="Document" asp-route-id="Model.Id" asp-route-Related="Module">
+
+                            </a>*@
+                        </form>
+                    }
+                }
+            }
+        }
+
     </dl>
 </div>
 <div>
-    <a class="btn btn-primary" asp-action="Edit" asp-route-id="@Model.Id">Edit</a> |
-    <a class="btn btn-outline-info" asp-action="ModulePartialView">Back to List Of Modules</a>
+    @if (User.IsInRole("Teacher"))
+    {
+        <a class="btn btn-primary" asp-action="Edit" asp-route-id="@Model.Id">Edit</a> <span> | </span>
+        <a class="btn btn-outline-info" asp-action="ModulePartialView">Back to List Of Modules</a>
+    }
+    else
+    {
+        <a class="btn btn-outline-info" asp-controller="Courses" asp-action="Index">Back to List Of Modules</a>
+    }
+
 </div>
+<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
+<script type="text/javascript">
+    $("body").on("submit", "#Form1", function () {
+        return confirm("Dowloaded Sucessfully!!!");
+    });
+</script>
+
+
+    </div>
+</div>
+

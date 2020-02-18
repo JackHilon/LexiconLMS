@@ -126,6 +126,7 @@ namespace LexiconLMS.Controllers
                                                            .Include(m => m.Activity).ThenInclude(d => d.Documents).ThenInclude(a => a.AppUser)
                                                            .Select(m => new StudentsModelViewModel
                                                            {
+                    ModuleId = m.Id,
                     ModuleName = m.Name,
                     ModuleDescription = m.Description,
                     ModuleStartDate = m.StartDate,
@@ -261,9 +262,7 @@ namespace LexiconLMS.Controllers
             ViewBag.nameCourse = CourseName;
             ViewBag.IdCourse = id;
 
-            var allStudents = await userManager.GetUsersInRoleAsync("Student");
-            var students = allStudents.Where(s => s.CourseId == id);
-
+            
             if (id == null)
             {
                 return NotFound();
@@ -284,9 +283,11 @@ namespace LexiconLMS.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id, string CourseName)
         {
-            // Remove all the students attending the course.
+     
 
             var course = await _context.Courses.FindAsync(id);
+
+            // Remove all the students attending the course.
 
             var allStudents = await userManager.GetUsersInRoleAsync("Student");
             var students = allStudents.Where(s => s.CourseId == id);
@@ -314,6 +315,21 @@ namespace LexiconLMS.Controllers
 
                     if (getActivitiesForModule != null)
                     {
+                        // get all the documents for activities and delete.
+                        var getAllDocuments = _context.Documents.Include(a => a.ModuleActivity);
+
+                        foreach (var activityitem in getActivitiesForModule)
+                        {
+                            var getDocumentForActivity = getAllDocuments.Where(m => m.ModuleActivityId == activityitem.Id);
+
+                            foreach (var document in getDocumentForActivity)
+                            {
+                                _context.Documents.Remove(document);
+                            }
+                          
+                        }
+
+                        // Delete all the activites for the module.
 
                         foreach (var activityitem in getActivitiesForModule)
                         {
@@ -323,11 +339,23 @@ namespace LexiconLMS.Controllers
                 }
             }
 
+            // Remove all Module documents.
+
+                var getAllModuleDocuments = _context.Documents.Include(a => a.Module);
+
+                foreach (var document in getAllModulesForCourse)
+                {
+                    var getDocumentForModule = getAllModuleDocuments.Where(m => m.ModuleId == document.Id);
+                    foreach (var doc in getDocumentForModule)
+                    {
+                        _context.Documents.Remove(doc);
+                    }
+                  
+                }
+
             // Remove all the modules of the course
 
-            // var allModules =  _context.Module.Include(c => c.Course);
-
-            //var getAllModulesForCourse = allModules.Where(c => c.CourseId == id);
+       
             if (getAllModulesForCourse != null)
             {
                 foreach (var module in getAllModulesForCourse)
@@ -335,9 +363,24 @@ namespace LexiconLMS.Controllers
                     _context.Module.Remove(module);
                 }
             }
-            // Remove course.
 
-            _context.Courses.Remove(course);
+                // Remove  all the documents of the course
+
+                var getAllCourseDocuments = _context.Documents.Include(a => a.Course);
+
+                 foreach (var document in _context.Courses)
+                {
+                    var getDocumentForcourse = getAllCourseDocuments.Where(m => m.CourseId == document.CourseId);
+                    foreach (var doc in getDocumentForcourse)
+                    {
+                        _context.Documents.Remove(doc);
+                    }
+
+                }
+
+                // Remove course.
+
+             _context.Courses.Remove(course);
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }

@@ -10,30 +10,40 @@
     <h4>Course</h4>
     <hr />
     <dl class="row">
-        <dt class = "col-sm-2">
+        <dt class="col-sm-2">
             @Html.DisplayNameFor(model => model.CourseName)
         </dt>
-        <dd class = "col-sm-10">
+        <dd class="col-sm-10">
             @Html.DisplayFor(model => model.CourseName)
         </dd>
-        <dt class = "col-sm-2">
+        <dt class="col-sm-2">
             @Html.DisplayNameFor(model => model.CourseDescription)
         </dt>
-        <dd class = "col-sm-10">
+        <dd class="col-sm-10">
             @Html.DisplayFor(model => model.CourseDescription)
         </dd>
-        <dt class = "col-sm-2">
+        <dt class="col-sm-2">
             @Html.DisplayNameFor(model => model.StartDate)
         </dt>
-        <dd class = "col-sm-10">
+        <dd class="col-sm-10">
             @Html.DisplayFor(model => model.StartDate)
         </dd>
     </dl>
 </div>
 <div>
     <a class="btn btn-primary" asp-action="Edit" asp-route-id="@Model.CourseId">Edit</a>
-    </div>
+</div>
 <br>
 <div>
     <a class="btn btn-info" asp-action="Index">Back to List</a>
+</div>
+<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
+<script type="text/javascript">
+    $("body").on("submit", "#Form1", function () {
+        return confirm("Dowloaded Sucessfully!!!");
+    });
+</script>
+
+
+    </div>
 </div>

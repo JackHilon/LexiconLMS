@@ -61,6 +61,7 @@ namespace LexiconLMS.Controllers
 
             var @module = await _context.Module
                 .Include(a=> a.Course)
+                .Include(a => a.Documents)
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (@module == null)
             {
@@ -211,7 +212,7 @@ namespace LexiconLMS.Controllers
                     _context.Documents.Remove(document);
                 }
 
-              //  _context.ModuleActivity.Remove(activityitem);
+              
 
             }
 
