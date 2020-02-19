@@ -55,7 +55,7 @@ namespace LexiconLMS.Controllers
             {
                 foreach (var document in documents)
                 {
-                    if(document.AppUser == student)
+                    if (document.AppUser == student)
                     {
                         student.Documents.Add(document);
                     }
@@ -79,7 +79,7 @@ namespace LexiconLMS.Controllers
             //********************************
         }
 
-        private async Task<string> GetUserRrole(ApplicationUser user)
+        private async Task<string> GetUserRole(ApplicationUser user)
         {
             string userRole;
 
@@ -126,19 +126,19 @@ namespace LexiconLMS.Controllers
                                                            .Include(m => m.Activity).ThenInclude(d => d.Documents).ThenInclude(a => a.AppUser)
                                                            .Select(m => new StudentsModelViewModel
                                                            {
-                    ModuleId = m.Id,
-                    ModuleName = m.Name,
-                    ModuleDescription = m.Description,
-                    ModuleStartDate = m.StartDate,
-                    
-                    //Activities = _context.ModuleActivity.Where(a => a.ModuleId == m.Id).Select(a => new StudentsActivityViewModel
-                    //{
-                    //    ActivityName = a.Name,
-                    //    ActivityDescription = a.Description,
-                    //    ActivityStartDate = a.StartDate
-                    //}).ToList()
-                    Activities = m.Activity
-                }
+                                                               ModuleId = m.Id,
+                                                               ModuleName = m.Name,
+                                                               ModuleDescription = m.Description,
+                                                               ModuleStartDate = m.StartDate,
+
+                                                               //Activities = _context.ModuleActivity.Where(a => a.ModuleId == m.Id).Select(a => new StudentsActivityViewModel
+                                                               //{
+                                                               //    ActivityName = a.Name,
+                                                               //    ActivityDescription = a.Description,
+                                                               //    ActivityStartDate = a.StartDate
+                                                               //}).ToList()
+                                                               Activities = m.Activity
+                                                           }
                 ).ToList();
 
                 CoursesModulesForStudentsViewModel viewModel = _context.Module.Select(m => new CoursesModulesForStudentsViewModel
@@ -149,7 +149,7 @@ namespace LexiconLMS.Controllers
                     MyModules = LotsOfModules
                 }
                 ).First();
-              
+
                 return View(nameof(StudentListings), viewModel);
                 //return RedirectToAction(nameof(StudentListings), viewModel);
             }
@@ -262,7 +262,7 @@ namespace LexiconLMS.Controllers
             ViewBag.nameCourse = CourseName;
             ViewBag.IdCourse = id;
 
-            
+
             if (id == null)
             {
                 return NotFound();
@@ -283,7 +283,7 @@ namespace LexiconLMS.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id, string CourseName)
         {
-     
+
 
             var course = await _context.Courses.FindAsync(id);
 
@@ -326,7 +326,7 @@ namespace LexiconLMS.Controllers
                             {
                                 _context.Documents.Remove(document);
                             }
-                          
+
                         }
 
                         // Delete all the activites for the module.
@@ -341,21 +341,21 @@ namespace LexiconLMS.Controllers
 
             // Remove all Module documents.
 
-                var getAllModuleDocuments = _context.Documents.Include(a => a.Module);
+            var getAllModuleDocuments = _context.Documents.Include(a => a.Module);
 
-                foreach (var document in getAllModulesForCourse)
+            foreach (var document in getAllModulesForCourse)
+            {
+                var getDocumentForModule = getAllModuleDocuments.Where(m => m.ModuleId == document.Id);
+                foreach (var doc in getDocumentForModule)
                 {
-                    var getDocumentForModule = getAllModuleDocuments.Where(m => m.ModuleId == document.Id);
-                    foreach (var doc in getDocumentForModule)
-                    {
-                        _context.Documents.Remove(doc);
-                    }
-                  
+                    _context.Documents.Remove(doc);
                 }
+
+            }
 
             // Remove all the modules of the course
 
-       
+
             if (getAllModulesForCourse != null)
             {
                 foreach (var module in getAllModulesForCourse)
@@ -364,23 +364,23 @@ namespace LexiconLMS.Controllers
                 }
             }
 
-                // Remove  all the documents of the course
+            // Remove  all the documents of the course
 
-                var getAllCourseDocuments = _context.Documents.Include(a => a.Course);
+            var getAllCourseDocuments = _context.Documents.Include(a => a.Course);
 
-                 foreach (var document in _context.Courses)
+            foreach (var document in _context.Courses)
+            {
+                var getDocumentForcourse = getAllCourseDocuments.Where(m => m.CourseId == document.CourseId);
+                foreach (var doc in getDocumentForcourse)
                 {
-                    var getDocumentForcourse = getAllCourseDocuments.Where(m => m.CourseId == document.CourseId);
-                    foreach (var doc in getDocumentForcourse)
-                    {
-                        _context.Documents.Remove(doc);
-                    }
-
+                    _context.Documents.Remove(doc);
                 }
 
-                // Remove course.
+            }
 
-             _context.Courses.Remove(course);
+            // Remove course.
+
+            _context.Courses.Remove(course);
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
@@ -486,12 +486,25 @@ namespace LexiconLMS.Controllers
                 return NotFound();
             }
 
+            string userrole = await GetUserRole(user);
+            if(userrole == "Teacher")
+            {
+                ViewBag.Role = "Teacher";
+            }
+            else
+            {
+                ViewBag.Role = "Student";
+            }
+            
+            
+
             return View(user);
         }
 
         private async Task<ApplicationUser> GetAsync(string? id)
         {
             return await _context.AppUser
+                .Include(a => a.Course)
                 .FirstOrDefaultAsync(m => m.Id == id);
         }
 
@@ -502,15 +515,103 @@ namespace LexiconLMS.Controllers
         {
 
 
-            var user = await GetAsync(id);
+            /*var user = await GetAsync(id);
 
+            if (user.Documents != null)
+            {
+                foreach (var document in user.Documents)
+                {
+                    user.Documents.Remove(document);
+                    _context.Documents.Remove(document);
+                }
+            }
+
+            string userRole = await GetUserRole(user);
+            int courseID = (int) user.CourseId;
+            string courseName = user.Course.CourseName;
+
+
+            
             _context.AppUser.Remove(user);
             await _context.SaveChangesAsync();
-            return RedirectToAction(nameof(ListOfTeachers));
+
+            if (userRole == "Teacher")
+            {
+                return RedirectToAction(nameof(ListOfTeachers));
+            }
+            else
+            {
+                return RedirectToAction(nameof(ListOfCourseStudents), courseName, courseID);
+            }*/
+
+
+            var user = await GetAsync(id);
+
+            // ----------------------------------------------
+            DeleteRelatedUserDoc(id);
+            // ----------------------------------------------
+            _context.AppUser.Remove(user);
+            await _context.SaveChangesAsync();
+
+            var userRole = await GetUserRole(user);
+            if (userRole == "Teacher")
+            {
+                return RedirectToAction(nameof(ListOfTeachers));
+            }
+            else
+            {
+                var course = _context.AppUser.FirstOrDefault(u => u.Id == id).Course;
+                var courseName = course.CourseName;
+                var courseID = course.CourseId;
+                // ===================================================================
+                //ViewBag.nameCourse = CourseName;
+                ViewBag.IdCourse = id;
+
+                var allStudents = await userManager.GetUsersInRoleAsync("Student");
+                var students = allStudents.Where(s => s.CourseId == courseID);
+
+                var documents = await _context.Documents.ToListAsync();
+                foreach (var student in students)
+                {
+                    foreach (var document in documents)
+                    {
+                        if (document.AppUser == student)
+                        {
+                            student.Documents.Add(document);
+                        }
+                    }
+                }
+                // =====================================================================
+
+                return View("ListOfCourseStudents", students);
+            }// end of else
         }
+        private void DeleteRelatedUserDoc(string id)
+        {
+            var docs = _context.Documents.Where(a => a.AppUser.Id == id).ToList();
+            foreach (var doc in docs)
+            {
+                var docId = doc.DocumentId;
+                _context.Documents.Remove(doc);
+            }
+        }
+
 
         // ================ end of Edit a teacher ============
 
+        //private async Task<string> GetUserRrole(ApplicationUser user)
+        //{
+        //    string userRole;
+
+        //    bool flag = await userManager.IsInRoleAsync(user, "Teacher");
+
+        //    if (flag)
+        //        userRole = "Teacher";
+        //    else
+        //        userRole = "Student";
+
+        //    return userRole;
+        //}
 
         public IActionResult StudentListings()
         {
