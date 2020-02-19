@@ -49,8 +49,10 @@
                     <a class="btn btn-sm btn-outline-danger" asp-action="GiveGrade" asp-controller="Document" asp-route-id="@student.Id" asp-route-ActivityId="@Model.ActivityId" asp-route-Grade="F">F</a>
                 </td>
 
-                <td>
+                <td>@{if (student.Documents.FirstOrDefault(a => a.ModuleActivityId == @Model.ActivityId) != null)
                     @Html.DisplayFor(Item => student.Documents.FirstOrDefault(a => a.ModuleActivityId == @Model.ActivityId).Grade)
+                    else { <p>Not uploaded</p>}
+                    }
                 </td>
 
             </tr>
