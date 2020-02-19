@@ -270,9 +270,9 @@ namespace LexiconLMS.Controllers
                     ActivityId = (int)currentActivityId,
                     Students = _context.AppUser.Where(user => user.CourseId == courseId).Include(a => a.Documents).ToList()
                 };
-             // ---------------------------------------------
+            // ---------------------------------------------
 
-                return View("SeeAssignments", model);
+            return View("SeeAssignments", model);
             
         }
 
